@@ -69,7 +69,6 @@ fn main() -> std::io::Result<()> {
 
     let mut file = BufWriter::new(File::create(
         Path::new(&env::var("OUT_DIR").unwrap()).join("generated.rs"),
-        // Path::new("src").join("generated.rs"),
     )?);
 
     let config = Config {
