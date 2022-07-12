@@ -50818,10 +50818,10 @@ pub mod enums {
         ChannelFull(crate::types::ChannelFull),
     }
     impl ChatFull {
-        pub fn id(&self) -> i64 {
+        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
             match self {
-                Self::Full(i) => i.id,
-                Self::ChannelFull(i) => i.id,
+                Self::Full(i) => i.notify_settings.clone(),
+                Self::ChannelFull(i) => i.notify_settings.clone(),
             }
         }
         pub fn about(&self) -> String {
@@ -50830,10 +50830,10 @@ pub mod enums {
                 Self::ChannelFull(i) => i.about.clone(),
             }
         }
-        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
+        pub fn id(&self) -> i64 {
             match self {
-                Self::Full(i) => i.notify_settings.clone(),
-                Self::ChannelFull(i) => i.notify_settings.clone(),
+                Self::Full(i) => i.id,
+                Self::ChannelFull(i) => i.id,
             }
         }
     }
@@ -51465,16 +51465,16 @@ pub mod enums {
         Folder(crate::types::DialogFolder),
     }
     impl Dialog {
-        pub fn pinned(&self) -> bool {
-            match self {
-                Self::Dialog(i) => i.pinned,
-                Self::Folder(i) => i.pinned,
-            }
-        }
         pub fn top_message(&self) -> i32 {
             match self {
                 Self::Dialog(i) => i.top_message,
                 Self::Folder(i) => i.top_message,
+            }
+        }
+        pub fn pinned(&self) -> bool {
+            match self {
+                Self::Dialog(i) => i.pinned,
+                Self::Folder(i) => i.pinned,
             }
         }
         pub fn peer(&self) -> crate::enums::Peer {
@@ -51818,16 +51818,16 @@ pub mod enums {
         Deleted(crate::types::EmojiKeywordDeleted),
     }
     impl EmojiKeyword {
-        pub fn keyword(&self) -> String {
-            match self {
-                Self::Keyword(i) => i.keyword.clone(),
-                Self::Deleted(i) => i.keyword.clone(),
-            }
-        }
         pub fn emoticons(&self) -> Vec<String> {
             match self {
                 Self::Keyword(i) => i.emoticons.clone(),
                 Self::Deleted(i) => i.emoticons.clone(),
+            }
+        }
+        pub fn keyword(&self) -> String {
+            match self {
+                Self::Keyword(i) => i.keyword.clone(),
+                Self::Deleted(i) => i.keyword.clone(),
             }
         }
     }
@@ -52100,16 +52100,16 @@ pub mod enums {
                 Self::Service(i) => i.date,
             }
         }
-        pub fn random_id(&self) -> i64 {
-            match self {
-                Self::Message(i) => i.random_id,
-                Self::Service(i) => i.random_id,
-            }
-        }
         pub fn bytes(&self) -> Vec<u8> {
             match self {
                 Self::Message(i) => i.bytes.clone(),
                 Self::Service(i) => i.bytes.clone(),
+            }
+        }
+        pub fn random_id(&self) -> i64 {
+            match self {
+                Self::Message(i) => i.random_id,
+                Self::Service(i) => i.random_id,
             }
         }
         pub fn chat_id(&self) -> i32 {
@@ -53042,20 +53042,20 @@ pub mod enums {
         Game(crate::types::InputBotInlineResultGame),
     }
     impl InputBotInlineResult {
-        pub fn send_message(&self) -> crate::enums::InputBotInlineMessage {
-            match self {
-                Self::Result(i) => i.send_message.clone(),
-                Self::Photo(i) => i.send_message.clone(),
-                Self::Document(i) => i.send_message.clone(),
-                Self::Game(i) => i.send_message.clone(),
-            }
-        }
         pub fn id(&self) -> String {
             match self {
                 Self::Result(i) => i.id.clone(),
                 Self::Photo(i) => i.id.clone(),
                 Self::Document(i) => i.id.clone(),
                 Self::Game(i) => i.id.clone(),
+            }
+        }
+        pub fn send_message(&self) -> crate::enums::InputBotInlineMessage {
+            match self {
+                Self::Result(i) => i.send_message.clone(),
+                Self::Photo(i) => i.send_message.clone(),
+                Self::Document(i) => i.send_message.clone(),
+                Self::Game(i) => i.send_message.clone(),
             }
         }
     }
@@ -53512,16 +53512,16 @@ pub mod enums {
                 Self::Big(i) => i.id,
             }
         }
-        pub fn name(&self) -> String {
-            match self {
-                Self::File(i) => i.name.clone(),
-                Self::Big(i) => i.name.clone(),
-            }
-        }
         pub fn parts(&self) -> i32 {
             match self {
                 Self::File(i) => i.parts,
                 Self::Big(i) => i.parts,
+            }
+        }
+        pub fn name(&self) -> String {
+            match self {
+                Self::File(i) => i.name.clone(),
+                Self::Big(i) => i.name.clone(),
             }
         }
     }
@@ -55184,16 +55184,16 @@ pub mod enums {
         Secret(crate::types::IpPortSecret),
     }
     impl IpPort {
-        pub fn port(&self) -> i32 {
-            match self {
-                Self::Port(i) => i.port,
-                Self::Secret(i) => i.port,
-            }
-        }
         pub fn ipv4(&self) -> i32 {
             match self {
                 Self::Port(i) => i.ipv4,
                 Self::Secret(i) => i.ipv4,
+            }
+        }
+        pub fn port(&self) -> i32 {
+            match self {
+                Self::Port(i) => i.port,
+                Self::Secret(i) => i.port,
             }
         }
     }
@@ -56177,29 +56177,6 @@ pub mod enums {
         BankCard(crate::types::MessageEntityBankCard),
     }
     impl MessageEntity {
-        pub fn offset(&self) -> i32 {
-            match self {
-                Self::Unknown(i) => i.offset,
-                Self::Mention(i) => i.offset,
-                Self::Hashtag(i) => i.offset,
-                Self::BotCommand(i) => i.offset,
-                Self::Url(i) => i.offset,
-                Self::Email(i) => i.offset,
-                Self::Bold(i) => i.offset,
-                Self::Italic(i) => i.offset,
-                Self::Code(i) => i.offset,
-                Self::Pre(i) => i.offset,
-                Self::TextUrl(i) => i.offset,
-                Self::MentionName(i) => i.offset,
-                Self::InputMessageEntityMentionName(i) => i.offset,
-                Self::Phone(i) => i.offset,
-                Self::Cashtag(i) => i.offset,
-                Self::Underline(i) => i.offset,
-                Self::Strike(i) => i.offset,
-                Self::Blockquote(i) => i.offset,
-                Self::BankCard(i) => i.offset,
-            }
-        }
         pub fn length(&self) -> i32 {
             match self {
                 Self::Unknown(i) => i.length,
@@ -56221,6 +56198,29 @@ pub mod enums {
                 Self::Strike(i) => i.length,
                 Self::Blockquote(i) => i.length,
                 Self::BankCard(i) => i.length,
+            }
+        }
+        pub fn offset(&self) -> i32 {
+            match self {
+                Self::Unknown(i) => i.offset,
+                Self::Mention(i) => i.offset,
+                Self::Hashtag(i) => i.offset,
+                Self::BotCommand(i) => i.offset,
+                Self::Url(i) => i.offset,
+                Self::Email(i) => i.offset,
+                Self::Bold(i) => i.offset,
+                Self::Italic(i) => i.offset,
+                Self::Code(i) => i.offset,
+                Self::Pre(i) => i.offset,
+                Self::TextUrl(i) => i.offset,
+                Self::MentionName(i) => i.offset,
+                Self::InputMessageEntityMentionName(i) => i.offset,
+                Self::Phone(i) => i.offset,
+                Self::Cashtag(i) => i.offset,
+                Self::Underline(i) => i.offset,
+                Self::Strike(i) => i.offset,
+                Self::Blockquote(i) => i.offset,
+                Self::BankCard(i) => i.offset,
             }
         }
     }
@@ -57044,16 +57044,16 @@ pub mod enums {
         MsgNewDetailedInfo(crate::types::MsgNewDetailedInfo),
     }
     impl MsgDetailedInfo {
-        pub fn bytes(&self) -> i32 {
-            match self {
-                Self::Info(i) => i.bytes,
-                Self::MsgNewDetailedInfo(i) => i.bytes,
-            }
-        }
         pub fn answer_msg_id(&self) -> i64 {
             match self {
                 Self::Info(i) => i.answer_msg_id,
                 Self::MsgNewDetailedInfo(i) => i.answer_msg_id,
+            }
+        }
+        pub fn bytes(&self) -> i32 {
+            match self {
+                Self::Info(i) => i.bytes,
+                Self::MsgNewDetailedInfo(i) => i.bytes,
             }
         }
         pub fn status(&self) -> i32 {
@@ -57435,20 +57435,28 @@ pub mod enums {
         TempDc(crate::types::PQInnerDataTempDc),
     }
     impl PQInnerData {
-        pub fn q(&self) -> Vec<u8> {
-            match self {
-                Self::Data(i) => i.q.clone(),
-                Self::Dc(i) => i.q.clone(),
-                Self::Temp(i) => i.q.clone(),
-                Self::TempDc(i) => i.q.clone(),
-            }
-        }
         pub fn new_nonce(&self) -> [u8; 32] {
             match self {
                 Self::Data(i) => i.new_nonce.clone(),
                 Self::Dc(i) => i.new_nonce.clone(),
                 Self::Temp(i) => i.new_nonce.clone(),
                 Self::TempDc(i) => i.new_nonce.clone(),
+            }
+        }
+        pub fn nonce(&self) -> [u8; 16] {
+            match self {
+                Self::Data(i) => i.nonce.clone(),
+                Self::Dc(i) => i.nonce.clone(),
+                Self::Temp(i) => i.nonce.clone(),
+                Self::TempDc(i) => i.nonce.clone(),
+            }
+        }
+        pub fn pq(&self) -> Vec<u8> {
+            match self {
+                Self::Data(i) => i.pq.clone(),
+                Self::Dc(i) => i.pq.clone(),
+                Self::Temp(i) => i.pq.clone(),
+                Self::TempDc(i) => i.pq.clone(),
             }
         }
         pub fn p(&self) -> Vec<u8> {
@@ -57467,20 +57475,12 @@ pub mod enums {
                 Self::TempDc(i) => i.server_nonce.clone(),
             }
         }
-        pub fn nonce(&self) -> [u8; 16] {
+        pub fn q(&self) -> Vec<u8> {
             match self {
-                Self::Data(i) => i.nonce.clone(),
-                Self::Dc(i) => i.nonce.clone(),
-                Self::Temp(i) => i.nonce.clone(),
-                Self::TempDc(i) => i.nonce.clone(),
-            }
-        }
-        pub fn pq(&self) -> Vec<u8> {
-            match self {
-                Self::Data(i) => i.pq.clone(),
-                Self::Dc(i) => i.pq.clone(),
-                Self::Temp(i) => i.pq.clone(),
-                Self::TempDc(i) => i.pq.clone(),
+                Self::Data(i) => i.q.clone(),
+                Self::Dc(i) => i.q.clone(),
+                Self::Temp(i) => i.q.clone(),
+                Self::TempDc(i) => i.q.clone(),
             }
         }
     }
@@ -58650,16 +58650,16 @@ pub mod enums {
         Webrtc(crate::types::PhoneConnectionWebrtc),
     }
     impl PhoneConnection {
+        pub fn ipv6(&self) -> String {
+            match self {
+                Self::Connection(i) => i.ipv6.clone(),
+                Self::Webrtc(i) => i.ipv6.clone(),
+            }
+        }
         pub fn id(&self) -> i64 {
             match self {
                 Self::Connection(i) => i.id,
                 Self::Webrtc(i) => i.id,
-            }
-        }
-        pub fn ip(&self) -> String {
-            match self {
-                Self::Connection(i) => i.ip.clone(),
-                Self::Webrtc(i) => i.ip.clone(),
             }
         }
         pub fn port(&self) -> i32 {
@@ -58668,10 +58668,10 @@ pub mod enums {
                 Self::Webrtc(i) => i.port,
             }
         }
-        pub fn ipv6(&self) -> String {
+        pub fn ip(&self) -> String {
             match self {
-                Self::Connection(i) => i.ipv6.clone(),
-                Self::Webrtc(i) => i.ipv6.clone(),
+                Self::Connection(i) => i.ip.clone(),
+                Self::Webrtc(i) => i.ip.clone(),
             }
         }
     }
@@ -60308,19 +60308,6 @@ pub mod enums {
         TranslationFiles(crate::types::SecureValueErrorTranslationFiles),
     }
     impl SecureValueError {
-        pub fn r#type(&self) -> crate::enums::SecureValueType {
-            match self {
-                Self::Data(i) => i.r#type.clone(),
-                Self::FrontSide(i) => i.r#type.clone(),
-                Self::ReverseSide(i) => i.r#type.clone(),
-                Self::Selfie(i) => i.r#type.clone(),
-                Self::File(i) => i.r#type.clone(),
-                Self::Files(i) => i.r#type.clone(),
-                Self::Error(i) => i.r#type.clone(),
-                Self::TranslationFile(i) => i.r#type.clone(),
-                Self::TranslationFiles(i) => i.r#type.clone(),
-            }
-        }
         pub fn text(&self) -> String {
             match self {
                 Self::Data(i) => i.text.clone(),
@@ -60332,6 +60319,19 @@ pub mod enums {
                 Self::Error(i) => i.text.clone(),
                 Self::TranslationFile(i) => i.text.clone(),
                 Self::TranslationFiles(i) => i.text.clone(),
+            }
+        }
+        pub fn r#type(&self) -> crate::enums::SecureValueType {
+            match self {
+                Self::Data(i) => i.r#type.clone(),
+                Self::FrontSide(i) => i.r#type.clone(),
+                Self::ReverseSide(i) => i.r#type.clone(),
+                Self::Selfie(i) => i.r#type.clone(),
+                Self::File(i) => i.r#type.clone(),
+                Self::Files(i) => i.r#type.clone(),
+                Self::Error(i) => i.r#type.clone(),
+                Self::TranslationFile(i) => i.r#type.clone(),
+                Self::TranslationFiles(i) => i.r#type.clone(),
             }
         }
     }
@@ -63255,10 +63255,10 @@ pub mod enums {
         NoFile(crate::types::WallPaperNoFile),
     }
     impl WallPaper {
-        pub fn default(&self) -> bool {
+        pub fn dark(&self) -> bool {
             match self {
-                Self::Paper(i) => i.default,
-                Self::NoFile(i) => i.default,
+                Self::Paper(i) => i.dark,
+                Self::NoFile(i) => i.dark,
             }
         }
         pub fn id(&self) -> i64 {
@@ -63267,10 +63267,10 @@ pub mod enums {
                 Self::NoFile(i) => i.id,
             }
         }
-        pub fn dark(&self) -> bool {
+        pub fn default(&self) -> bool {
             match self {
-                Self::Paper(i) => i.dark,
-                Self::NoFile(i) => i.dark,
+                Self::Paper(i) => i.default,
+                Self::NoFile(i) => i.default,
             }
         }
     }
@@ -63379,18 +63379,6 @@ pub mod enums {
         NoProxy(crate::types::WebDocumentNoProxy),
     }
     impl WebDocument {
-        pub fn size(&self) -> i32 {
-            match self {
-                Self::Document(i) => i.size,
-                Self::NoProxy(i) => i.size,
-            }
-        }
-        pub fn url(&self) -> String {
-            match self {
-                Self::Document(i) => i.url.clone(),
-                Self::NoProxy(i) => i.url.clone(),
-            }
-        }
         pub fn mime_type(&self) -> String {
             match self {
                 Self::Document(i) => i.mime_type.clone(),
@@ -63401,6 +63389,18 @@ pub mod enums {
             match self {
                 Self::Document(i) => i.attributes.clone(),
                 Self::NoProxy(i) => i.attributes.clone(),
+            }
+        }
+        pub fn url(&self) -> String {
+            match self {
+                Self::Document(i) => i.url.clone(),
+                Self::NoProxy(i) => i.url.clone(),
+            }
+        }
+        pub fn size(&self) -> i32 {
+            match self {
+                Self::Document(i) => i.size,
+                Self::NoProxy(i) => i.size,
             }
         }
     }
@@ -64547,10 +64547,10 @@ pub mod enums {
             Slice(crate::types::contacts::BlockedSlice),
         }
         impl Blocked {
-            pub fn chats(&self) -> Vec<crate::enums::Chat> {
+            pub fn users(&self) -> Vec<crate::enums::User> {
                 match self {
-                    Self::Blocked(i) => i.chats.clone(),
-                    Self::Slice(i) => i.chats.clone(),
+                    Self::Blocked(i) => i.users.clone(),
+                    Self::Slice(i) => i.users.clone(),
                 }
             }
             pub fn blocked(&self) -> Vec<crate::enums::PeerBlocked> {
@@ -64559,10 +64559,10 @@ pub mod enums {
                     Self::Slice(i) => i.blocked.clone(),
                 }
             }
-            pub fn users(&self) -> Vec<crate::enums::User> {
+            pub fn chats(&self) -> Vec<crate::enums::Chat> {
                 match self {
-                    Self::Blocked(i) => i.users.clone(),
-                    Self::Slice(i) => i.users.clone(),
+                    Self::Blocked(i) => i.chats.clone(),
+                    Self::Slice(i) => i.chats.clone(),
                 }
             }
         }
