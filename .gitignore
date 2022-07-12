@@ -2,7 +2,7 @@
 **/*.rs.bk
 Cargo.lock
 *.session
-# src/generated.rs
+src/generated.rs
 
 # examples/ file to test changes, might contain sensitive information
 testbed.rs
