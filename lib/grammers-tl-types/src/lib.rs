@@ -74,10 +74,16 @@
 //! [`Deserializable`]: trait.Deserializable.html
 //! [`LAYER`]: constant.LAYER.html
 pub mod deserialize;
+#[cfg(debug_assertions)]
+mod generateds;
+#[cfg(not(debug_assertions))]
 mod generated;
 pub mod serialize;
 
 pub use deserialize::{Cursor, Deserializable};
+#[cfg(debug_assertions)]
+pub use generated::{enums, functions, name_for_id, types, LAYER};
+#[cfg(not(debug_assertions))]
 pub use generated::{enums, functions, name_for_id, types, LAYER};
 pub use serialize::Serializable;
 
