@@ -1,3 +1,5 @@
+use std::fmt;
+
 use super::Client;
 use grammers_mtsender::InvocationError;
 use grammers_session::PackedChat;
@@ -5,24 +7,46 @@ use grammers_tl_types as tl;
 
 const MAX_PARTICIPANT_LIMIT: i32 = 200;
 
+#[derive(Debug)]
+pub enum ChannelError {
+    NotFoundChannel,
+    Other(InvocationError),
+}
+impl fmt::Display for ChannelError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use ChannelError::*;
+        match self {
+            NotFoundChannel => write!(f, "not found the channel"),
+            Other(e) => write!(f, "channel error: {}", e),
+        }
+    }
+}
+
+impl std::error::Error for ChannelError {}
+
 impl Client {
     //get full channel
     pub async fn get_full_channel<C: Into<PackedChat>>(
         &mut self,
         chat: C,
-    ) -> Result<tl::enums::messages::ChatFull, InvocationError> {
+    ) -> Result<tl::types::ChannelFull, ChannelError> {
         let chat = chat.into();
         let input_channel = tl::types::InputChannel {
             channel_id: chat.id,
             access_hash: chat.access_hash.unwrap_or(0i64),
         };
-        let chat_full = self
+        match self
             .invoke(&tl::functions::channels::GetFullChannel {
                 channel: tl::enums::InputChannel::Channel(input_channel),
             })
-            .await?;
-
-        Ok(chat_full)
+            .await
+        {
+            Ok(tl::enums::messages::ChatFull::Full(chat_full)) => match chat_full.full_chat {
+                tl::enums::ChatFull::ChannelFull(channel_full) => Ok(channel_full),
+                _ => Err(ChannelError::NotFoundChannel),
+            },
+            Err(e) => Err(ChannelError::Other(e)),
+        }
     }
 
     // get chat' members
