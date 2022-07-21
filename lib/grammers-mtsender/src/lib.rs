@@ -7,7 +7,7 @@
 // except according to those terms.
 mod errors;
 
-use bytes::{Buf, BytesMut};
+use bytes::{Buf, BufMut, BytesMut};
 pub use errors::{AuthorizationError, InvocationError, ReadError};
 use grammers_mtproto::mtp::{self, Mtp};
 use grammers_mtproto::transport::{self, Transport};
@@ -15,6 +15,7 @@ use grammers_mtproto::{authentication, MsgId};
 use grammers_tl_types::{self as tl, Deserializable, RemoteCall};
 use log::{debug, info, trace, warn};
 use std::io;
+use std::net::{addr::SocketAddrV4, SocketAddr};
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::SystemTime;
 use tl::Serializable;
@@ -134,7 +135,28 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         addr: A,
     ) -> Result<(Self, Enqueuer), io::Error> {
         info!("connecting...");
-        let stream = TcpStream::connect(addr).await?;
+        let socks5 = &[0x05, 0x01, 0x00];
+        let mut stream = TcpStream::connect("127.0.0.1:7890").await?;
+        stream.write_all(socks5).await?;
+
+        let mut socks5_1 = BytesMut::with_capacity(512);
+        if let SocketAddr::V4(ip) = addr {
+            stream.write_all(&[0x01]);
+            stream.write_all(&ip.ip().octets()[..]);
+            stream.write_u16(ip.port());
+        }
+        let mut buf = [0; 2];
+        stream.read(&mut buf).await?;
+        // stream.write_all(&socks5_1).await?;
+        //0x01, 0xbb
+        //0x00, 0x50
+        //&[0x05, 0x01, 0x00, , 149, 154, 167, 51, 0x00, 0x50]
+        let mut buf = [0; 10];
+        let n = stream.read(&mut buf).await?;
+
+        info!("{:#?}", &buf[..n]);
+
+        // let mut stream = TcpStream::connect(addr).await?;
         let (tx, rx) = mpsc::unbounded_channel();
 
         Ok((
