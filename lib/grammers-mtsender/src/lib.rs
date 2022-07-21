@@ -7,7 +7,7 @@
 // except according to those terms.
 mod errors;
 
-use bytes::{Buf, BufMut, BytesMut};
+use bytes::{Buf, BytesMut};
 pub use errors::{AuthorizationError, InvocationError, ReadError};
 use grammers_mtproto::mtp::{self, Mtp};
 use grammers_mtproto::transport::{self, Transport};
@@ -15,7 +15,7 @@ use grammers_mtproto::{authentication, MsgId};
 use grammers_tl_types::{self as tl, Deserializable, RemoteCall};
 use log::{debug, info, trace, warn};
 use std::io;
-use std::net::{addr::SocketAddrV4, SocketAddr};
+use std::net::SocketAddr;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::SystemTime;
 use tl::Serializable;
@@ -101,6 +101,59 @@ enum RequestState {
 
 pub struct Enqueuer(mpsc::UnboundedSender<Request>);
 
+async fn proxy_socks5<A: ToSocketAddrs>(
+    address: &str,
+    port: &str,
+    addr: A,
+) -> Result<TcpStream, io::Error> {
+    let addrs = tokio::net::lookup_host(addr)
+        .await?
+        .collect::<Vec<SocketAddr>>();
+
+    let addrs = addrs.first().expect("parse proxy server fail");
+
+    let socks5 = &[0x05, 0x01, 0x00];
+    let mut stream = TcpStream::connect(format!("{}:{}", address, port)).await?;
+    stream.write_all(socks5).await?;
+
+    let mut buf = [0; 2];
+    stream.read(&mut buf).await?;
+
+    match addrs {
+        SocketAddr::V4(ip) => {
+            stream.write_all(socks5).await?;
+            stream.write_all(&[0x01]).await?;
+            stream.write_all(&ip.ip().octets()[..]).await?;
+            stream.write_u16(ip.port()).await?;
+        }
+        SocketAddr::V6(_ip) => {}
+    }
+    let mut buf = [0; 10];
+    stream.read(&mut buf).await?;
+    Ok(stream)
+}
+
+async fn proxy_connect<A: ToSocketAddrs>(
+    proxy_address: String,
+    addr: A,
+) -> Result<TcpStream, io::Error> {
+    let parse_proxy_info = proxy_address.split("://").collect::<Vec<&str>>();
+    if parse_proxy_info.len() < 2 {
+        panic!("proxy info config error");
+    }
+    let schema = parse_proxy_info[0];
+    let connect_info = parse_proxy_info[1].split(":").collect::<Vec<&str>>();
+
+    if parse_proxy_info.len() < 2 {
+        panic!("proxy info config error");
+    }
+    match schema {
+        "socks5" => proxy_socks5(connect_info[0], connect_info[1], addr).await,
+
+        _ => panic!("proxy info schema error"),
+    }
+}
+
 impl Enqueuer {
     /// Enqueue a Remote Procedure Call to be sent in future calls to `step`.
     pub fn enqueue<R: RemoteCall>(
@@ -133,30 +186,14 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         transport: T,
         mtp: M,
         addr: A,
+        proxy: Option<String>,
     ) -> Result<(Self, Enqueuer), io::Error> {
         info!("connecting...");
-        let socks5 = &[0x05, 0x01, 0x00];
-        let mut stream = TcpStream::connect("127.0.0.1:7890").await?;
-        stream.write_all(socks5).await?;
+        let stream = match proxy {
+            Some(proxy_address) => proxy_connect(proxy_address, addr).await?,
+            None => TcpStream::connect(addr).await?,
+        };
 
-        let mut socks5_1 = BytesMut::with_capacity(512);
-        if let SocketAddr::V4(ip) = addr {
-            stream.write_all(&[0x01]);
-            stream.write_all(&ip.ip().octets()[..]);
-            stream.write_u16(ip.port());
-        }
-        let mut buf = [0; 2];
-        stream.read(&mut buf).await?;
-        // stream.write_all(&socks5_1).await?;
-        //0x01, 0xbb
-        //0x00, 0x50
-        //&[0x05, 0x01, 0x00, , 149, 154, 167, 51, 0x00, 0x50]
-        let mut buf = [0; 10];
-        let n = stream.read(&mut buf).await?;
-
-        info!("{:#?}", &buf[..n]);
-
-        // let mut stream = TcpStream::connect(addr).await?;
         let (tx, rx) = mpsc::unbounded_channel();
 
         Ok((
@@ -518,8 +555,9 @@ impl<T: Transport> Sender<T, mtp::Encrypted> {
 pub async fn connect<T: Transport, A: ToSocketAddrs>(
     transport: T,
     addr: A,
+    proxy: Option<String>,
 ) -> Result<(Sender<T, mtp::Encrypted>, Enqueuer), AuthorizationError> {
-    let (mut sender, enqueuer) = Sender::connect(transport, mtp::Plain::new(), addr).await?;
+    let (mut sender, enqueuer) = Sender::connect(transport, mtp::Plain::new(), addr, proxy).await?;
 
     info!("generating new authorization key...");
     let (request, data) = authentication::step1()?;
@@ -566,6 +604,13 @@ pub async fn connect_with_auth<T: Transport, A: ToSocketAddrs>(
     transport: T,
     addr: A,
     auth_key: [u8; 256],
+    proxy: Option<String>,
 ) -> Result<(Sender<T, mtp::Encrypted>, Enqueuer), io::Error> {
-    Ok(Sender::connect(transport, mtp::Encrypted::build().finish(auth_key), addr).await?)
+    Ok(Sender::connect(
+        transport,
+        mtp::Encrypted::build().finish(auth_key),
+        addr,
+        proxy,
+    )
+    .await?)
 }

@@ -48,18 +48,19 @@ pub(crate) async fn connect_sender(
         DC_ADDRESSES[dc_id as usize].into()
     };
 
+    let proxy = config.proxy.clone();
     let (mut sender, request_tx) = if let Some(auth_key) = config.session.dc_auth_key(dc_id) {
         info!(
             "creating a new sender with existing auth key to dc {} {:?}",
             dc_id, addr
         );
-        sender::connect_with_auth(transport, addr, auth_key).await?
+        sender::connect_with_auth(transport, addr, auth_key, proxy).await?
     } else {
         info!(
             "creating a new sender and auth key in dc {} {:?}",
             dc_id, addr
         );
-        let (sender, tx) = sender::connect(transport, addr).await?;
+        let (sender, tx) = sender::connect(transport, addr, proxy).await?;
 
         config.session.insert_dc(dc_id, addr, sender.auth_key());
         (sender, tx)
