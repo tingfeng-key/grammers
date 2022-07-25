@@ -22,6 +22,29 @@ impl fmt::Display for ChatError {
 impl std::error::Error for ChatError {}
 
 impl Client {
+    pub async fn get_chats(&mut self, chat_id: i64) -> Result<crate::types::chat::Chat, ChatError> {
+        match self
+            .invoke(&tl::functions::messages::GetChats { id: vec![chat_id] })
+            .await
+        {
+            Ok(tl::enums::messages::Chats::Chats(chats)) => {
+                match chats.chats.into_iter().filter(|x| x.id() == chat_id).last() {
+                    Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
+                    None => Err(ChatError::NotFound),
+                }
+            }
+            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => match chat_slice
+                .chats
+                .into_iter()
+                .filter(|x| x.id() == chat_id)
+                .last()
+            {
+                Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
+                None => Err(ChatError::NotFound),
+            },
+            Err(e) => Err(ChatError::Other(e)),
+        }
+    }
     pub async fn get_full_chat(&mut self, chat_id: i64) -> Result<tl::types::ChatFull, ChatError> {
         match self
             .invoke(&tl::functions::messages::GetFullChat { chat_id })

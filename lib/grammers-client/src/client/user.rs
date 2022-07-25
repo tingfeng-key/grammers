@@ -1,7 +1,5 @@
 use super::Client;
-use crate::types::Chat;
 use grammers_mtsender::InvocationError;
-use grammers_session::{PackedChat, PackedType};
 use grammers_tl_types as tl;
 
 impl Client {

@@ -9,14 +9,14 @@ const MAX_PARTICIPANT_LIMIT: i32 = 200;
 
 #[derive(Debug)]
 pub enum ChannelError {
-    NotFoundChannel,
+    NotFound,
     Other(InvocationError),
 }
 impl fmt::Display for ChannelError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use ChannelError::*;
         match self {
-            NotFoundChannel => write!(f, "not found the channel"),
+            NotFound => write!(f, "not found the channel"),
             Other(e) => write!(f, "channel error: {}", e),
         }
     }
@@ -25,6 +25,39 @@ impl fmt::Display for ChannelError {
 impl std::error::Error for ChannelError {}
 
 impl Client {
+    pub async fn get_channels(
+        &mut self,
+        chat_id: i64,
+    ) -> Result<crate::types::chat::Chat, ChannelError> {
+        let input_channel = tl::types::InputChannel {
+            channel_id: chat_id,
+            access_hash: 0,
+        };
+        match self
+            .invoke(&tl::functions::channels::GetChannels {
+                id: vec![tl::enums::InputChannel::Channel(input_channel)],
+            })
+            .await
+        {
+            Ok(tl::enums::messages::Chats::Chats(chats)) => {
+                match chats.chats.into_iter().filter(|x| x.id() == chat_id).last() {
+                    Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
+                    None => Err(ChannelError::NotFound),
+                }
+            }
+            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => match chat_slice
+                .chats
+                .into_iter()
+                .filter(|x| x.id() == chat_id)
+                .last()
+            {
+                Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
+                None => Err(ChannelError::NotFound),
+            },
+            Err(e) => Err(ChannelError::Other(e)),
+        }
+    }
+
     //get full channel
     pub async fn get_full_channel(
         &mut self,
@@ -34,7 +67,6 @@ impl Client {
             channel_id: chat.id,
             access_hash: chat.access_hash.unwrap_or(0i64),
         };
-        println!("{:#?}", input_channel);
         match self
             .invoke(&tl::functions::channels::GetFullChannel {
                 channel: tl::enums::InputChannel::Channel(input_channel),
@@ -43,7 +75,7 @@ impl Client {
         {
             Ok(tl::enums::messages::ChatFull::Full(chat_full)) => match chat_full.full_chat {
                 tl::enums::ChatFull::ChannelFull(channel_full) => Ok(channel_full),
-                _ => Err(ChannelError::NotFoundChannel),
+                _ => Err(ChannelError::NotFound),
             },
             Err(e) => Err(ChannelError::Other(e)),
         }
