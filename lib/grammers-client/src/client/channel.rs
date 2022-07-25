@@ -26,15 +26,15 @@ impl std::error::Error for ChannelError {}
 
 impl Client {
     //get full channel
-    pub async fn get_full_channel<C: Into<PackedChat>>(
+    pub async fn get_full_channel(
         &mut self,
-        chat: C,
+        chat: PackedChat,
     ) -> Result<tl::types::ChannelFull, ChannelError> {
-        let chat = chat.into();
         let input_channel = tl::types::InputChannel {
             channel_id: chat.id,
             access_hash: chat.access_hash.unwrap_or(0i64),
         };
+        println!("{:#?}", input_channel);
         match self
             .invoke(&tl::functions::channels::GetFullChannel {
                 channel: tl::enums::InputChannel::Channel(input_channel),
