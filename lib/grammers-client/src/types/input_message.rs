@@ -427,17 +427,51 @@ impl InputSendMultiMedia {
         self
     }
 
-    pub fn photo(self, file: Uploaded, descript: Option<String>) -> Self {
-        let that = self.add_media(Self::sing_media(
-            descript.unwrap_or_default(),
-            tl::types::InputMediaUploadedPhoto {
-                file: file.input_file,
-                stickers: None,
-                ttl_seconds: None,
+    pub fn media<M: Into<tl::enums::MessageMedia>>(
+        self,
+        media: M,
+        descript: Option<String>,
+    ) -> Self {
+        match media.into() {
+            tl::enums::MessageMedia::Photo(media_photo) => {
+                if let Some(tl::enums::Photo::Photo(photo)) = media_photo.photo {
+                    return self.add_media(Self::sing_media(
+                        descript.unwrap_or_default(),
+                        tl::types::InputMediaPhoto {
+                            id: tl::types::InputPhoto {
+                                id: photo.id,
+                                access_hash: photo.access_hash,
+                                file_reference: photo.file_reference,
+                            }
+                            .into(),
+                            ttl_seconds: None,
+                        }
+                        .into(),
+                    ));
+                }
+                self
             }
-            .into(),
-        ));
-        that
+            tl::enums::MessageMedia::Document(media_document) => {
+                if let Some(tl::enums::Document::Document(document)) = media_document.document {
+                    return self.add_media(Self::sing_media(
+                        descript.unwrap_or_default(),
+                        tl::types::InputMediaDocument {
+                            id: tl::types::InputDocument {
+                                id: document.id,
+                                access_hash: document.access_hash,
+                                file_reference: document.file_reference,
+                            }
+                            .into(),
+                            ttl_seconds: None,
+                            query: None,
+                        }
+                        .into(),
+                    ));
+                }
+                self
+            }
+            _ => self,
+        }
     }
 
     /// questions: https://stackoverflow.com/a/65881427
@@ -454,7 +488,7 @@ impl InputSendMultiMedia {
     // }
 
     pub fn document(self, file: Uploaded, descript: Option<String>) -> Self {
-        let mime_type = self.get_file_mime(&file);
+        let mime_type = Self::get_file_mime(&file);
         let file_name = file.name().to_string();
         let that = self.add_media(Self::sing_media(
             descript.unwrap_or_default(),
@@ -486,7 +520,7 @@ impl InputSendMultiMedia {
     //     that
     // }
 
-    fn get_file_mime(&self, file: &Uploaded) -> String {
+    pub fn get_file_mime(file: &Uploaded) -> String {
         if let Some(mime) = mime_guess::from_path(file.name()).first() {
             mime.essence_str().to_string()
         } else {

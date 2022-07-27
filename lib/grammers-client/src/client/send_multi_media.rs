@@ -1,3 +1,5 @@
+use crate::types::{InputSendMultiMedia, Uploaded};
+
 use super::Client;
 pub use grammers_mtsender::{AuthorizationError, InvocationError};
 use grammers_session::PackedChat;
@@ -14,7 +16,8 @@ impl Client {
     ) -> Result<(), InvocationError> {
         let chat = chat.into();
         let input = input.into();
-        println!("{:#?}", input.multi_media);
+
+        // println!("{:#?}", input.multi_media);
         let updates = self
             .invoke(&tl::functions::messages::SendMultiMedia {
                 silent: input.silent,
@@ -28,7 +31,73 @@ impl Client {
             })
             .await?;
 
-        println!("{:#?}", updates);
+        // println!("{:#?}", updates);
         Ok(())
+    }
+
+    pub async fn upload_media(
+        &self,
+        chat: PackedChat,
+        media: tl::enums::InputMedia,
+    ) -> Result<tl::enums::MessageMedia, InvocationError> {
+        Ok(self
+            .invoke(&tl::functions::messages::UploadMedia {
+                peer: chat.to_input_peer(),
+                media: media.into(),
+            })
+            .await?)
+    }
+
+    pub fn phone(&self, file: Uploaded) -> tl::enums::InputMedia {
+        return tl::types::InputMediaUploadedPhoto {
+            file: file.input_file,
+            stickers: None,
+            ttl_seconds: None,
+        }
+        .into();
+    }
+
+    pub fn video(&self, file: Uploaded) -> tl::enums::InputMedia {
+        return tl::types::InputMediaUploadedDocument {
+            nosound_video: false,
+            force_file: false,
+            file: file.clone().input_file,
+            thumb: None,
+            mime_type: InputSendMultiMedia::get_file_mime(&file),
+            attributes: vec![
+                tl::types::DocumentAttributeFilename {
+                    file_name: file.name().to_string(),
+                }
+                .into(),
+                tl::types::DocumentAttributeVideo {
+                    round_message: false,
+                    supports_streaming: true,
+                    duration: 0,
+                    w: 0,
+                    h: 0,
+                }
+                .into(),
+            ],
+            stickers: None,
+            ttl_seconds: None,
+        }
+        .into();
+    }
+
+    pub fn document(&self, file: Uploaded) -> tl::enums::InputMedia {
+        return tl::types::InputMediaUploadedDocument {
+            nosound_video: false,
+            force_file: false,
+            file: file.clone().input_file,
+            thumb: None,
+            mime_type: InputSendMultiMedia::get_file_mime(&file),
+            attributes: vec![tl::types::DocumentAttributeFilename {
+                file_name: file.name().to_string(),
+            }
+            .into()],
+            stickers: None,
+            ttl_seconds: None,
+        }
+        .into();
     }
 }
