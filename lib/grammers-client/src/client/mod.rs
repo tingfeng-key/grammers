@@ -16,6 +16,7 @@ pub mod files;
 mod filters;
 pub mod messages;
 pub mod net;
+pub mod send_multi_media;
 pub mod updates;
 pub mod user;
 

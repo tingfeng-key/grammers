@@ -388,6 +388,7 @@ impl Client {
         let random_id = generate_random_id();
         let entities = parse_mention_entities(self, message.entities.clone());
         let updates = if let Some(media) = message.media.clone() {
+            println!("{:#?}, {}", media, random_id);
             self.invoke(&tl::functions::messages::SendMedia {
                 silent: message.silent,
                 background: message.background,

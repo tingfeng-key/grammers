@@ -37,7 +37,7 @@ pub(crate) use chat_map::Peer;
 pub use chats::{AdminRightsBuilder, BannedRightsBuilder};
 pub use dialog::Dialog;
 pub use inline_query::InlineQuery;
-pub use input_message::InputMessage;
+pub use input_message::{InputMessage, InputSendMultiMedia};
 pub use iter_buffer::IterBuffer;
 pub use login_token::LoginToken;
 pub(crate) use media::Uploaded;
