@@ -68,6 +68,7 @@ impl Client {
                 let chat_hashes = self.0.chat_hashes.lock("client.next_update");
                 message_box.get_channel_difference(&chat_hashes)
             } {
+                warn!("out1, {:#?}", message_box.is_empty());
                 drop(message_box);
                 let response = self.invoke(&request).await?;
 
@@ -90,6 +91,7 @@ impl Client {
             }
 
             let deadline = message_box.check_deadlines();
+            warn!("out2, {:#?}", message_box.is_empty());
             drop(message_box);
             tokio::select! {
                 step = self.step() => {
