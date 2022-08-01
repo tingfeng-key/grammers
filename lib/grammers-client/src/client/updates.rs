@@ -47,12 +47,14 @@ impl Client {
     /// ```
     pub async fn next_update(&self) -> Result<Option<Update>, InvocationError> {
         loop {
+            warn!("update");
             if let Some(updates) = self.0.updates.lock("client.next_update").pop_front() {
                 return Ok(Some(updates));
             }
 
             let mut message_box = self.0.message_box.lock("client.next_update");
             if let Some(request) = message_box.get_difference() {
+                warn!("update1");
                 drop(message_box);
                 let response = self.invoke(&request).await?;
                 let mut message_box = self.0.message_box.lock("client.next_update/get_difference");
@@ -61,9 +63,11 @@ impl Client {
                     message_box.apply_difference(response, &mut chat_hashes);
 
                 self.extend_update_queue(updates, ChatMap::new(users, chats));
+                warn!("update2");
                 continue;
             }
 
+            warn!("update3");
             if let Some(request) = {
                 let chat_hashes = self.0.chat_hashes.lock("client.next_update");
                 message_box.get_channel_difference(&chat_hashes)
@@ -87,6 +91,7 @@ impl Client {
                 };
 
                 self.extend_update_queue(updates, ChatMap::new(users, chats));
+                warn!("update4");
                 continue;
             }
 
