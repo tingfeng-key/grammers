@@ -14,7 +14,8 @@ pub use generated::types::User;
 pub use generated::LAYER as VERSION;
 use generated::{enums, types};
 use grammers_tl_types::deserialize::Error as DeserializeError;
-pub use message_box::MessageBox;
+pub use message_box::{channel_id, PrematureEndReason};
+pub use message_box::{Gap, MessageBox};
 use std::collections::HashMap;
 use std::fmt;
 use std::fs::{File, OpenOptions};
@@ -39,6 +40,7 @@ pub struct Session {
     session: Mutex<types::Session>,
 }
 
+#[allow(clippy::new_without_default)]
 impl Session {
     pub fn new() -> Self {
         Self {
@@ -75,7 +77,7 @@ impl Session {
     pub fn load(data: &[u8]) -> Result<Self, Error> {
         Ok(Self {
             session: Mutex::new(
-                enums::Session::from_bytes(&data)
+                enums::Session::from_bytes(data)
                     .map_err(|e| match e {
                         DeserializeError::UnexpectedEof => Error::MalformedData,
                         DeserializeError::UnexpectedConstructor { .. } => Error::UnsupportedVersion,
