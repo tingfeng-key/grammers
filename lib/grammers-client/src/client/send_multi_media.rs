@@ -28,6 +28,7 @@ impl Client {
                 multi_media: input.multi_media,
                 schedule_date: input.schedule_date,
                 send_as: None,
+                noforwards: false,
             })
             .await?;
 
