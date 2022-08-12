@@ -18,7 +18,7 @@ impl Client {
         let input = input.into();
 
         // println!("{:#?}", input.multi_media);
-        let updates = self
+        let _updates = self
             .invoke(&tl::functions::messages::SendMultiMedia {
                 silent: input.silent,
                 background: input.background,
@@ -31,7 +31,6 @@ impl Client {
                 noforwards: false,
             })
             .await?;
-
         // println!("{:#?}", updates);
         Ok(())
     }
