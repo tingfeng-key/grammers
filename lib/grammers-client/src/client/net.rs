@@ -48,15 +48,11 @@ pub(crate) async fn connect_sender(
         DC_ADDRESSES[dc_id as usize].into()
     };
 
-    let proxy = config.proxy.clone();
     let (mut sender, request_tx) = if let Some(auth_key) = config.session.dc_auth_key(dc_id) {
         info!(
             "creating a new sender with existing auth key to dc {} {:?}",
             dc_id, addr
         );
-<<<<<<< HEAD
-        sender::connect_with_auth(transport, addr, auth_key, proxy).await?
-=======
 
         #[cfg(feature = "proxy")]
         if let Some(url) = config.params.proxy_url.as_ref() {
@@ -67,15 +63,11 @@ pub(crate) async fn connect_sender(
 
         #[cfg(not(feature = "proxy"))]
         sender::connect_with_auth(transport, addr, auth_key).await?
->>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
     } else {
         info!(
             "creating a new sender and auth key in dc {} {:?}",
             dc_id, addr
         );
-<<<<<<< HEAD
-        let (sender, tx) = sender::connect(transport, addr, proxy).await?;
-=======
 
         #[cfg(feature = "proxy")]
         let (sender, tx) = if let Some(url) = config.params.proxy_url.as_ref() {
@@ -86,7 +78,6 @@ pub(crate) async fn connect_sender(
 
         #[cfg(not(feature = "proxy"))]
         let (sender, tx) = sender::connect(transport, addr).await?;
->>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
 
         config.session.insert_dc(dc_id, addr, sender.auth_key());
         (sender, tx)

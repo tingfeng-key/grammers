@@ -39,9 +39,6 @@ pub struct Config {
 
     /// Additional initialization parameters that can have sane defaults.
     pub params: InitParams,
-
-    /// setting client connect proxy config
-    pub proxy: Option<String>,
 }
 
 /// Optional initialization parameters, required when initializing a connection to Telegram's

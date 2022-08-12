@@ -15,7 +15,6 @@ use grammers_mtproto::{authentication, MsgId};
 use grammers_tl_types::{self as tl, Deserializable, RemoteCall};
 use log::{debug, info, trace, warn};
 use std::io;
-use std::net::SocketAddr;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::SystemTime;
 use tl::Serializable;
@@ -213,14 +212,8 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         transport: T,
         mtp: M,
         addr: A,
-        proxy: Option<String>,
     ) -> Result<(Self, Enqueuer), io::Error> {
         info!("connecting...");
-<<<<<<< HEAD
-        let stream = match proxy {
-            Some(proxy_address) => proxy_connect(proxy_address, addr).await?,
-            None => TcpStream::connect(addr).await?,
-=======
 
         let stream = NetStream::Tcp(TcpStream::connect(addr).await?);
         let (tx, rx) = mpsc::unbounded_channel();
@@ -306,7 +299,6 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                     format!("proxy scheme not supported: {}", scheme),
                 ));
             }
->>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
         };
 
         let (tx, rx) = mpsc::unbounded_channel();
@@ -670,15 +662,10 @@ impl<T: Transport> Sender<T, mtp::Encrypted> {
 pub async fn connect<T: Transport, A: ToSocketAddrs>(
     transport: T,
     addr: A,
-    proxy: Option<String>,
 ) -> Result<(Sender<T, mtp::Encrypted>, Enqueuer), AuthorizationError> {
-<<<<<<< HEAD
-    let (mut sender, enqueuer) = Sender::connect(transport, mtp::Plain::new(), addr, proxy).await?;
-=======
     let (sender, enqueuer) = Sender::connect(transport, mtp::Plain::new(), addr).await?;
     generate_auth_key(sender, enqueuer).await
 }
->>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
 
 #[cfg(feature = "proxy")]
 pub async fn connect_via_proxy<'a, T: Transport, A: IntoTargetAddr<'a>>(
@@ -740,17 +727,7 @@ pub async fn connect_with_auth<T: Transport, A: ToSocketAddrs>(
     transport: T,
     addr: A,
     auth_key: [u8; 256],
-    proxy: Option<String>,
 ) -> Result<(Sender<T, mtp::Encrypted>, Enqueuer), io::Error> {
-<<<<<<< HEAD
-    Ok(Sender::connect(
-        transport,
-        mtp::Encrypted::build().finish(auth_key),
-        addr,
-        proxy,
-    )
-    .await?)
-=======
     Sender::connect(transport, mtp::Encrypted::build().finish(auth_key), addr).await
 }
 
@@ -768,5 +745,4 @@ pub async fn connect_via_proxy_with_auth<'a, T: Transport, A: IntoTargetAddr<'a>
         proxy_url,
     )
     .await
->>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
 }
