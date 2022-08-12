@@ -54,13 +54,39 @@ pub(crate) async fn connect_sender(
             "creating a new sender with existing auth key to dc {} {:?}",
             dc_id, addr
         );
+<<<<<<< HEAD
         sender::connect_with_auth(transport, addr, auth_key, proxy).await?
+=======
+
+        #[cfg(feature = "proxy")]
+        if let Some(url) = config.params.proxy_url.as_ref() {
+            sender::connect_via_proxy_with_auth(transport, addr, auth_key, url).await?
+        } else {
+            sender::connect_with_auth(transport, addr, auth_key).await?
+        }
+
+        #[cfg(not(feature = "proxy"))]
+        sender::connect_with_auth(transport, addr, auth_key).await?
+>>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
     } else {
         info!(
             "creating a new sender and auth key in dc {} {:?}",
             dc_id, addr
         );
+<<<<<<< HEAD
         let (sender, tx) = sender::connect(transport, addr, proxy).await?;
+=======
+
+        #[cfg(feature = "proxy")]
+        let (sender, tx) = if let Some(url) = config.params.proxy_url.as_ref() {
+            sender::connect_via_proxy(transport, addr, url).await?
+        } else {
+            sender::connect(transport, addr).await?
+        };
+
+        #[cfg(not(feature = "proxy"))]
+        let (sender, tx) = sender::connect(transport, addr).await?;
+>>>>>>> acb8c593a1b52c8f9ac5284ed4bbd7c96a00544e
 
         config.session.insert_dc(dc_id, addr, sender.auth_key());
         (sender, tx)

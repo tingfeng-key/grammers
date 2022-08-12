@@ -16,6 +16,7 @@ edition = "2021"
 [features]
 markdown = ["pulldown-cmark"]
 html = ["html5ever"]
+proxy = ["grammers-mtsender/proxy"]
 
 [dependencies]
 chrono = "0.4.19"
@@ -33,7 +34,7 @@ mime_guess = "2.0.3"
 os_info = { version = "3.0.4", default_features = false }
 pin-project-lite = "0.2"
 pulldown-cmark = { version = "0.8.0", default-features = false, optional = true }
-tokio = { version = "1.5.0", features = ["sync", "fs", "macros", "time", "sync"] }
+tokio = { version = "1.5.0", features = ["sync", "fs", "macros", "time", "sync", "rt"] }
 
 [dev-dependencies]
 simple_logger = { version = "1.11.0", default-features = false, features = ["colors"] }
