@@ -127,59 +127,6 @@ enum RequestState {
 
 pub struct Enqueuer(mpsc::UnboundedSender<Request>);
 
-async fn proxy_socks5<A: ToSocketAddrs>(
-    address: &str,
-    port: &str,
-    addr: A,
-) -> Result<TcpStream, io::Error> {
-    let addrs = tokio::net::lookup_host(addr)
-        .await?
-        .collect::<Vec<SocketAddr>>();
-
-    let addrs = addrs.first().expect("parse proxy server fail");
-
-    let socks5 = &[0x05, 0x01, 0x00];
-    let mut stream = TcpStream::connect(format!("{}:{}", address, port)).await?;
-    stream.write_all(socks5).await?;
-
-    let mut buf = [0; 2];
-    stream.read(&mut buf).await?;
-
-    match addrs {
-        SocketAddr::V4(ip) => {
-            stream.write_all(socks5).await?;
-            stream.write_all(&[0x01]).await?;
-            stream.write_all(&ip.ip().octets()[..]).await?;
-            stream.write_u16(ip.port()).await?;
-        }
-        SocketAddr::V6(_ip) => {}
-    }
-    let mut buf = [0; 10];
-    stream.read(&mut buf).await?;
-    Ok(stream)
-}
-
-async fn proxy_connect<A: ToSocketAddrs>(
-    proxy_address: String,
-    addr: A,
-) -> Result<TcpStream, io::Error> {
-    let parse_proxy_info = proxy_address.split("://").collect::<Vec<&str>>();
-    if parse_proxy_info.len() < 2 {
-        panic!("proxy info config error");
-    }
-    let schema = parse_proxy_info[0];
-    let connect_info = parse_proxy_info[1].split(":").collect::<Vec<&str>>();
-
-    if parse_proxy_info.len() < 2 {
-        panic!("proxy info config error");
-    }
-    match schema {
-        "socks5" => proxy_socks5(connect_info[0], connect_info[1], addr).await,
-
-        _ => panic!("proxy info schema error"),
-    }
-}
-
 impl Enqueuer {
     /// Enqueue a Remote Procedure Call to be sent in future calls to `step`.
     pub fn enqueue<R: RemoteCall>(
