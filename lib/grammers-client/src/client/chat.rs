@@ -40,16 +40,4 @@ impl Client {
             Err(e) => Err(ChatError::Other(e)),
         }
     }
-    pub async fn get_full_chat(&mut self, chat_id: i64) -> Result<tl::types::ChatFull, ChatError> {
-        match self
-            .invoke(&tl::functions::messages::GetFullChat { chat_id })
-            .await
-        {
-            Ok(tl::enums::messages::ChatFull::Full(chat_full)) => match chat_full.full_chat {
-                tl::enums::ChatFull::Full(channel_full) => Ok(channel_full),
-                _ => Err(ChatError::NotFound),
-            },
-            Err(e) => Err(ChatError::Other(e)),
-        }
-    }
 }

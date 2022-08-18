@@ -27,33 +27,14 @@ impl std::error::Error for ChannelError {}
 impl Client {
     pub async fn get_channels(
         &mut self,
-        chat_id: i64,
-    ) -> Result<crate::types::chat::Chat, ChannelError> {
-        let input_channel = tl::types::InputChannel {
-            channel_id: chat_id,
-            access_hash: 0,
-        };
+        id: Vec<tl::enums::InputChannel>,
+    ) -> Result<Vec<tl::enums::Chat>, ChannelError> {
         match self
-            .invoke(&tl::functions::channels::GetChannels {
-                id: vec![tl::enums::InputChannel::Channel(input_channel)],
-            })
+            .invoke(&tl::functions::channels::GetChannels { id })
             .await
         {
-            Ok(tl::enums::messages::Chats::Chats(chats)) => {
-                match chats.chats.into_iter().filter(|x| x.id() == chat_id).last() {
-                    Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
-                    None => Err(ChannelError::NotFound),
-                }
-            }
-            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => match chat_slice
-                .chats
-                .into_iter()
-                .filter(|x| x.id() == chat_id)
-                .last()
-            {
-                Some(chat) => Ok(crate::types::chat::Chat::from_chat(chat)),
-                None => Err(ChannelError::NotFound),
-            },
+            Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats.chats),
+            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => Ok(chat_slice.chats),
             Err(e) => Err(ChannelError::Other(e)),
         }
     }
@@ -61,24 +42,37 @@ impl Client {
     //get full channel
     pub async fn get_full_channel(
         &mut self,
-        chat: PackedChat,
-    ) -> Result<tl::types::ChannelFull, ChannelError> {
-        let input_channel = tl::types::InputChannel {
-            channel_id: chat.id,
-            access_hash: chat.access_hash.unwrap_or(0i64),
-        };
+        channel: tl::enums::InputChannel,
+    ) -> Result<(tl::types::ChannelFull, tl::types::Channel), ChannelError> {
         match self
-            .invoke(&tl::functions::channels::GetFullChannel {
-                channel: tl::enums::InputChannel::Channel(input_channel),
-            })
+            .invoke(&tl::functions::channels::GetFullChannel { channel })
             .await
         {
-            Ok(tl::enums::messages::ChatFull::Full(chat_full)) => match chat_full.full_chat {
-                tl::enums::ChatFull::ChannelFull(channel_full) => Ok(channel_full),
-                _ => Err(ChannelError::NotFound),
-            },
+            Ok(tl::enums::messages::ChatFull::Full(chat_full)) => {
+                let full = match chat_full.full_chat {
+                    tl::enums::ChatFull::ChannelFull(channel_full) => Ok(channel_full),
+                    _ => Err(ChannelError::NotFound),
+                }?;
+                let base = match chat_full.chats.first() {
+                    Some(tl::enums::Chat::Channel(channel)) => Ok(channel.clone()),
+                    _ => Err(ChannelError::NotFound),
+                }?;
+                Ok((full, base))
+            }
             Err(e) => Err(ChannelError::Other(e)),
         }
+    }
+
+    pub fn input_channel_for_access_hash(
+        self,
+        channel_id: i64,
+        access_hash: i64,
+    ) -> tl::enums::InputChannel {
+        tl::types::InputChannel {
+            channel_id,
+            access_hash,
+        }
+        .into()
     }
 
     // get chat' members

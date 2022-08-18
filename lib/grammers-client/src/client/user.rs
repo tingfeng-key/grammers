@@ -1,17 +1,43 @@
 use super::Client;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
+use std::fmt;
+
+#[derive(Debug)]
+pub enum UserError {
+    EmptyUser,
+    Other(InvocationError),
+}
+impl fmt::Display for UserError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use UserError::*;
+        match self {
+            EmptyUser => write!(f, "empty user"),
+            Other(e) => write!(f, "channel error: {}", e),
+        }
+    }
+}
 
 impl Client {
     pub async fn get_full_user(
         &mut self,
         id: tl::enums::InputUser,
-    ) -> Result<tl::enums::users::UserFull, InvocationError> {
-        let user_full = self
-            .invoke(&tl::functions::users::GetFullUser { id })
-            .await?;
+    ) -> Result<(tl::types::UserFull, tl::types::User), UserError> {
+        match self.invoke(&tl::functions::users::GetFullUser { id }).await {
+            Ok(tl::enums::users::UserFull::Full(user_full)) => {
+                let full_user = match user_full.full_user {
+                    tl::enums::UserFull::Full(user) => user,
+                };
 
-        Ok(user_full)
+                let user_base = match user_full.users.first() {
+                    Some(tl::enums::User::Empty(_)) => Err(UserError::EmptyUser),
+                    Some(tl::enums::User::User(user)) => Ok(user.clone()),
+                    None => Err(UserError::EmptyUser),
+                }?;
+                Ok((full_user, user_base))
+            }
+            Err(e) => Err(UserError::Other(e)),
+        }
     }
 
     pub async fn get_users(
@@ -19,7 +45,6 @@ impl Client {
         id: Vec<tl::enums::InputUser>,
     ) -> Result<Vec<crate::types::chat::Chat>, InvocationError> {
         let users = self.invoke(&tl::functions::users::GetUsers { id }).await?;
-        println!("t_len:{}", users.len());
         let mut chats = vec![];
         for user in users {
             chats.push(crate::types::chat::Chat::from_user(user))
