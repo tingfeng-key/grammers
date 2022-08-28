@@ -75,6 +75,20 @@ impl Client {
         .into()
     }
 
+    pub fn input_channel_for_message(
+        self,
+        peer: tl::enums::InputPeer,
+        msg_id: i32,
+        channel_id: i64,
+    ) -> tl::enums::InputChannel {
+        tl::types::InputChannelFromMessage {
+            peer,
+            msg_id,
+            channel_id,
+        }
+        .into()
+    }
+
     // get chat' members
     pub async fn get_chat_members<C: Into<PackedChat>>(
         &self,
