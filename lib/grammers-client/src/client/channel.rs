@@ -28,13 +28,25 @@ impl Client {
     pub async fn get_channels(
         &mut self,
         id: Vec<tl::enums::InputChannel>,
-    ) -> Result<Vec<tl::enums::Chat>, ChannelError> {
+    ) -> Result<Vec<crate::types::Chat>, ChannelError> {
         match self
             .invoke(&tl::functions::channels::GetChannels { id })
             .await
         {
-            Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats.chats),
-            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => Ok(chat_slice.chats),
+            Ok(tl::enums::messages::Chats::Chats(chats)) => {
+                let mut res_chats = vec![];
+                for chat in chats.chats {
+                    res_chats.push(crate::types::chat::Chat::from_chat(chat))
+                }
+                Ok(res_chats)
+            }
+            Ok(tl::enums::messages::Chats::Slice(chat_slice)) => {
+                let mut res_chats = vec![];
+                for chat in chat_slice.chats {
+                    res_chats.push(crate::types::chat::Chat::from_chat(chat))
+                }
+                Ok(res_chats)
+            }
             Err(e) => Err(ChannelError::Other(e)),
         }
     }
