@@ -342,7 +342,6 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                     Ok(Vec::new())
                 },
                 n = reader.read_buf(&mut self.read_buffer) => {
-                    println!("read_buf1:{:#?}, {:#?}", n, self.read_buffer);
                     self.on_net_read(n?)
                 },
                 _ = sleep_until(self.next_ping) => {
