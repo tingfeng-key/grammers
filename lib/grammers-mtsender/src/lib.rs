@@ -361,11 +361,9 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                     Ok(Vec::new())
                 },
                 n = reader.read_buf(&mut self.read_buffer) => {
-                    println!("read_buf2:{:#?}, {:#?}", n, self.read_buffer);
                     self.on_net_read(n?)
                 }
                 n = writer.write(&self.write_buffer[self.write_index..]) => {
-                    println!("read_buf2:{:#?}, {:#?}", n, self.read_buffer);
                     self.on_net_write(n?);
                     Ok(Vec::new())
                 }
