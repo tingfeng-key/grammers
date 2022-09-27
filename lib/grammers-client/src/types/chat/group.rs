@@ -18,7 +18,7 @@ use std::fmt;
 /// join more of them. Certain actions in official clients, like setting a chat's username,
 /// silently upgrade the chat to a megagroup.
 #[derive(Clone)]
-pub struct Group(pub tl::enums::Chat);
+pub struct Group(tl::enums::Chat);
 
 impl fmt::Debug for Group {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -104,6 +104,38 @@ impl Group {
         }
     }
 
+    /// Return the access_hash of this group.
+    pub fn access_hash(&self) -> Option<i64> {
+        use tl::enums::Chat as C;
+
+        match &self.0 {
+            C::Empty(_) | C::Chat(_) | C::Forbidden(_) => None,
+            C::Channel(channel) => channel.access_hash,
+            C::ChannelForbidden(channel) => Some(channel.access_hash),
+        }
+    }
+
+    /// Return the broadcast of this group.
+    pub fn broadcast(&self) -> bool {
+        use tl::enums::Chat as C;
+
+        match &self.0 {
+            C::Empty(_) | C::Chat(_) | C::Forbidden(_) => false,
+            C::Channel(channel) => channel.broadcast,
+            C::ChannelForbidden(channel) => channel.broadcast,
+        }
+    }
+
+    /// Return the username of this group.
+    pub fn username(&self) -> Option<String> {
+        use tl::enums::Chat as C;
+
+        match &self.0 {
+            C::Empty(_) | C::Chat(_) | C::Forbidden(_) | C::ChannelForbidden(_) => None,
+            C::Channel(channel) => channel.username.clone(),
+        }
+    }
+
     /// Returns true if this group is a megagroup (also known as supergroups).
     ///
     /// In case inner type of group is Channel, that means it's a megagroup.
@@ -113,6 +145,16 @@ impl Group {
         match &self.0 {
             C::Empty(_) | C::Chat(_) | C::Forbidden(_) => false,
             C::Channel(_) | C::ChannelForbidden(_) => true,
+        }
+    }
+
+    /// Return the min of this group.
+    pub fn is_min(&self) -> Option<bool> {
+        use tl::enums::Chat as C;
+
+        match &self.0 {
+            C::Empty(_) | C::Chat(_) | C::Forbidden(_) | C::ChannelForbidden(_) => None,
+            C::Channel(c) => Some(c.min),
         }
     }
 }

@@ -61,7 +61,7 @@ impl RestrictionReason {
 ///
 /// [@BotFather]: https://t.me/BotFather
 #[derive(Clone)]
-pub struct User(pub tl::types::User);
+pub struct User(pub(crate) tl::types::User);
 
 impl fmt::Debug for User {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -114,7 +114,8 @@ impl User {
         self.0.id
     }
 
-    pub(crate) fn access_hash(&self) -> Option<i64> {
+    /// Return access_hash for this user.
+    pub fn access_hash(&self) -> Option<i64> {
         self.0.access_hash
     }
 
@@ -266,6 +267,11 @@ impl User {
     /// Language code of the user, if any.
     pub fn lang_code(&self) -> Option<&str> {
         self.0.lang_code.as_deref()
+    }
+
+    /// Return the min of this user.
+    pub fn is_min(&self) -> bool {
+        self.0.min
     }
 }
 

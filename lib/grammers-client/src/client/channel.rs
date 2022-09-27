@@ -1,5 +1,7 @@
 use std::fmt;
 
+use crate::types::Chat;
+
 use super::Client;
 use grammers_mtsender::InvocationError;
 use grammers_session::PackedChat;
@@ -106,7 +108,7 @@ impl Client {
         &self,
         chat: C,
         filter: tl::enums::ChannelParticipantsFilter,
-    ) -> Result<Vec<tl::enums::User>, InvocationError> {
+    ) -> Result<Vec<Chat>, InvocationError> {
         let chat = chat.into();
         let input_channel = tl::types::InputChannel {
             channel_id: chat.id,
@@ -120,13 +122,13 @@ impl Client {
             limit: MAX_PARTICIPANT_LIMIT,
             hash: 0,
         };
-        let mut chat_members: Vec<tl::enums::User> = vec![];
+        let mut chat_members: Vec<Chat> = vec![];
         loop {
             if let tl::enums::channels::ChannelParticipants::Participants(p) =
                 self.invoke(&request).await?
             {
                 for elem in p.users {
-                    chat_members.push(elem);
+                    chat_members.push(Chat::from_user(elem));
                 }
                 if request.offset >= p.count {
                     break;
