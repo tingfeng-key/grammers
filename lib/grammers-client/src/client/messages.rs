@@ -145,7 +145,8 @@ impl<R: tl::RemoteCall<Return = tl::enums::messages::Messages>> IterBuffer<R, Me
         };
 
         let mut chat_hashes = self.client.0.chat_hashes.lock("iter_messages");
-        chat_hashes.extend(&users, &chats);
+        // Telegram can return peers without hash (e.g. Users with 'min: true')
+        let _ = chat_hashes.extend(&users, &chats);
         drop(chat_hashes);
 
         let chats = ChatMap::new(users, chats);

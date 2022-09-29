@@ -126,13 +126,18 @@ impl Group {
         }
     }
 
-    /// Return the username of this group.
-    pub fn username(&self) -> Option<String> {
-        use tl::enums::Chat as C;
+    /// Return the public @username of this group, if any.
+    ///
+    /// The returned username does not contain the "@" prefix.
+    ///
+    /// Outside of the application, people may link to this user with one of Telegram's URLs, such
+    /// as https://t.me/username.
+    pub fn username(&self) -> Option<&str> {
+        use tl::enums::Chat;
 
         match &self.0 {
-            C::Empty(_) | C::Chat(_) | C::Forbidden(_) | C::ChannelForbidden(_) => None,
-            C::Channel(channel) => channel.username.clone(),
+            Chat::Empty(_) | Chat::Chat(_) | Chat::Forbidden(_) | Chat::ChannelForbidden(_) => None,
+            Chat::Channel(channel) => channel.username.as_deref(),
         }
     }
 

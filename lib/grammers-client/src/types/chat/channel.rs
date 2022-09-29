@@ -114,9 +114,14 @@ impl Channel {
         self.0.broadcast
     }
 
-    /// Return the username of this group.
-    pub fn username(&self) -> Option<String> {
-        self.0.username.clone()
+    /// Return the public @username of this channel, if any.
+    ///
+    /// The returned username does not contain the "@" prefix.
+    ///
+    /// Outside of the application, people may link to this user with one of Telegram's URLs, such
+    /// as https://t.me/username.
+    pub fn username(&self) -> Option<&str> {
+        self.0.username.as_deref()
     }
 }
 
