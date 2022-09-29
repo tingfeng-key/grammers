@@ -1,3 +1,5 @@
+use crate::types::Chat;
+
 use super::Client;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
@@ -22,7 +24,7 @@ impl Client {
     pub async fn get_full_user(
         &mut self,
         id: tl::enums::InputUser,
-    ) -> Result<(tl::types::UserFull, tl::types::User), UserError> {
+    ) -> Result<(tl::types::UserFull, Chat), UserError> {
         match self.invoke(&tl::functions::users::GetFullUser { id }).await {
             Ok(tl::enums::users::UserFull::Full(user_full)) => {
                 let full_user = match user_full.full_user {
@@ -31,7 +33,7 @@ impl Client {
 
                 let user_base = match user_full.users.first() {
                     Some(tl::enums::User::Empty(_)) => Err(UserError::EmptyUser),
-                    Some(tl::enums::User::User(user)) => Ok(user.clone()),
+                    Some(tl::enums::User::User(user)) => Ok(Chat::from_user(user.clone().into())),
                     None => Err(UserError::EmptyUser),
                 }?;
                 Ok((full_user, user_base))
@@ -43,7 +45,7 @@ impl Client {
     pub async fn get_users(
         &mut self,
         id: Vec<tl::enums::InputUser>,
-    ) -> Result<Vec<crate::types::chat::Chat>, InvocationError> {
+    ) -> Result<Vec<Chat>, InvocationError> {
         let users = self.invoke(&tl::functions::users::GetUsers { id }).await?;
         let mut chats = vec![];
         for user in users {
