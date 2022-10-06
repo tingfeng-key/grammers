@@ -507,6 +507,62 @@ impl Message {
 
         None
     }
+
+    fn parse_username_from_string(entity_text: String) -> Option<String> {
+        if entity_text.starts_with("https://t.me") {
+            let new = entity_text.replace("https://t.me/", "");
+            if new.starts_with("+") {
+                return None;
+            }
+            return Some(new);
+        }
+
+        if entity_text.starts_with("@") {
+            return Some(entity_text.replace("@", ""));
+        }
+        return None;
+    }
+
+    pub fn parse_usernames_from_entities(&self) -> Vec<String> {
+        let mut usernames = vec![];
+        if let Some(entities) = &self.msg.entities {
+            for entity in entities {
+                let text_u16 = self
+                    .msg
+                    .message
+                    .encode_utf16()
+                    .skip(entity.offset() as usize)
+                    .take(entity.length() as usize)
+                    .collect::<Vec<u16>>();
+
+                let entity_text = String::from_utf16(&text_u16).unwrap();
+                let username = match entity {
+                    tl::enums::MessageEntity::Url(_) => {
+                        Self::parse_username_from_string(entity_text)
+                    }
+                    tl::enums::MessageEntity::TextUrl(url) => {
+                        Self::parse_username_from_string(url.url.clone())
+                    }
+                    tl::enums::MessageEntity::InputMessageEntityMentionName(_) => {
+                        Self::parse_username_from_string(entity_text)
+                    }
+                    tl::enums::MessageEntity::Mention(_) => {
+                        Self::parse_username_from_string(entity_text)
+                    }
+                    tl::enums::MessageEntity::MentionName(_) => {
+                        Self::parse_username_from_string(entity_text)
+                    }
+                    _ => None,
+                };
+                if let Some(username) = username {
+                    if !usernames.contains(&username) {
+                        usernames.push(username);
+                    }
+                }
+            }
+        }
+        usernames
+    }
 }
 
 impl fmt::Debug for Message {
