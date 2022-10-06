@@ -12,6 +12,7 @@ pub mod chat;
 pub mod chats;
 #[allow(clippy::module_inception)]
 pub mod client;
+pub mod contacts;
 pub mod dialogs;
 pub mod files;
 mod filters;
@@ -25,3 +26,4 @@ pub use auth::SignInError;
 pub(crate) use client::ClientInner;
 pub use client::{Client, Config, InitParams};
 pub use filters::Filters;
+pub use grammers_session::{PackedChat, PackedType};
