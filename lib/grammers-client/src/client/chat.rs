@@ -1,5 +1,7 @@
 use std::fmt;
 
+use crate::types::{input_channel::InputChannel};
+
 use super::Client;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
@@ -82,5 +84,8 @@ impl Client {
             },
             _ => Err(ChatError::JoinError),
         }
+    }
+
+    pub async fn add_chat_members(&mut self, _chat: InputChannel, _users: Vec<tl::enums::InputUser>) {
     }
 }

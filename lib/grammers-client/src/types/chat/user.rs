@@ -273,6 +273,10 @@ impl User {
     pub fn is_min(&self) -> bool {
         self.0.min
     }
+
+    pub fn phone(&self) -> Option<&str> {
+        self.0.phone.as_deref()
+    }
 }
 
 impl From<User> for PackedChat {
