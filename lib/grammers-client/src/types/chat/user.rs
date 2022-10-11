@@ -115,7 +115,7 @@ impl User {
     }
 
     /// Return access_hash for this user.
-    pub fn access_hash(&self) -> Option<i64> {
+    pub(crate) fn access_hash(&self) -> Option<i64> {
         self.0.access_hash
     }
 
@@ -267,11 +267,6 @@ impl User {
     /// Language code of the user, if any.
     pub fn lang_code(&self) -> Option<&str> {
         self.0.lang_code.as_deref()
-    }
-
-    /// Return the min of this user.
-    pub fn is_min(&self) -> bool {
-        self.0.min
     }
 
     pub fn phone(&self) -> Option<&str> {

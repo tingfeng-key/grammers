@@ -104,28 +104,6 @@ impl Group {
         }
     }
 
-    /// Return the access_hash of this group.
-    pub fn access_hash(&self) -> Option<i64> {
-        use tl::enums::Chat as C;
-
-        match &self.0 {
-            C::Empty(_) | C::Chat(_) | C::Forbidden(_) => None,
-            C::Channel(channel) => channel.access_hash,
-            C::ChannelForbidden(channel) => Some(channel.access_hash),
-        }
-    }
-
-    /// Return the broadcast of this group.
-    pub fn broadcast(&self) -> bool {
-        use tl::enums::Chat as C;
-
-        match &self.0 {
-            C::Empty(_) | C::Chat(_) | C::Forbidden(_) => false,
-            C::Channel(channel) => channel.broadcast,
-            C::ChannelForbidden(channel) => channel.broadcast,
-        }
-    }
-
     /// Return the public @username of this group, if any.
     ///
     /// The returned username does not contain the "@" prefix.

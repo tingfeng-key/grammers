@@ -171,14 +171,6 @@ impl Chat {
             },
         }
     }
-
-    pub fn access_hash(&self) -> Option<i64> {
-        match self {
-            Self::User(user) => user.access_hash(),
-            Self::Group(group) => group.access_hash(),
-            Self::Channel(channel) => channel.access_hash(),
-        }
-    }
 }
 
 impl From<Chat> for PackedChat {

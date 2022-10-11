@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::types::{input_channel::InputChannel, Chat};
+use crate::types::Chat;
 
 use super::Client;
 use grammers_mtsender::InvocationError;
@@ -43,6 +43,7 @@ impl Client {
         }
     }
 
+    /// join private chat
     pub async fn accept_invite_link(
         &mut self,
         invite_link: &str,
@@ -65,6 +66,9 @@ impl Client {
         }
         Ok(None)
     }
+
+    /// Join a group or channel.
+    /// use PackedChat
     pub async fn join_chat(
         &mut self,
         packed_chat: PackedChat,
@@ -73,7 +77,7 @@ impl Client {
 
         let update_chat = match self
             .invoke(&tl::functions::channels::JoinChannel {
-                channel: packed_chat.try_to_input_channel().unwrap(),
+                channel: packed_chat.to_input_channel_lossy(),
             })
             .await?
         {
@@ -88,10 +92,35 @@ impl Client {
         Ok(None)
     }
 
-    pub async fn add_chat_members(
+    /// Invite users to a channel/supergroup
+    pub async fn invite_to_channel(
         &mut self,
-        _chat: InputChannel,
-        _users: Vec<tl::enums::InputUser>,
-    ) {
+        chat: PackedChat,
+        users: Vec<PackedChat>,
+    ) -> Result<bool, InvocationError> {
+        let _ = self
+            .invoke(&tl::functions::channels::InviteToChannel {
+                channel: chat.to_input_channel_lossy(),
+                users: users.into_iter().map(|x| x.to_input_user_lossy()).collect(),
+            })
+            .await?;
+        Ok(true)
+    }
+
+    /// Adds a user to a chat and sends a service message on it
+    pub async fn add_chat_user(
+        &mut self,
+        chat: PackedChat,
+        user: PackedChat,
+        fwd_limit: i32,
+    ) -> Result<bool, InvocationError> {
+        let _ = self
+            .invoke(&tl::functions::messages::AddChatUser {
+                chat_id: chat.id,
+                user_id: user.to_input_user_lossy(),
+                fwd_limit,
+            })
+            .await?;
+        Ok(true)
     }
 }

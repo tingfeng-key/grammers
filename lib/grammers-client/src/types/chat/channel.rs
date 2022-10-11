@@ -104,16 +104,6 @@ impl Channel {
         self.0.title.as_str()
     }
 
-    /// Return the access_hash of this channel.
-    pub fn access_hash(&self) -> Option<i64> {
-        self.0.access_hash
-    }
-
-    /// Return the access_hash of this group.
-    pub fn broadcast(&self) -> bool {
-        self.0.broadcast
-    }
-
     /// Return the public @username of this channel, if any.
     ///
     /// The returned username does not contain the "@" prefix.
