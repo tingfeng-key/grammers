@@ -43,53 +43,123 @@ impl Client {
         }
     }
 
-    /// join private chat
+    #[cfg(feature = "parse_invite_link")]
+    fn parse_invite_link(invite_link: &str) -> Option<String> {
+        let url_parse_result = url::Url::parse(invite_link);
+        if url_parse_result.is_err() {
+            return None;
+        }
+
+        let url_parse = url_parse_result.unwrap();
+        let scheme = url_parse.scheme();
+        let path = url_parse.path();
+        if url_parse.host_str().is_none() || !vec!["https", "http"].contains(&scheme) {
+            return None;
+        }
+        let host = url_parse.host_str().unwrap();
+        let hosts = vec![
+            "t.me",
+            "telegram.me",
+            "telegram.dog",
+            "tg.dev",
+            "telegram.me",
+            "telesco.pe",
+        ];
+
+        if !hosts.contains(&host) {
+            return None;
+        }
+        let paths = path.split("/").collect::<Vec<&str>>();
+
+        if paths.len() == 1 {
+            if paths[0].starts_with("+") {
+                return Some(paths[0].replace("+", ""));
+            }
+            return None;
+        }
+
+        if paths.len() > 1 {
+            if paths[0].starts_with("joinchat") {
+                return Some(paths[1].to_string());
+            }
+            if paths[0].starts_with("+") {
+                return Some(paths[0].replace("+", ""));
+            }
+            return None;
+        }
+
+        None
+    }
+
+    /// Accept an invite link to join the corresponding private chat.
+    ///
+    /// If the chat is public (has a public username), [`Client::join_chat`](Client::join_chat) should be used instead.
     pub async fn accept_invite_link(
         &mut self,
         invite_link: &str,
-    ) -> Result<Option<Chat>, InvocationError> {
-        use tl::enums::Updates;
-        assert!(invite_link.starts_with("https://t.me/joinchat/"));
-        let update_chat = match self
-            .invoke(&tl::functions::messages::ImportChatInvite {
-                hash: invite_link.replace("https://t.me/joinchat/", ""),
-            })
-            .await?
-        {
-            Updates::Combined(updates) => updates.chats.first().cloned(),
-            Updates::Updates(updates) => updates.chats.first().cloned(),
-            _ => None,
+    ) -> Result<tl::enums::Updates, InvocationError> {
+        #[cfg(not(feature = "parse_invite_link"))]
+        let hash = invite_link.to_string();
+        #[cfg(feature = "parse_invite_link")]
+        let hash = {
+            use grammers_mtproto::mtp::RpcError;
+            let parse_result = Self::parse_invite_link(invite_link);
+            if parse_result.is_none() {
+                return Err(InvocationError::Rpc(RpcError {
+                    code: 400,
+                    name: "INVITE_HASH_INVALID".to_string(),
+                    value: None,
+                    caused_by: None,
+                }));
+            }
+            parse_result.unwrap()
         };
 
-        if let Some(chat) = update_chat {
-            return Ok(Some(Chat::from_chat(chat)));
-        }
-        Ok(None)
+        self.invoke(&tl::functions::messages::ImportChatInvite { hash })
+            .await
     }
 
-    /// Join a group or channel.
+    /// Join a public group or channel.
+    ///
+    /// A channel is public if it has a username.
+    /// To join private chats, [`Client::accept_invite_link`](Client::accept_invite_link) should be used instead.
     /// use PackedChat
-    pub async fn join_chat(
+    pub async fn join_chat<C: Into<PackedChat>>(
         &mut self,
-        packed_chat: PackedChat,
+        packed_chat: C,
     ) -> Result<Option<Chat>, InvocationError> {
         use tl::enums::Updates;
 
+        let chat = packed_chat.into();
         let update_chat = match self
             .invoke(&tl::functions::channels::JoinChannel {
-                channel: packed_chat.to_input_channel_lossy(),
+                channel: chat.try_to_input_channel().unwrap(),
             })
             .await?
         {
-            Updates::Combined(updates) => updates.chats.first().cloned(),
-            Updates::Updates(updates) => updates.chats.first().cloned(),
+            Updates::Combined(updates) => Some(
+                updates
+                    .chats
+                    .into_iter()
+                    .filter(|x| x.id() == chat.id)
+                    .collect::<Vec<tl::enums::Chat>>(),
+            ),
+            Updates::Updates(updates) => Some(
+                updates
+                    .chats
+                    .into_iter()
+                    .filter(|x| x.id() == chat.id)
+                    .collect::<Vec<tl::enums::Chat>>(),
+            ),
             _ => None,
         };
 
-        if let Some(chat) = update_chat {
-            return Ok(Some(Chat::from_chat(chat)));
+        match update_chat {
+            Some(chats) if chats.len() > 0 => Ok(Some(Chat::from_chat(chats[0].clone()))),
+            Some(chats) if chats.len() == 0 => Ok(None),
+            None => Ok(None),
+            Some(_) => Ok(None),
         }
-        Ok(None)
     }
 
     /// Invite users to a channel/supergroup
