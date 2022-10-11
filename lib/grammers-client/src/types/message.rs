@@ -518,7 +518,12 @@ impl Message {
         }
 
         if entity_text.starts_with("@") {
-            return Some(entity_text.replace("@", ""));
+            let username = entity_text.replace("@", "");
+            if username.contains("/") {
+                let urls = username.split("/").collect::<Vec<&str>>();
+                return Some(urls[0].to_string());
+            }
+            return Some(username);
         }
         return None;
     }
