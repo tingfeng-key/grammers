@@ -120,7 +120,10 @@ impl Client {
                         message_box.end_channel_difference(&request, PrematureEndReason::Banned);
                         continue;
                     }
-                    Err(e) => return Err(e),
+                    Err(e) => {
+                        println!("{:#?}", e);
+                        return Err(e);
+                    }
                 };
 
                 let (updates, users, chats) = {

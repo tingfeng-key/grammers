@@ -1,9 +1,10 @@
 use std::fmt;
 
-use crate::types::{input_channel::InputChannel};
+use crate::types::{input_channel::InputChannel, Chat};
 
 use super::Client;
 use grammers_mtsender::InvocationError;
+use grammers_session::PackedChat;
 use grammers_tl_types as tl;
 
 #[derive(Debug)]
@@ -26,7 +27,7 @@ impl fmt::Display for ChatError {
 impl std::error::Error for ChatError {}
 
 impl Client {
-    pub async fn get_chats(&mut self, id: Vec<i64>) -> Result<Vec<crate::types::Chat>, ChatError> {
+    pub async fn get_chats(&mut self, id: Vec<i64>) -> Result<Vec<Chat>, ChatError> {
         match self.invoke(&tl::functions::messages::GetChats { id }).await {
             Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats
                 .chats
@@ -42,50 +43,55 @@ impl Client {
         }
     }
 
-    pub async fn join_chat(&mut self, chat_id: &str) -> Result<crate::types::Chat, ChatError> {
+    pub async fn accept_invite_link(
+        &mut self,
+        invite_link: &str,
+    ) -> Result<Option<Chat>, InvocationError> {
         use tl::enums::Updates;
-        const INVITE_LINK: &str = "https://t.me/joinchat/";
-        let updates = match chat_id.starts_with(INVITE_LINK) {
-            true => {
-                let hash = chat_id.replace(INVITE_LINK, "");
-                self.invoke(&tl::functions::messages::ImportChatInvite { hash })
-                    .await
-            }
-            false => {
-                let chat = self
-                    .resolve_username(chat_id)
-                    .await
-                    .map_err(|e| ChatError::Other(e))?;
+        assert!(invite_link.starts_with("https://t.me/joinchat/"));
+        let update_chat = match self
+            .invoke(&tl::functions::messages::ImportChatInvite {
+                hash: invite_link.replace("https://t.me/joinchat/", ""),
+            })
+            .await?
+        {
+            Updates::Combined(updates) => updates.chats.first().cloned(),
+            Updates::Updates(updates) => updates.chats.first().cloned(),
+            _ => None,
+        };
 
-                if chat.is_none() {
-                    return Err(ChatError::JoinError);
-                }
-                let chat = chat.unwrap();
-                self.invoke(&tl::functions::channels::JoinChannel {
-                    channel: tl::types::InputChannel {
-                        channel_id: chat.id(),
-                        access_hash: chat.access_hash().unwrap_or_default(),
-                    }
-                    .into(),
-                })
-                .await
-            }
+        if let Some(chat) = update_chat {
+            return Ok(Some(Chat::from_chat(chat)));
         }
-        .map_err(|e| ChatError::Other(e))?;
+        Ok(None)
+    }
+    pub async fn join_chat(
+        &mut self,
+        packed_chat: PackedChat,
+    ) -> Result<Option<Chat>, InvocationError> {
+        use tl::enums::Updates;
 
-        match updates {
-            Updates::Combined(updates) => match updates.chats.first() {
-                Some(chat) => Ok(crate::types::Chat::from_chat(chat.clone())),
-                None => Err(ChatError::JoinError),
-            },
-            Updates::Updates(updates) => match updates.chats.first() {
-                Some(chat) => Ok(crate::types::Chat::from_chat(chat.clone())),
-                None => Err(ChatError::JoinError),
-            },
-            _ => Err(ChatError::JoinError),
+        let update_chat = match self
+            .invoke(&tl::functions::channels::JoinChannel {
+                channel: packed_chat.try_to_input_channel().unwrap(),
+            })
+            .await?
+        {
+            Updates::Combined(updates) => updates.chats.first().cloned(),
+            Updates::Updates(updates) => updates.chats.first().cloned(),
+            _ => None,
+        };
+
+        if let Some(chat) = update_chat {
+            return Ok(Some(Chat::from_chat(chat)));
         }
+        Ok(None)
     }
 
-    pub async fn add_chat_members(&mut self, _chat: InputChannel, _users: Vec<tl::enums::InputUser>) {
+    pub async fn add_chat_members(
+        &mut self,
+        _chat: InputChannel,
+        _users: Vec<tl::enums::InputUser>,
+    ) {
     }
 }
