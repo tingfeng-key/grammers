@@ -12,7 +12,6 @@ use crate::Client;
 use futures_util::future::try_join_all;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
-use std::time::Duration;
 use std::{io::SeekFrom, path::Path, sync::Arc};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio::{
@@ -22,10 +21,9 @@ use tokio::{
 
 pub const MIN_CHUNK_SIZE: i32 = 4 * 1024;
 pub const MAX_CHUNK_SIZE: i32 = 512 * 1024;
+const FILE_MIGRATE_ERROR: i32 = 303;
 const BIG_FILE_SIZE: usize = 10 * 1024 * 1024;
 const WORKER_COUNT: usize = 4;
-const RATE_LIMIT_DELAY: Duration = Duration::from_millis(250);
-const RATE_LIMIT_RETRIES: usize = 3;
 
 pub struct DownloadIter {
     client: Client,
@@ -87,10 +85,15 @@ impl DownloadIter {
 
         use tl::enums::upload::File;
 
-        // TODO handle FILE_MIGRATE and maybe FILEREF_UPGRADE_NEEDED
-        let mut retries = 0;
+        // TODO handle maybe FILEREF_UPGRADE_NEEDED
+        let mut dc: Option<u32> = None;
         loop {
-            break match self.client.invoke(&self.request).await {
+            let result = match dc.take() {
+                None => self.client.invoke(&self.request).await,
+                Some(dc) => self.client.invoke_in_dc(&self.request, dc as i32).await,
+            };
+
+            break match result {
                 Ok(File::File(f)) => {
                     if f.bytes.len() < self.request.limit as usize {
                         self.done = true;
@@ -105,15 +108,11 @@ impl DownloadIter {
                 Ok(File::CdnRedirect(_)) => {
                     panic!("API returned File::CdnRedirect even though cdn_supported = false");
                 }
-                // Rate limit hit
-                Err(InvocationError::Rpc(err))
-                    if err.code == 420 && retries < RATE_LIMIT_RETRIES =>
-                {
-                    tokio::time::sleep(RATE_LIMIT_DELAY).await;
-                    retries += 1;
+                Err(InvocationError::Rpc(err)) if err.code == FILE_MIGRATE_ERROR => {
+                    dc = err.value;
                     continue;
                 }
-                Err(e) => Err(e),
+                Err(e) => Err(e.into()),
             };
         }
     }
@@ -227,7 +226,7 @@ impl Client {
             let client = self.clone();
             let task = tokio::task::spawn(async move {
                 let mut retry_offset = None;
-                let mut retry_counter = 0;
+                let mut dc = None;
                 loop {
                     // Calculate file offset
                     let offset: i64 = {
@@ -235,7 +234,6 @@ impl Client {
                             retry_offset = None;
                             offset
                         } else {
-                            retry_counter = 0;
                             let mut i = part_index.lock().await;
                             *i += 1;
                             (MAX_CHUNK_SIZE * (*i - 1)) as i64
@@ -245,15 +243,17 @@ impl Client {
                         break;
                     }
                     // Fetch from telegram
-                    let res = client
-                        .invoke(&tl::functions::upload::GetFile {
-                            precise: true,
-                            cdn_supported: false,
-                            location: location.clone(),
-                            offset,
-                            limit: MAX_CHUNK_SIZE,
-                        })
-                        .await;
+                    let request = &tl::functions::upload::GetFile {
+                        precise: true,
+                        cdn_supported: false,
+                        location: location.clone(),
+                        offset,
+                        limit: MAX_CHUNK_SIZE,
+                    };
+                    let res = match dc {
+                        None => client.invoke(request).await,
+                        Some(dc) => client.invoke_in_dc(request, dc as i32).await,
+                    };
                     match res {
                         Ok(tl::enums::upload::File::File(file)) => {
                             tx.send((offset as u64, file.bytes)).unwrap();
@@ -264,14 +264,10 @@ impl Client {
                             );
                         }
                         Err(InvocationError::Rpc(err)) => {
-                            // Retry on rate limit
-                            if err.code == 420 {
-                                tokio::time::sleep(RATE_LIMIT_DELAY).await;
+                            if err.code == FILE_MIGRATE_ERROR {
+                                dc = err.value;
                                 retry_offset = Some(offset);
-                                retry_counter += 1;
-                                if retry_counter <= RATE_LIMIT_RETRIES {
-                                    continue;
-                                }
+                                continue;
                             }
                             return Err(InvocationError::Rpc(err));
                         }
