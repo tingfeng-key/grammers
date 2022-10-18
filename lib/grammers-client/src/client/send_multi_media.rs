@@ -29,6 +29,7 @@ impl Client {
                 schedule_date: input.schedule_date,
                 send_as: None,
                 noforwards: false,
+                update_stickersets_order: false,
             })
             .await?;
         // println!("{:#?}", updates);

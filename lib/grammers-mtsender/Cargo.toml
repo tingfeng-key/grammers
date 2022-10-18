@@ -1,9 +1,4 @@
 [package]
-<<<<<<< HEAD
-=======
-name = "grammers-mtsender"
-version = "0.4.0"
->>>>>>> 60578cf2146e51a422f7a87a9b23d0117a625906
 authors = ["Lonami Exo <totufals@hotmail.com>"]
 categories = ["api-bindings", "network-programming"]
 description = """
@@ -16,20 +11,15 @@ keywords = ["api", "mtproto", "telegram", "tl"]
 license = "MIT OR Apache-2.0"
 name = "grammers-mtsender"
 repository = "https://github.com/Lonami/grammers"
-version = "0.3.0"
+version = "0.4.0"
 
 [features]
 proxy = ["tokio-socks", "trust-dns-resolver", "url"]
 
 [dependencies]
 bytes = "1.0.1"
-<<<<<<< HEAD
-grammers-mtproto = {path = "../grammers-mtproto", version = "0.3.0"}
-grammers-tl-types = {path = "../grammers-tl-types", version = "0.3.0", features = ["tl-mtproto"]}
-=======
-grammers-mtproto = { path = "../grammers-mtproto", version = "0.4.0" }
-grammers-tl-types = { path = "../grammers-tl-types", version = "0.4.0", features = [ "tl-mtproto" ] }
->>>>>>> 60578cf2146e51a422f7a87a9b23d0117a625906
+grammers-mtproto = {path = "../grammers-mtproto", version = "0.4.0"}
+grammers-tl-types = {path = "../grammers-tl-types", version = "0.4.0", features = ["tl-mtproto"]}
 log = "0.4.14"
 tokio = {version = "1.5.0", features = ["net", "io-util", "sync", "macros", "time"]}
 tokio-socks = {version = "0.5.1", optional = true}
