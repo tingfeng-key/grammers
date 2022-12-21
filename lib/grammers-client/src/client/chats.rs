@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // Copyright 2020 - developers of the `grammers` project.
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
@@ -932,3 +933,4 @@ impl ParticipantPermissions {
         }
     }
 }
+
