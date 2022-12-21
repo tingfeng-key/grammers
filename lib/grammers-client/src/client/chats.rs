@@ -375,6 +375,33 @@ impl Client {
         })
     }
 
+    pub async fn resolve_username_all(&self, username: &str) -> Result<Vec<Chat>, InvocationError> {
+        let mut res = vec![];
+        let tl::types::contacts::ResolvedPeer { peer, users, chats } = match self
+            .invoke(&tl::functions::contacts::ResolveUsername {
+                username: username.into(),
+            })
+            .await
+        {
+            Ok(tl::enums::contacts::ResolvedPeer::Peer(p)) => p,
+            Err(err) if err.is("USERNAME_NOT_OCCUPIED") => return Ok(res),
+            Err(err) => return Err(err),
+        };
+
+        let mut chat_hashes = self.0.chat_hashes.lock("resolve_username");
+        // Telegram can return peers without hash (e.g. Users with 'min: true')
+        let _ = chat_hashes.extend(&users, &chats);
+        drop(chat_hashes);
+
+        for user in users {
+            res.push(Chat::from_user(user));
+        }
+        for chat in chats {
+            res.push(Chat::from_chat(chat));
+        }
+        Ok(res)
+    }
+
     /// Fetch full information about the currently logged-in user.
     ///
     /// Although this method is cheap to call, you might want to cache the results somewhere.
