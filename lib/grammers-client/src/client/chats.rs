@@ -377,7 +377,11 @@ impl Client {
 
     pub async fn resolve_username_all(&self, username: &str) -> Result<Vec<Chat>, InvocationError> {
         let mut res = vec![];
-        let tl::types::contacts::ResolvedPeer { peer, users, chats } = match self
+        let tl::types::contacts::ResolvedPeer {
+            peer: _,
+            users,
+            chats,
+        } = match self
             .invoke(&tl::functions::contacts::ResolveUsername {
                 username: username.into(),
             })
