@@ -7,6 +7,7 @@
 // except according to those terms.
 #![cfg(any(feature = "markdown", feature = "html"))]
 use grammers_tl_types as tl;
+use std::borrow::Cow;
 
 #[cfg(feature = "html")]
 const CODE_LANG_PREFIX: &str = "language-";
@@ -167,6 +168,77 @@ pub fn parse_markdown_message(message: &str) -> (String, Vec<tl::enums::MessageE
     (text, entities)
 }
 
+#[cfg(feature = "markdown")]
+pub fn generate_markdown_message(message: &str, entities: &[tl::enums::MessageEntity]) -> String {
+    // Getting this wrong isn't the end of the world so the wildcard pattern is used
+    // (but it would still be a shame for it to be wrong).
+    let mut insertions = Vec::with_capacity(
+        entities
+            .iter()
+            .map(|entity| match entity {
+                ME::Bold(_) => 2,
+                ME::Italic(_) => 2,
+                ME::Code(_) => 2,
+                ME::Pre(_) => 2,
+                ME::TextUrl(_) => 2,
+                ME::MentionName(_) => 2,
+                _ => 0,
+            })
+            .sum(),
+    );
+
+    use tl::enums::MessageEntity as ME;
+    entities.iter().for_each(|entity| match entity {
+        ME::Unknown(_) => {}
+        ME::Mention(_) => {}
+        ME::Hashtag(_) => {}
+        ME::BotCommand(_) => {}
+        ME::Url(_) => {}
+        ME::Email(_) => {}
+        ME::Bold(e) => {
+            insertions.push((e.offset, Cow::Borrowed("**")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("**")));
+        }
+        ME::Italic(e) => {
+            insertions.push((e.offset, Cow::Borrowed("_")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("_")));
+        }
+        ME::Code(e) => {
+            insertions.push((e.offset, Cow::Borrowed("`")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("`")));
+        }
+        ME::Pre(e) => {
+            // Both this and URLs could be improved by having a custom Insertion with prefix,
+            // formatted and suffix values separatedly. Or perhaps it's possible to use a
+            // formatter into our buffer directly.
+            insertions.push((e.offset, Cow::Owned(format!("```{}\n", e.language))));
+            insertions.push((e.offset + e.length, Cow::Borrowed("```\n")));
+        }
+        ME::TextUrl(e) => {
+            insertions.push((e.offset, Cow::Borrowed("[")));
+            insertions.push((e.offset + e.length, Cow::Owned(format!("]({})", e.url))));
+        }
+        ME::MentionName(e) => {
+            insertions.push((e.offset, Cow::Borrowed("[")));
+            insertions.push((
+                e.offset + e.length,
+                Cow::Owned(format!("]({}{})", MENTION_URL_PREFIX, e.user_id)),
+            ));
+        }
+        ME::InputMessageEntityMentionName(_) => {}
+        ME::Phone(_) => {}
+        ME::Cashtag(_) => {}
+        ME::Underline(_) => {}
+        ME::Strike(_) => {}
+        ME::Blockquote(_) => {}
+        ME::BankCard(_) => {}
+        ME::Spoiler(_) => {}
+        ME::CustomEmoji(_) => {}
+    });
+
+    inject_into_message(message, insertions)
+}
+
 #[cfg(feature = "html")]
 pub fn parse_html_message(message: &str) -> (String, Vec<tl::enums::MessageEntity>) {
     use html5ever::tendril::StrTendril;
@@ -181,10 +253,11 @@ pub fn parse_html_message(message: &str) -> (String, Vec<tl::enums::MessageEntit
         ATOM_LOCALNAME__61 as TAG_A, ATOM_LOCALNAME__62 as TAG_B,
         ATOM_LOCALNAME__62_6C_6F_63_6B_71_75_6F_74_65 as TAG_BLOCKQUOTE,
         ATOM_LOCALNAME__63_6C_61_73_73 as ATTR_CLASS, ATOM_LOCALNAME__63_6F_64_65 as TAG_CODE,
-        ATOM_LOCALNAME__64_65_6C as TAG_DEL, ATOM_LOCALNAME__65_6D as TAG_EM,
-        ATOM_LOCALNAME__68_72_65_66 as ATTR_HREF, ATOM_LOCALNAME__69 as TAG_I,
-        ATOM_LOCALNAME__70_72_65 as TAG_PRE, ATOM_LOCALNAME__73 as TAG_S,
-        ATOM_LOCALNAME__73_74_72_6F_6E_67 as TAG_STRONG, ATOM_LOCALNAME__75 as TAG_U,
+        ATOM_LOCALNAME__64_65_6C as TAG_DEL, ATOM_LOCALNAME__64_65_74_61_69_6C_73 as TAG_DETAILS,
+        ATOM_LOCALNAME__65_6D as TAG_EM, ATOM_LOCALNAME__68_72_65_66 as ATTR_HREF,
+        ATOM_LOCALNAME__69 as TAG_I, ATOM_LOCALNAME__70_72_65 as TAG_PRE,
+        ATOM_LOCALNAME__73 as TAG_S, ATOM_LOCALNAME__73_74_72_6F_6E_67 as TAG_STRONG,
+        ATOM_LOCALNAME__75 as TAG_U,
     };
 
     struct Sink {
@@ -218,6 +291,9 @@ pub fn parse_html_message(message: &str) -> (String, Vec<tl::enums::MessageEntit
                     }
                     TAG_BLOCKQUOTE => {
                         push_entity!(MessageEntityBlockquote(self.offset) => self.entities);
+                    }
+                    TAG_DETAILS => {
+                        push_entity!(MessageEntitySpoiler(self.offset) => self.entities);
                     }
                     TAG_CODE => {
                         match self.entities.iter_mut().rev().next() {
@@ -281,6 +357,9 @@ pub fn parse_html_message(message: &str) -> (String, Vec<tl::enums::MessageEntit
                     TAG_BLOCKQUOTE => {
                         update_entity_len!(Blockquote(self.offset) => self.entities);
                     }
+                    TAG_DETAILS => {
+                        update_entity_len!(Spoiler(self.offset) => self.entities);
+                    }
                     TAG_CODE => {
                         match self.entities.iter_mut().rev().next() {
                             // If the previous tag is an open `<pre>`, don't update `<code>` len;
@@ -334,6 +413,168 @@ pub fn parse_html_message(message: &str) -> (String, Vec<tl::enums::MessageEntit
     let Sink { text, entities, .. } = tok.sink;
 
     (text, entities)
+}
+
+#[cfg(feature = "html")]
+pub fn generate_html_message(message: &str, entities: &[tl::enums::MessageEntity]) -> String {
+    use grammers_tl_types::enums::MessageEntity as ME;
+
+    // Getting this wrong isn't the end of the world so the wildcard pattern is used
+    // (but it would still be a shame for it to be wrong).
+    let mut insertions = Vec::with_capacity(
+        entities
+            .iter()
+            .map(|entity| match entity {
+                ME::Bold(_) => 2,
+                ME::Italic(_) => 2,
+                ME::Code(_) => 2,
+                ME::Pre(_) => 2,
+                ME::TextUrl(_) => 2,
+                ME::MentionName(_) => 2,
+                ME::Underline(_) => 2,
+                ME::Strike(_) => 2,
+                ME::Blockquote(_) => 2,
+                ME::Spoiler(_) => 2,
+                _ => 0,
+            })
+            .sum(),
+    );
+
+    entities.iter().for_each(|entity| match entity {
+        ME::Unknown(_) => {}
+        ME::Mention(_) => {}
+        ME::Hashtag(_) => {}
+        ME::BotCommand(_) => {}
+        ME::Url(_) => {}
+        ME::Email(_) => {}
+        ME::Bold(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<b>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</b>")));
+        }
+        ME::Italic(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<i>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</i>")));
+        }
+        ME::Code(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<code>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</code>")));
+        }
+        ME::Pre(e) => {
+            // See markdown implementation: this could be more efficient.
+            if e.language.is_empty() {
+                insertions.push((e.offset, Cow::Borrowed("<pre>")));
+                insertions.push((e.offset + e.length, Cow::Borrowed("</pre>")));
+            } else {
+                insertions.push((
+                    e.offset,
+                    Cow::Owned(format!(
+                        "<pre><code class=\"{}{}\">",
+                        CODE_LANG_PREFIX, e.language
+                    )),
+                ));
+                insertions.push((e.offset + e.length, Cow::Borrowed("</code></pre>")));
+            }
+        }
+        ME::TextUrl(e) => {
+            insertions.push((e.offset, Cow::Owned(format!("<a href=\"{}\">", e.url))));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</a>")));
+        }
+        ME::MentionName(e) => {
+            insertions.push((
+                e.offset,
+                Cow::Owned(format!("<a href=\"{}{}\">", MENTION_URL_PREFIX, e.user_id)),
+            ));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</a>")));
+        }
+        ME::InputMessageEntityMentionName(_) => {}
+        ME::Phone(_) => {}
+        ME::Cashtag(_) => {}
+        ME::Underline(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<u>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</u>")));
+        }
+        ME::Strike(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<del>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</del>")));
+        }
+        ME::Blockquote(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<blockquote>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</blockquote>")));
+        }
+        ME::BankCard(_) => {}
+        ME::Spoiler(e) => {
+            insertions.push((e.offset, Cow::Borrowed("<details>")));
+            insertions.push((e.offset + e.length, Cow::Borrowed("</details>")));
+        }
+        ME::CustomEmoji(_) => {}
+    });
+
+    inject_into_message(message, insertions)
+}
+
+fn inject_into_message(message: &str, mut insertions: Vec<(i32, Cow<str>)>) -> String {
+    // Allocate exactly as much as needed, then walk through the message string
+    // and insertions in order, without inserting in the middle of a UTF-8 encoded
+    // character or UTF-16 pairs.
+    //
+    // Insertion offset could probably be avoided by walking the strings in reverse,
+    // but that complicates things even more.
+    let mut result =
+        vec![0; message.len() + insertions.iter().map(|(_, what)| what.len()).sum::<usize>()];
+
+    insertions.sort_by_key(|(at, _)| -*at);
+
+    let mut index = 0usize; // current index into the result
+    let mut tg_index = 0usize; // current index as seen by telegram
+    let mut tg_ins_offset = 0usize; // offset introduced by previous insertions as seen by telegram
+    let mut prev_point = None; // temporary storage for utf-16 surrogate pairs
+    let mut insertion = insertions.pop(); // next insertion to apply
+
+    for point in message.encode_utf16() {
+        if let Some((at, what)) = &insertion {
+            let at = *at as usize;
+            debug_assert!(at + tg_ins_offset >= tg_index, "insertion left behind");
+            if at + tg_ins_offset == tg_index {
+                result[index..index + what.len()].copy_from_slice(what.as_bytes());
+                index += what.len();
+                tg_index += telegram_string_len(&what) as usize;
+                tg_ins_offset += telegram_string_len(&what) as usize;
+                insertion = insertions.pop();
+            }
+        }
+
+        let c = if let Some(previous) = prev_point.take() {
+            char::decode_utf16([previous, point])
+                .next()
+                .unwrap()
+                .unwrap()
+        } else {
+            match char::decode_utf16([point]).next().unwrap() {
+                Ok(c) => c,
+                Err(unpaired) => {
+                    prev_point = Some(unpaired.unpaired_surrogate());
+                    tg_index += 1;
+                    continue;
+                }
+            }
+        };
+
+        index += c.encode_utf8(&mut result[index..]).len();
+        tg_index += 1;
+    }
+
+    if let Some(ins) = insertion {
+        insertions.push(ins);
+    }
+    while let Some((_, what)) = insertions.pop() {
+        // The remaining insertion offsets are assumed to be correct at the end.
+        // Even if they were not, they couldn't really skip past the source message,
+        // which has already reached the end.
+        result[index..index + what.len()].copy_from_slice(what.as_bytes());
+        index += what.len();
+    }
+
+    String::from_utf8(result).unwrap()
 }
 
 #[cfg(test)]
@@ -477,6 +718,17 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "markdown")]
+    fn parse_then_unparse_markdown() {
+        let markdown = "Some **bold 🤷🏽‍♀️**, _italics_, inline `🤷🏽‍♀️ code`, \
+        a\n\n```rust\npre\n```\nblock, a [link](https://example.com), and \
+        [mentions](tg://user?id=12345678)";
+        let (text, entities) = parse_markdown_message(markdown);
+        let generated = generate_markdown_message(&text, &entities);
+        assert_eq!(generated, markdown);
+    }
+
+    #[test]
     #[cfg(feature = "html")]
     fn parse_leading_html() {
         // Intentionally use different casing to make sure that is handled well
@@ -528,13 +780,13 @@ mod tests {
         let (text, entities) = parse_html_message(
             "Some <b>bold</b> (<strong>strong</strong>), <i>italics</i> \
             (<em>cursive</em>), inline <code>code</code>, a <pre>pre</pre> \
-            block, a <a href=\"https://example.com\">link</a>, and \
-            <a href=\"tg://user?id=12345678\">mentions</a>",
+            block, a <a href=\"https://example.com\">link</a>, \
+            <details>spoilers</details> and <a href=\"tg://user?id=12345678\">mentions</a>",
         );
 
         assert_eq!(
             text,
-            "Some bold (strong), italics (cursive), inline code, a pre block, a link, and mentions"
+            "Some bold (strong), italics (cursive), inline code, a pre block, a link, spoilers and mentions"
         );
         assert_eq!(
             entities,
@@ -576,8 +828,13 @@ mod tests {
                     url: "https://example.com".to_string()
                 }
                 .into(),
+                tl::types::MessageEntitySpoiler {
+                    offset: 73,
+                    length: 8,
+                }
+                .into(),
                 tl::types::MessageEntityMentionName {
-                    offset: 77,
+                    offset: 86,
                     length: 8,
                     user_id: 12345678
                 }
@@ -674,5 +931,17 @@ mod tests {
                 .into(),
             ]
         );
+    }
+
+    #[test]
+    #[cfg(feature = "html")]
+    fn parse_then_unparse_html() {
+        let html = "Some <b>bold</b>, <i>italics</i> inline <code>code</code>, \
+        a <pre>pre</pre> block <pre><code class=\"language-rs\">use rust;</code></pre>, \
+        a <a href=\"https://example.com\">link</a>, <details>spoilers</details> and \
+        <a href=\"tg://user?id=12345678\">mentions</a>";
+        let (text, entities) = parse_html_message(html);
+        let generated = generate_html_message(&text, &entities);
+        assert_eq!(generated, html);
     }
 }
