@@ -6,4 +6,8 @@ impl Filters {
     pub fn channel_participants_search(q: String) -> ChannelParticipantsFilter {
         ChannelParticipantsFilter::ChannelParticipantsSearch(types::ChannelParticipantsSearch { q })
     }
+
+    pub fn channel_participants_recent() -> ChannelParticipantsFilter {
+        ChannelParticipantsFilter::ChannelParticipantsRecent
+    }
 }
