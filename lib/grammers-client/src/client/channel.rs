@@ -146,4 +146,39 @@ impl Client {
         }
         Ok(chat_members)
     }
+
+    pub async fn get_chat_member<C: Into<PackedChat>>(
+        &self,
+        chat: C,
+        filter: tl::enums::ChannelParticipantsFilter,
+        page: i32,
+    ) -> Result<(Vec<Chat>, i32), InvocationError> {
+        use tl::enums::channels::ChannelParticipants::Participants;
+        use tl::functions::channels::GetParticipants;
+
+        let chat = chat.into();
+        let input_channel = tl::types::InputChannel {
+            channel_id: chat.id,
+            access_hash: chat.access_hash.unwrap_or(0i64),
+        };
+
+        let mut chat_count = 0;
+        let mut chat_members: Vec<Chat> = vec![];
+
+        let request = GetParticipants {
+            channel: tl::enums::InputChannel::Channel(input_channel),
+            filter,
+            offset: (MAX_PARTICIPANT_LIMIT * page) as i32,
+            limit: MAX_PARTICIPANT_LIMIT,
+            hash: 0,
+        };
+
+        if let Participants(p) = self.invoke(&request).await? {
+            for elem in p.users {
+                chat_members.push(Chat::from_user(elem));
+            }
+            chat_count = p.count;
+        }
+        Ok((chat_members, chat_count))
+    }
 }
