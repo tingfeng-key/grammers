@@ -13,4 +13,13 @@ impl InputUser {
         }
         .into()
     }
+
+    pub fn user_from_message() -> tl::enums::InputUser {
+        tl::types::InputPeerUserFromMessage {
+            peer: todo!(),
+            msg_id: todo!(),
+            user_id: todo!(),
+        }
+        .into()
+    }
 }
