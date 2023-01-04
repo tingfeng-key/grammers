@@ -6,7 +6,7 @@ impl Client {
     pub async fn contact_add(
         self,
         add_phone_privacy_exception: bool,
-        id: tl::enums::InputUser,
+        input_user: crate::types::InputUser,
         first_name: String,
         last_name: String,
         phone: String,
@@ -17,7 +17,7 @@ impl Client {
         let updates = self
             .invoke(&tl::functions::contacts::AddContact {
                 add_phone_privacy_exception,
-                id: id.clone(),
+                id: input_user.0.clone(),
                 first_name,
                 last_name,
                 phone,
@@ -41,7 +41,7 @@ impl Client {
             _ => None,
         };
         if let Some(users) = users_result {
-            return match id {
+            return match input_user.0 {
                 InputUser::Empty => Ok(None),
                 InputUser::UserSelf => Ok(users.into_iter().filter(|x| x.is_self()).next()),
                 InputUser::User(input_user) => Ok(users

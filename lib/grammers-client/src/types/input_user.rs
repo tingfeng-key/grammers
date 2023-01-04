@@ -1,25 +1,23 @@
 use grammers_tl_types as tl;
-pub struct InputUser(tl::enums::InputUser);
+pub struct InputUser(pub(crate) tl::enums::InputUser);
 
 impl InputUser {
     pub fn from(raw: tl::enums::InputUser) -> Self {
         Self(raw)
     }
 
-    pub fn new_user_id(user_id: i64, access_hash: i64) -> tl::enums::InputUser {
-        tl::types::InputUser {
-            user_id,
-            access_hash,
-        }
-        .into()
+    pub fn from_message(peer: tl::enums::InputPeer, msg_id: i32, user_id: i64) -> Self {
+        Self::from(
+            tl::types::InputUserFromMessage {
+                peer,
+                msg_id,
+                user_id,
+            }
+            .into(),
+        )
     }
 
-    pub fn user_from_message() -> tl::enums::InputUser {
-        tl::types::InputPeerUserFromMessage {
-            peer: todo!(),
-            msg_id: todo!(),
-            user_id: todo!(),
-        }
-        .into()
+    pub fn to_raw(self) -> tl::enums::InputUser {
+        self.0
     }
 }
