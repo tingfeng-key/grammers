@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 use grammers_tl_types as tl;
+use tl::types::PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow;
 
 #[derive(Debug, Clone)]
 pub struct PasswordToken {
@@ -25,10 +26,6 @@ impl PasswordToken {
         self.password.has_password
     }
 
-    pub fn new_algo(&self) -> tl::enums::PasswordKdfAlgo {
-        self.password.new_algo.clone()
-    }
-
     pub fn srp_id(&self) -> i64 {
         self.password.srp_id.unwrap_or_default()
     }
@@ -43,7 +40,7 @@ impl PasswordToken {
 
     pub fn current_algo(
         &self,
-    ) -> Option<tl::types::PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
+    ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
         use tl::enums::PasswordKdfAlgo::{
             Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow, Unknown,
         };
@@ -53,6 +50,18 @@ impl PasswordToken {
                 Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow(a) => Some(a),
             },
             None => None,
+        }
+    }
+
+    pub fn new_algo(
+        &self,
+    ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
+        use tl::enums::PasswordKdfAlgo::{
+            Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow, Unknown,
+        };
+        match self.password.new_algo.clone() {
+            Unknown => None,
+            Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow(a) => Some(a),
         }
     }
 
@@ -81,5 +90,32 @@ impl PasswordToken {
             m1,
         }
         .into()
+    }
+
+    pub fn generate_new_hash(
+        &self,
+        new_password: String,
+    ) -> Option<(
+        PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow,
+        Vec<u8>,
+    )> {
+        use grammers_crypto::two_factor_auth::{compute_password_hash, generate_random_32_bytes};
+        match self.new_algo() {
+            Some(mut new_algo) => {
+                let rand = generate_random_32_bytes();
+                new_algo.salt1.extend_from_slice(&rand);
+                Some((
+                    new_algo.clone(),
+                    compute_password_hash(
+                        &new_algo.salt1,
+                        &new_algo.salt2,
+                        &new_algo.g,
+                        &new_algo.p,
+                        new_password,
+                    ),
+                ))
+            }
+            None => None,
+        }
     }
 }

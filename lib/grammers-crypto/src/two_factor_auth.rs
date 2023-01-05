@@ -101,6 +101,32 @@ pub fn calculate_2fa(
     (m1, g_a)
 }
 
+pub fn generate_random_32_bytes() -> Vec<u8> {
+    let mut buf = [0u8; 32];
+    getrandom::getrandom(&mut buf).unwrap();
+    buf.to_vec()
+}
+pub fn compute_password_hash(
+    salt1: &[u8],
+    salt2: &[u8],
+    g: &i32,
+    p: &[u8],
+    password: impl AsRef<[u8]>,
+) -> Vec<u8> {
+    // Prepare our parameters
+    let big_p = BigUint::from_bytes_be(p);
+
+    let big_g = BigUint::from(*g as u32);
+
+    // x := PH2(password, salt1, salt2)
+    let x = ph2(&password, salt1, salt2);
+
+    let x = BigUint::from_bytes_be(&x);
+
+    // v := pow(g, x) mod p
+    let big_v = big_g.modpow(&x, &big_p);
+    pad_to_256(&big_v.to_bytes_be())
+}
 /// Validation for parameters required for two-factor authentication
 pub fn check_p_and_g(g: &i32, p: &[u8]) -> bool {
     if !check_p_len(p) {

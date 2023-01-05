@@ -1,7 +1,6 @@
 use crate::types::Chat;
 
 use super::Client;
-use grammers_crypto as crypto;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
 use std::fmt;
@@ -110,22 +109,23 @@ impl Client {
         email: Option<String>,
     ) -> Result<bool, UserError> {
         let password = self.get_password_information().await?;
-        let params = crate::utils::extract_password_parameters(&password.new_algo());
-        let input_password = vec![0u8];
-        match password.has_password() {
-            true => Ok(self
-                .invoke(&tl::functions::account::UpdatePasswordSettings {
+        match !password.has_password() {
+            true => {
+                let (new_algo, new_hash) = password.generate_new_hash(new_password).unwrap();
+                let request = tl::functions::account::UpdatePasswordSettings {
                     password: tl::enums::InputCheckPasswordSrp::InputCheckPasswordEmpty,
                     new_settings: tl::types::account::PasswordInputSettings {
-                        new_algo: Some(password.new_algo()),
-                        new_password_hash: Some(input_password),
+                        new_algo: Some(new_algo.into()),
+                        new_password_hash: Some(new_hash),
                         hint,
                         email,
                         new_secure_settings: None,
                     }
                     .into(),
-                })
-                .await?),
+                };
+                println!("{:#?}", request);
+                Ok(self.invoke(&request).await?)
+            }
             false => Err(UserError::NotSetPassword),
         }
     }
@@ -135,24 +135,26 @@ impl Client {
         current_password: String,
         new_password: String,
         hint: Option<String>,
+        email: Option<String>,
     ) -> Result<bool, UserError> {
         let password = self.get_password_information().await?;
-        let params = crate::utils::extract_password_parameters(&password.new_algo());
-        let input_password = vec![0u8];
         match password.has_password() {
-            true => Ok(self
-                .invoke(&tl::functions::account::UpdatePasswordSettings {
+            true => {
+                let (new_algo, new_hash) = password.generate_new_hash(new_password).unwrap();
+                let request = tl::functions::account::UpdatePasswordSettings {
                     password: password.to_input_check_password_srp(current_password),
                     new_settings: tl::types::account::PasswordInputSettings {
-                        new_algo: Some(password.new_algo()),
-                        new_password_hash: Some(input_password),
+                        new_algo: Some(new_algo.into()),
+                        new_password_hash: Some(new_hash),
                         hint,
-                        email: None,
+                        email,
                         new_secure_settings: None,
                     }
                     .into(),
-                })
-                .await?),
+                };
+                println!("{:#?}", request);
+                Ok(self.invoke(&request).await?)
+            }
             false => Err(UserError::NotSetPassword),
         }
     }
