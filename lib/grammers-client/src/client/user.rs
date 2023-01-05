@@ -1,6 +1,7 @@
 use crate::types::Chat;
 
 use super::Client;
+use grammers_crypto as crypto;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
 use std::fmt;
@@ -105,7 +106,6 @@ impl Client {
     pub async fn enabled_password_verify(
         self,
         new_password: String,
-        current_password: Option<String>,
         hint: Option<String>,
         email: Option<String>,
     ) -> Result<bool, UserError> {
@@ -142,12 +142,7 @@ impl Client {
         match password.has_password() {
             true => Ok(self
                 .invoke(&tl::functions::account::UpdatePasswordSettings {
-                    password: tl::types::InputCheckPasswordSrp {
-                        srp_id: todo!(),
-                        a: todo!(),
-                        m1: todo!(),
-                    }
-                    .into(),
+                    password: password.to_input_check_password_srp(current_password),
                     new_settings: tl::types::account::PasswordInputSettings {
                         new_algo: Some(password.new_algo()),
                         new_password_hash: Some(input_password),
