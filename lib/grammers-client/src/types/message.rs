@@ -590,8 +590,13 @@ impl Message {
                     _ => None,
                 };
                 if let Some(username) = username {
-                    if !usernames.contains(&username) {
-                        usernames.push(username);
+                    let username_split = username.split("/").collect::<Vec<&str>>();
+                    let entity = match username_split.len() > 1 {
+                        true => username_split[0].to_string(),
+                        false => username,
+                    };
+                    if !usernames.contains(&entity) {
+                        usernames.push(entity);
                     }
                 }
             }

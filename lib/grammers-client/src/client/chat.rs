@@ -48,14 +48,54 @@ impl Client {
         &mut self,
         chat: PackedChat,
         users: Vec<PackedChat>,
-    ) -> Result<bool, InvocationError> {
-        let _ = self
+    ) -> Result<Option<(Option<i64>, Vec<i64>)>, InvocationError> {
+        use tl::enums::Updates;
+
+        let user_ids = users
+            .clone()
+            .into_iter()
+            .map(|x| x.id)
+            .collect::<Vec<i64>>();
+
+        let updates = self
             .invoke(&tl::functions::channels::InviteToChannel {
                 channel: chat.to_input_channel_lossy(),
                 users: users.into_iter().map(|x| x.to_input_user_lossy()).collect(),
             })
             .await?;
-        Ok(true)
+
+        let result = match updates {
+            Updates::Combined(update) => Some((
+                update
+                    .chats
+                    .into_iter()
+                    .map(|x| x.id())
+                    .filter(|x| x == &chat.id)
+                    .next(),
+                update
+                    .users
+                    .into_iter()
+                    .map(|x| x.id())
+                    .filter(|x| user_ids.contains(&x))
+                    .collect::<Vec<i64>>(),
+            )),
+            Updates::Updates(update) => Some((
+                update
+                    .chats
+                    .into_iter()
+                    .map(|x| x.id())
+                    .filter(|x| x == &chat.id)
+                    .next(),
+                update
+                    .users
+                    .into_iter()
+                    .map(|x| x.id())
+                    .filter(|x| user_ids.contains(&x))
+                    .collect::<Vec<i64>>(),
+            )),
+            _ => None,
+        };
+        Ok(result)
     }
 
     /// Adds a user to a chat and sends a service message on it
@@ -64,14 +104,49 @@ impl Client {
         chat: PackedChat,
         user: PackedChat,
         fwd_limit: i32,
-    ) -> Result<bool, InvocationError> {
-        let _ = self
+    ) -> Result<
+        Option<(Option<crate::types::Chat>, Option<crate::types::chat::User>)>,
+        InvocationError,
+    > {
+        use tl::enums::Updates;
+        let updates = self
             .invoke(&tl::functions::messages::AddChatUser {
                 chat_id: chat.id,
                 user_id: user.to_input_user_lossy(),
                 fwd_limit,
             })
             .await?;
-        Ok(true)
+        let result = match updates {
+            Updates::Combined(update) => Some((
+                update
+                    .chats
+                    .into_iter()
+                    .map(|x| crate::types::chat::Chat::from_chat(x))
+                    .filter(|x| x.id() == chat.id)
+                    .next(),
+                update
+                    .users
+                    .into_iter()
+                    .map(|x| crate::types::chat::User::from_raw(x))
+                    .filter(|x| x.id() == user.id)
+                    .next(),
+            )),
+            Updates::Updates(update) => Some((
+                update
+                    .chats
+                    .into_iter()
+                    .map(|x| crate::types::chat::Chat::from_chat(x))
+                    .filter(|x| x.id() == chat.id)
+                    .next(),
+                update
+                    .users
+                    .into_iter()
+                    .map(|x| crate::types::chat::User::from_raw(x))
+                    .filter(|x| x.id() == user.id)
+                    .next(),
+            )),
+            _ => None,
+        };
+        Ok(result)
     }
 }

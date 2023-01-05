@@ -74,4 +74,21 @@ impl Client {
         }
         Ok(chats)
     }
+
+    pub async fn contacts_list(self) -> Result<Vec<crate::types::Chat>, InvocationError> {
+        use tl::enums::contacts::Contacts;
+        Ok(
+            match self
+                .invoke(&tl::functions::contacts::GetContacts { hash: 0 })
+                .await?
+            {
+                Contacts::Contacts(contacts) => contacts
+                    .users
+                    .into_iter()
+                    .map(|x| crate::types::Chat::from_user(x))
+                    .collect::<Vec<crate::types::Chat>>(),
+                Contacts::NotModified => vec![],
+            },
+        )
+    }
 }

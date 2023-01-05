@@ -20,4 +20,12 @@ impl PasswordToken {
     pub fn hint(&self) -> Option<&str> {
         self.password.hint.as_deref()
     }
+
+    pub fn has_password(&self) -> bool {
+        self.password.has_password
+    }
+
+    pub fn new_algo(&self) -> tl::enums::PasswordKdfAlgo {
+        self.password.new_algo.clone()
+    }
 }

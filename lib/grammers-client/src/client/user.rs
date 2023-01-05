@@ -8,15 +8,23 @@ use std::fmt;
 #[derive(Debug)]
 pub enum UserError {
     EmptyUser,
-    Other(InvocationError),
+    NotSetPassword,
+    Other(String),
 }
 impl fmt::Display for UserError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use UserError::*;
         match self {
             EmptyUser => write!(f, "empty user"),
-            Other(e) => write!(f, "channel error: {}", e),
+            NotSetPassword => write!(f, "not set password"),
+            Other(e) => write!(f, "{}", e),
         }
+    }
+}
+
+impl From<InvocationError> for UserError {
+    fn from(value: InvocationError) -> Self {
+        Self::Other(value.to_string())
     }
 }
 
@@ -25,21 +33,19 @@ impl Client {
         &mut self,
         id: tl::enums::InputUser,
     ) -> Result<(tl::types::UserFull, Chat), UserError> {
-        match self.invoke(&tl::functions::users::GetFullUser { id }).await {
-            Ok(tl::enums::users::UserFull::Full(user_full)) => {
-                let full_user = match user_full.full_user {
-                    tl::enums::UserFull::Full(user) => user,
-                };
+        let tl::enums::users::UserFull::Full(user_full) = self
+            .invoke(&tl::functions::users::GetFullUser { id })
+            .await?;
+        let full_user = match user_full.full_user {
+            tl::enums::UserFull::Full(user) => user,
+        };
 
-                let user_base = match user_full.users.first() {
-                    Some(tl::enums::User::Empty(_)) => Err(UserError::EmptyUser),
-                    Some(tl::enums::User::User(user)) => Ok(Chat::from_user(user.clone().into())),
-                    None => Err(UserError::EmptyUser),
-                }?;
-                Ok((full_user, user_base))
-            }
-            Err(e) => Err(UserError::Other(e)),
-        }
+        let user_base = match user_full.users.first() {
+            Some(tl::enums::User::Empty(_)) => Err(UserError::EmptyUser),
+            Some(tl::enums::User::User(user)) => Ok(Chat::from_user(user.clone().into())),
+            None => Err(UserError::EmptyUser),
+        }?;
+        Ok((full_user, user_base))
     }
 
     pub async fn get_users(
@@ -78,6 +84,82 @@ impl Client {
             user_id,
         }
         .into()
+    }
+
+    pub async fn update_profile(
+        self,
+        first_name: Option<String>,
+        last_name: Option<String>,
+        about: Option<String>,
+    ) -> Result<crate::types::chat::User, InvocationError> {
+        Ok(crate::types::chat::User::from_raw(
+            self.invoke(&tl::functions::account::UpdateProfile {
+                first_name,
+                last_name,
+                about,
+            })
+            .await?,
+        ))
+    }
+
+    pub async fn enabled_password_verify(
+        self,
+        new_password: String,
+        current_password: Option<String>,
+        hint: Option<String>,
+        email: Option<String>,
+    ) -> Result<bool, UserError> {
+        let password = self.get_password_information().await?;
+        let params = crate::utils::extract_password_parameters(&password.new_algo());
+        let input_password = vec![0u8];
+        match password.has_password() {
+            true => Ok(self
+                .invoke(&tl::functions::account::UpdatePasswordSettings {
+                    password: tl::enums::InputCheckPasswordSrp::InputCheckPasswordEmpty,
+                    new_settings: tl::types::account::PasswordInputSettings {
+                        new_algo: Some(password.new_algo()),
+                        new_password_hash: Some(input_password),
+                        hint,
+                        email,
+                        new_secure_settings: None,
+                    }
+                    .into(),
+                })
+                .await?),
+            false => Err(UserError::NotSetPassword),
+        }
+    }
+
+    pub async fn change_password_verify(
+        self,
+        current_password: String,
+        new_password: String,
+        hint: Option<String>,
+    ) -> Result<bool, UserError> {
+        let password = self.get_password_information().await?;
+        let params = crate::utils::extract_password_parameters(&password.new_algo());
+        let input_password = vec![0u8];
+        match password.has_password() {
+            true => Ok(self
+                .invoke(&tl::functions::account::UpdatePasswordSettings {
+                    password: tl::types::InputCheckPasswordSrp {
+                        srp_id: todo!(),
+                        a: todo!(),
+                        m1: todo!(),
+                    }
+                    .into(),
+                    new_settings: tl::types::account::PasswordInputSettings {
+                        new_algo: Some(password.new_algo()),
+                        new_password_hash: Some(input_password),
+                        hint,
+                        email: None,
+                        new_secure_settings: None,
+                    }
+                    .into(),
+                })
+                .await?),
+            false => Err(UserError::NotSetPassword),
+        }
     }
 
     // pub async fn get_full(&mut self, packed_chat: PackedChat) -> Result<Chat, InvocationError> {

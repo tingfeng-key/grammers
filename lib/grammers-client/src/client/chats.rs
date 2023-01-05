@@ -809,12 +809,28 @@ impl Client {
     pub async fn accept_invite_link(
         &self,
         invite_link: &str,
-    ) -> Result<tl::enums::Updates, InvocationError> {
+    ) -> Result<Vec<Chat>, InvocationError> {
+        use tl::enums::Updates;
         match Self::parse_invite_link(invite_link) {
-            Some(hash) => {
-                self.invoke(&tl::functions::messages::ImportChatInvite { hash })
-                    .await
-            }
+            Some(hash) => Ok(
+                match self
+                    .invoke(&tl::functions::messages::ImportChatInvite { hash })
+                    .await?
+                {
+                    Updates::Combined(updates) => updates
+                        .chats
+                        .into_iter()
+                        .map(|x| Chat::from_chat(x))
+                        .collect::<Vec<Chat>>(),
+                    Updates::Updates(updates) => updates
+                        .chats
+                        .into_iter()
+                        .map(|x| Chat::from_chat(x))
+                        .collect::<Vec<Chat>>(),
+
+                    _ => vec![],
+                },
+            ),
             None => Err(InvocationError::Rpc(RpcError {
                 code: 400,
                 name: "INVITE_HASH_INVALID".to_string(),
@@ -835,35 +851,29 @@ impl Client {
         use tl::enums::Updates;
 
         let chat = chat.into();
-        let update_chat = match self
-            .invoke(&tl::functions::channels::JoinChannel {
-                channel: chat.try_to_input_channel().unwrap(),
-            })
-            .await?
-        {
-            Updates::Combined(updates) => Some(
-                updates
+        Ok(
+            match self
+                .invoke(&tl::functions::channels::JoinChannel {
+                    channel: chat.try_to_input_channel().unwrap(),
+                })
+                .await?
+            {
+                Updates::Combined(updates) => updates
                     .chats
                     .into_iter()
+                    .map(|x| Chat::from_chat(x))
                     .filter(|x| x.id() == chat.id)
-                    .collect::<Vec<tl::enums::Chat>>(),
-            ),
-            Updates::Updates(updates) => Some(
-                updates
+                    .next(),
+                Updates::Updates(updates) => updates
                     .chats
                     .into_iter()
+                    .map(|x| Chat::from_chat(x))
                     .filter(|x| x.id() == chat.id)
-                    .collect::<Vec<tl::enums::Chat>>(),
-            ),
-            _ => None,
-        };
+                    .next(),
 
-        match update_chat {
-            Some(chats) if chats.len() > 0 => Ok(Some(Chat::from_chat(chats[0].clone()))),
-            Some(chats) if chats.len() == 0 => Ok(None),
-            None => Ok(None),
-            Some(_) => Ok(None),
-        }
+                _ => None,
+            },
+        )
     }
 }
 

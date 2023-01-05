@@ -13,12 +13,11 @@ impl Client {
         &self,
         chat: C,
         input: M,
-    ) -> Result<(), InvocationError> {
+    ) -> Result<Option<i32>, InvocationError> {
         let chat = chat.into();
         let input = input.into();
 
-        // println!("{:#?}", input.multi_media);
-        let _updates = self
+        let updates = self
             .invoke(&tl::functions::messages::SendMultiMedia {
                 silent: input.silent,
                 background: input.background,
@@ -32,8 +31,13 @@ impl Client {
                 update_stickersets_order: false,
             })
             .await?;
-        // println!("{:#?}", updates);
-        Ok(())
+
+        Ok(match updates {
+            tl::enums::Updates::UpdateShortSentMessage(update) => Some(update.id),
+            tl::enums::Updates::UpdateShortMessage(update) => Some(update.id),
+            tl::enums::Updates::UpdateShortChatMessage(update) => Some(update.id),
+            _ => None,
+        })
     }
 
     pub async fn upload_media(
