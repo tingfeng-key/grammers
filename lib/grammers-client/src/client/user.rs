@@ -87,7 +87,7 @@ impl Client {
     }
 
     pub async fn update_profile(
-        self,
+        &self,
         first_name: Option<String>,
         last_name: Option<String>,
         about: Option<String>,
@@ -104,14 +104,14 @@ impl Client {
 
     pub async fn enabled_password_verify(
         self,
-        new_password: String,
+        password: String,
         hint: Option<String>,
         email: Option<String>,
     ) -> Result<bool, UserError> {
-        let password = self.get_password_information().await?;
-        match !password.has_password() {
+        let password_token = self.get_password_information().await?;
+        match !password_token.has_password() {
             true => {
-                let (new_algo, new_hash) = password.generate_new_hash(new_password).unwrap();
+                let (new_algo, new_hash) = password_token.generate_new_hash(password).unwrap();
                 let request = tl::functions::account::UpdatePasswordSettings {
                     password: tl::enums::InputCheckPasswordSrp::InputCheckPasswordEmpty,
                     new_settings: tl::types::account::PasswordInputSettings {
@@ -123,7 +123,7 @@ impl Client {
                     }
                     .into(),
                 };
-                println!("{:#?}", request);
+                // println!("{:#?}", request);
                 Ok(self.invoke(&request).await?)
             }
             false => Err(UserError::NotSetPassword),

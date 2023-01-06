@@ -26,19 +26,19 @@ impl PasswordToken {
         self.password.has_password
     }
 
-    pub fn srp_id(&self) -> i64 {
+    fn srp_id(&self) -> i64 {
         self.password.srp_id.unwrap_or_default()
     }
 
-    pub fn srp_b(&self) -> Vec<u8> {
+    fn srp_b(&self) -> Vec<u8> {
         self.password.srp_b.clone().unwrap_or_default()
     }
 
-    pub fn secure_random(&self) -> Vec<u8> {
+    fn secure_random(&self) -> Vec<u8> {
         self.password.secure_random.clone()
     }
 
-    pub fn current_algo(
+    fn current_algo(
         &self,
     ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
         use tl::enums::PasswordKdfAlgo::{
@@ -53,7 +53,7 @@ impl PasswordToken {
         }
     }
 
-    pub fn new_algo(
+    fn new_algo(
         &self,
     ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
         use tl::enums::PasswordKdfAlgo::{
@@ -100,20 +100,25 @@ impl PasswordToken {
         Vec<u8>,
     )> {
         use grammers_crypto::two_factor_auth::{compute_password_hash, generate_random_32_bytes};
+        println!("{:#?}", self);
         match self.new_algo() {
             Some(mut new_algo) => {
                 let rand = generate_random_32_bytes();
+                // println!("{:#?}", new_algo.g);
+                // println!("{:#?}", new_algo.p);
+                // println!("{:#?}", new_algo.salt1);
+                // println!("{:#?}", new_algo.salt2);
+                // println!("{:#?}", rand);
                 new_algo.salt1.extend_from_slice(&rand);
-                Some((
-                    new_algo.clone(),
-                    compute_password_hash(
-                        &new_algo.salt1,
-                        &new_algo.salt2,
-                        &new_algo.g,
-                        &new_algo.p,
-                        new_password,
-                    ),
-                ))
+                let new_password_hash = compute_password_hash(
+                    &new_algo.salt1,
+                    &new_algo.salt2,
+                    &new_algo.g,
+                    &new_algo.p,
+                    new_password,
+                );
+                // println!("{:#?}", new_password_hash);
+                Some((new_algo.clone(), new_password_hash))
             }
             None => None,
         }

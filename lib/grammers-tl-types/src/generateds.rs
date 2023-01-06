@@ -55128,12 +55128,6 @@ pub mod enums {
         BotInlineMediaResult(crate::types::BotInlineMediaResult),
     }
     impl BotInlineResult {
-        pub fn r#type(&self) -> String {
-            match self {
-                Self::Result(i) => i.r#type.clone(),
-                Self::BotInlineMediaResult(i) => i.r#type.clone(),
-            }
-        }
         pub fn id(&self) -> String {
             match self {
                 Self::Result(i) => i.id.clone(),
@@ -55144,6 +55138,12 @@ pub mod enums {
             match self {
                 Self::Result(i) => i.send_message.clone(),
                 Self::BotInlineMediaResult(i) => i.send_message.clone(),
+            }
+        }
+        pub fn r#type(&self) -> String {
+            match self {
+                Self::Result(i) => i.r#type.clone(),
+                Self::BotInlineMediaResult(i) => i.r#type.clone(),
             }
         }
     }
@@ -56231,16 +56231,16 @@ pub mod enums {
         ChannelFull(crate::types::ChannelFull),
     }
     impl ChatFull {
-        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
-            match self {
-                Self::Full(i) => i.notify_settings.clone(),
-                Self::ChannelFull(i) => i.notify_settings.clone(),
-            }
-        }
         pub fn about(&self) -> String {
             match self {
                 Self::Full(i) => i.about.clone(),
                 Self::ChannelFull(i) => i.about.clone(),
+            }
+        }
+        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
+            match self {
+                Self::Full(i) => i.notify_settings.clone(),
+                Self::ChannelFull(i) => i.notify_settings.clone(),
             }
         }
         pub fn id(&self) -> i64 {
@@ -57408,16 +57408,16 @@ pub mod enums {
         Deleted(crate::types::EmojiKeywordDeleted),
     }
     impl EmojiKeyword {
-        pub fn keyword(&self) -> String {
-            match self {
-                Self::Keyword(i) => i.keyword.clone(),
-                Self::Deleted(i) => i.keyword.clone(),
-            }
-        }
         pub fn emoticons(&self) -> Vec<String> {
             match self {
                 Self::Keyword(i) => i.emoticons.clone(),
                 Self::Deleted(i) => i.emoticons.clone(),
+            }
+        }
+        pub fn keyword(&self) -> String {
+            match self {
+                Self::Keyword(i) => i.keyword.clone(),
+                Self::Deleted(i) => i.keyword.clone(),
             }
         }
     }
@@ -57736,12 +57736,6 @@ pub mod enums {
         Service(crate::types::EncryptedMessageService),
     }
     impl EncryptedMessage {
-        pub fn random_id(&self) -> i64 {
-            match self {
-                Self::Message(i) => i.random_id,
-                Self::Service(i) => i.random_id,
-            }
-        }
         pub fn bytes(&self) -> Vec<u8> {
             match self {
                 Self::Message(i) => i.bytes.clone(),
@@ -57758,6 +57752,12 @@ pub mod enums {
             match self {
                 Self::Message(i) => i.date,
                 Self::Service(i) => i.date,
+            }
+        }
+        pub fn random_id(&self) -> i64 {
+            match self {
+                Self::Message(i) => i.random_id,
+                Self::Service(i) => i.random_id,
             }
         }
     }
@@ -58165,16 +58165,16 @@ pub mod enums {
         Call(crate::types::GroupCall),
     }
     impl GroupCall {
-        pub fn access_hash(&self) -> i64 {
-            match self {
-                Self::Discarded(i) => i.access_hash,
-                Self::Call(i) => i.access_hash,
-            }
-        }
         pub fn id(&self) -> i64 {
             match self {
                 Self::Discarded(i) => i.id,
                 Self::Call(i) => i.id,
+            }
+        }
+        pub fn access_hash(&self) -> i64 {
+            match self {
+                Self::Discarded(i) => i.access_hash,
+                Self::Call(i) => i.access_hash,
             }
         }
     }
@@ -60994,16 +60994,16 @@ pub mod enums {
         Secret(crate::types::IpPortSecret),
     }
     impl IpPort {
-        pub fn ipv4(&self) -> i32 {
-            match self {
-                Self::Port(i) => i.ipv4,
-                Self::Secret(i) => i.ipv4,
-            }
-        }
         pub fn port(&self) -> i32 {
             match self {
                 Self::Port(i) => i.port,
                 Self::Secret(i) => i.port,
+            }
+        }
+        pub fn ipv4(&self) -> i32 {
+            match self {
+                Self::Port(i) => i.ipv4,
+                Self::Secret(i) => i.ipv4,
             }
         }
     }
@@ -63494,20 +63494,12 @@ pub mod enums {
         TempDc(crate::types::PQInnerDataTempDc),
     }
     impl PQInnerData {
-        pub fn q(&self) -> Vec<u8> {
+        pub fn pq(&self) -> Vec<u8> {
             match self {
-                Self::Data(i) => i.q.clone(),
-                Self::Dc(i) => i.q.clone(),
-                Self::Temp(i) => i.q.clone(),
-                Self::TempDc(i) => i.q.clone(),
-            }
-        }
-        pub fn p(&self) -> Vec<u8> {
-            match self {
-                Self::Data(i) => i.p.clone(),
-                Self::Dc(i) => i.p.clone(),
-                Self::Temp(i) => i.p.clone(),
-                Self::TempDc(i) => i.p.clone(),
+                Self::Data(i) => i.pq.clone(),
+                Self::Dc(i) => i.pq.clone(),
+                Self::Temp(i) => i.pq.clone(),
+                Self::TempDc(i) => i.pq.clone(),
             }
         }
         pub fn server_nonce(&self) -> [u8; 16] {
@@ -63526,20 +63518,28 @@ pub mod enums {
                 Self::TempDc(i) => i.nonce,
             }
         }
-        pub fn pq(&self) -> Vec<u8> {
-            match self {
-                Self::Data(i) => i.pq.clone(),
-                Self::Dc(i) => i.pq.clone(),
-                Self::Temp(i) => i.pq.clone(),
-                Self::TempDc(i) => i.pq.clone(),
-            }
-        }
         pub fn new_nonce(&self) -> [u8; 32] {
             match self {
                 Self::Data(i) => i.new_nonce,
                 Self::Dc(i) => i.new_nonce,
                 Self::Temp(i) => i.new_nonce,
                 Self::TempDc(i) => i.new_nonce,
+            }
+        }
+        pub fn p(&self) -> Vec<u8> {
+            match self {
+                Self::Data(i) => i.p.clone(),
+                Self::Dc(i) => i.p.clone(),
+                Self::Temp(i) => i.p.clone(),
+                Self::TempDc(i) => i.p.clone(),
+            }
+        }
+        pub fn q(&self) -> Vec<u8> {
+            match self {
+                Self::Data(i) => i.q.clone(),
+                Self::Dc(i) => i.q.clone(),
+                Self::Temp(i) => i.q.clone(),
+                Self::TempDc(i) => i.q.clone(),
             }
         }
     }
@@ -64746,12 +64746,6 @@ pub mod enums {
                 Self::Webrtc(i) => i.ipv6.clone(),
             }
         }
-        pub fn id(&self) -> i64 {
-            match self {
-                Self::Connection(i) => i.id,
-                Self::Webrtc(i) => i.id,
-            }
-        }
         pub fn port(&self) -> i32 {
             match self {
                 Self::Connection(i) => i.port,
@@ -64762,6 +64756,12 @@ pub mod enums {
             match self {
                 Self::Connection(i) => i.ip.clone(),
                 Self::Webrtc(i) => i.ip.clone(),
+            }
+        }
+        pub fn id(&self) -> i64 {
+            match self {
+                Self::Connection(i) => i.id,
+                Self::Webrtc(i) => i.id,
             }
         }
     }
@@ -67133,16 +67133,16 @@ pub mod enums {
         Ok(crate::types::ServerDhParamsOk),
     }
     impl ServerDhParams {
-        pub fn nonce(&self) -> [u8; 16] {
-            match self {
-                Self::Fail(i) => i.nonce,
-                Self::Ok(i) => i.nonce,
-            }
-        }
         pub fn server_nonce(&self) -> [u8; 16] {
             match self {
                 Self::Fail(i) => i.server_nonce,
                 Self::Ok(i) => i.server_nonce,
+            }
+        }
+        pub fn nonce(&self) -> [u8; 16] {
+            match self {
+                Self::Fail(i) => i.nonce,
+                Self::Ok(i) => i.nonce,
             }
         }
     }
@@ -69852,6 +69852,12 @@ pub mod enums {
                 Self::NoProxy(i) => i.url.clone(),
             }
         }
+        pub fn mime_type(&self) -> String {
+            match self {
+                Self::Document(i) => i.mime_type.clone(),
+                Self::NoProxy(i) => i.mime_type.clone(),
+            }
+        }
         pub fn attributes(&self) -> Vec<crate::enums::DocumentAttribute> {
             match self {
                 Self::Document(i) => i.attributes.clone(),
@@ -69862,12 +69868,6 @@ pub mod enums {
             match self {
                 Self::Document(i) => i.size,
                 Self::NoProxy(i) => i.size,
-            }
-        }
-        pub fn mime_type(&self) -> String {
-            match self {
-                Self::Document(i) => i.mime_type.clone(),
-                Self::NoProxy(i) => i.mime_type.clone(),
             }
         }
     }
@@ -71277,16 +71277,16 @@ pub mod enums {
                     Self::Slice(i) => i.blocked.clone(),
                 }
             }
-            pub fn users(&self) -> Vec<crate::enums::User> {
-                match self {
-                    Self::Blocked(i) => i.users.clone(),
-                    Self::Slice(i) => i.users.clone(),
-                }
-            }
             pub fn chats(&self) -> Vec<crate::enums::Chat> {
                 match self {
                     Self::Blocked(i) => i.chats.clone(),
                     Self::Slice(i) => i.chats.clone(),
+                }
+            }
+            pub fn users(&self) -> Vec<crate::enums::User> {
+                match self {
+                    Self::Blocked(i) => i.users.clone(),
+                    Self::Slice(i) => i.users.clone(),
                 }
             }
         }
@@ -72684,16 +72684,16 @@ pub mod enums {
             Replaced(crate::types::messages::ExportedChatInviteReplaced),
         }
         impl ExportedChatInvite {
-            pub fn users(&self) -> Vec<crate::enums::User> {
-                match self {
-                    Self::Invite(i) => i.users.clone(),
-                    Self::Replaced(i) => i.users.clone(),
-                }
-            }
             pub fn invite(&self) -> crate::enums::ExportedChatInvite {
                 match self {
                     Self::Invite(i) => i.invite.clone(),
                     Self::Replaced(i) => i.invite.clone(),
+                }
+            }
+            pub fn users(&self) -> Vec<crate::enums::User> {
+                match self {
+                    Self::Invite(i) => i.users.clone(),
+                    Self::Replaced(i) => i.users.clone(),
                 }
             }
         }
