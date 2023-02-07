@@ -1,38 +1,15 @@
 use crate::types::Chat;
 
 use super::Client;
+use grammers_mtproto::mtp::RpcError;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
-use std::fmt;
-
-#[derive(Debug)]
-pub enum UserError {
-    EmptyUser,
-    NotSetPassword,
-    Other(String),
-}
-impl fmt::Display for UserError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use UserError::*;
-        match self {
-            EmptyUser => write!(f, "empty user"),
-            NotSetPassword => write!(f, "not set password"),
-            Other(e) => write!(f, "{}", e),
-        }
-    }
-}
-
-impl From<InvocationError> for UserError {
-    fn from(value: InvocationError) -> Self {
-        Self::Other(value.to_string())
-    }
-}
 
 impl Client {
     pub async fn get_full_user(
         &mut self,
         id: tl::enums::InputUser,
-    ) -> Result<(tl::types::UserFull, Chat), UserError> {
+    ) -> Result<(tl::types::UserFull, Chat), InvocationError> {
         let tl::enums::users::UserFull::Full(user_full) = self
             .invoke(&tl::functions::users::GetFullUser { id })
             .await?;
@@ -41,15 +18,25 @@ impl Client {
         };
 
         let user_base = match user_full.users.first() {
-            Some(tl::enums::User::Empty(_)) => Err(UserError::EmptyUser),
+            Some(tl::enums::User::Empty(_)) => Err(InvocationError::Rpc(RpcError {
+                code: 404,
+                name: "not found user".to_string(),
+                value: None,
+                caused_by: None,
+            })),
             Some(tl::enums::User::User(user)) => Ok(Chat::from_user(user.clone().into())),
-            None => Err(UserError::EmptyUser),
+            None => Err(InvocationError::Rpc(RpcError {
+                code: 404,
+                name: "not found user".to_string(),
+                value: None,
+                caused_by: None,
+            })),
         }?;
         Ok((full_user, user_base))
     }
 
     pub async fn get_users(
-        &mut self,
+        self,
         id: Vec<tl::enums::InputUser>,
     ) -> Result<Vec<Chat>, InvocationError> {
         let users = self.invoke(&tl::functions::users::GetUsers { id }).await?;
@@ -107,7 +94,7 @@ impl Client {
         password: String,
         hint: Option<String>,
         email: Option<String>,
-    ) -> Result<bool, UserError> {
+    ) -> Result<bool, InvocationError> {
         let password_token = self.get_password_information().await?;
         match !password_token.has_password() {
             true => {
@@ -126,7 +113,12 @@ impl Client {
                 // println!("{:#?}", request);
                 Ok(self.invoke(&request).await?)
             }
-            false => Err(UserError::NotSetPassword),
+            false => Err(InvocationError::Rpc(RpcError {
+                code: 500,
+                name: "not set password".to_string(),
+                value: None,
+                caused_by: None,
+            })),
         }
     }
 
@@ -136,7 +128,7 @@ impl Client {
         new_password: String,
         hint: Option<String>,
         email: Option<String>,
-    ) -> Result<bool, UserError> {
+    ) -> Result<bool, InvocationError> {
         let password = self.get_password_information().await?;
         match password.has_password() {
             true => {
@@ -155,7 +147,12 @@ impl Client {
                 println!("{:#?}", request);
                 Ok(self.invoke(&request).await?)
             }
-            false => Err(UserError::NotSetPassword),
+            false => Err(InvocationError::Rpc(RpcError {
+                code: 500,
+                name: "not set password".to_string(),
+                value: None,
+                caused_by: None,
+            })),
         }
     }
 

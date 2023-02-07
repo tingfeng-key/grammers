@@ -171,6 +171,63 @@ impl Chat {
             },
         }
     }
+
+    pub fn photo_to_location(&self) -> Option<tl::enums::InputFileLocation> {
+        match self {
+            Self::User(user) => match user.0.photo.clone() {
+                Some(photo_size) => match photo_size {
+                    tl::enums::UserProfilePhoto::Empty => None,
+                    tl::enums::UserProfilePhoto::Photo(photo) => Some(
+                        tl::types::InputPeerPhotoFileLocation {
+                            big: false,
+                            peer: self.pack().to_input_peer(),
+                            photo_id: photo.photo_id,
+                        }
+                        .into(),
+                    ),
+                },
+                None => None,
+            },
+            Self::Group(group) => match group.0.clone() {
+                tl::enums::Chat::Empty(_) => None,
+                tl::enums::Chat::Chat(chat) => match chat.photo {
+                    tl::enums::ChatPhoto::Empty => None,
+                    tl::enums::ChatPhoto::Photo(photo) => Some(
+                        tl::types::InputPeerPhotoFileLocation {
+                            big: false,
+                            peer: self.pack().to_input_peer(),
+                            photo_id: photo.photo_id,
+                        }
+                        .into(),
+                    ),
+                },
+                tl::enums::Chat::Forbidden(_) => None,
+                tl::enums::Chat::Channel(channel) => match channel.photo {
+                    tl::enums::ChatPhoto::Empty => None,
+                    tl::enums::ChatPhoto::Photo(photo) => Some(
+                        tl::types::InputPeerPhotoFileLocation {
+                            big: false,
+                            peer: self.pack().to_input_peer(),
+                            photo_id: photo.photo_id,
+                        }
+                        .into(),
+                    ),
+                },
+                tl::enums::Chat::ChannelForbidden(_) => None,
+            },
+            Self::Channel(channel) => match channel.0.photo.clone() {
+                tl::enums::ChatPhoto::Empty => None,
+                tl::enums::ChatPhoto::Photo(photo) => Some(
+                    tl::types::InputPeerPhotoFileLocation {
+                        big: false,
+                        peer: self.pack().to_input_peer(),
+                        photo_id: photo.photo_id,
+                    }
+                    .into(),
+                ),
+            },
+        }
+    }
 }
 
 impl From<Chat> for PackedChat {

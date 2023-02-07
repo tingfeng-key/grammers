@@ -174,7 +174,7 @@ impl Client {
         Client::load(path, &mut download).await
     }
 
-    pub(crate) async fn download_media_at_location<P: AsRef<Path>>(
+    pub async fn download_media_at_location<P: AsRef<Path>>(
         &self,
         location: tl::enums::InputFileLocation,
         path: P,

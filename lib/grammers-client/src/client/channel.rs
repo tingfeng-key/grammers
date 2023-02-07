@@ -1,36 +1,18 @@
-use std::fmt;
-
 use crate::types::Chat;
 
 use super::Client;
+use grammers_mtproto::mtp::RpcError;
 use grammers_mtsender::InvocationError;
 use grammers_session::PackedChat;
 use grammers_tl_types as tl;
 
 const MAX_PARTICIPANT_LIMIT: i32 = 200;
 
-#[derive(Debug)]
-pub enum ChannelError {
-    NotFound,
-    Other(InvocationError),
-}
-impl fmt::Display for ChannelError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use ChannelError::*;
-        match self {
-            NotFound => write!(f, "not found the channel"),
-            Other(e) => write!(f, "channel error: {}", e),
-        }
-    }
-}
-
-impl std::error::Error for ChannelError {}
-
 impl Client {
     pub async fn get_channels(
-        &mut self,
+        self,
         id: Vec<tl::enums::InputChannel>,
-    ) -> Result<Vec<crate::types::Chat>, ChannelError> {
+    ) -> Result<Vec<crate::types::Chat>, InvocationError> {
         match self
             .invoke(&tl::functions::channels::GetChannels { id })
             .await
@@ -49,7 +31,7 @@ impl Client {
                 }
                 Ok(res_chats)
             }
-            Err(e) => Err(ChannelError::Other(e)),
+            Err(e) => Err(e),
         }
     }
 
@@ -57,7 +39,7 @@ impl Client {
     pub async fn get_full_channel(
         &mut self,
         channel: tl::enums::InputChannel,
-    ) -> Result<(tl::types::ChannelFull, tl::types::Channel), ChannelError> {
+    ) -> Result<(tl::types::ChannelFull, crate::types::Chat), InvocationError> {
         match self
             .invoke(&tl::functions::channels::GetFullChannel { channel })
             .await
@@ -65,15 +47,27 @@ impl Client {
             Ok(tl::enums::messages::ChatFull::Full(chat_full)) => {
                 let full = match chat_full.full_chat {
                     tl::enums::ChatFull::ChannelFull(channel_full) => Ok(channel_full),
-                    _ => Err(ChannelError::NotFound),
+                    _ => Err(InvocationError::Rpc(RpcError {
+                        code: 404,
+                        name: "not found channel".to_string(),
+                        value: None,
+                        caused_by: None,
+                    })),
                 }?;
                 let base = match chat_full.chats.first() {
-                    Some(tl::enums::Chat::Channel(channel)) => Ok(channel.clone()),
-                    _ => Err(ChannelError::NotFound),
+                    Some(tl::enums::Chat::Channel(channel)) => {
+                        Ok(crate::types::Chat::from_chat(channel.clone().into()))
+                    }
+                    _ => Err(InvocationError::Rpc(RpcError {
+                        code: 404,
+                        name: "not found channel".to_string(),
+                        value: None,
+                        caused_by: None,
+                    })),
                 }?;
                 Ok((full, base))
             }
-            Err(e) => Err(ChannelError::Other(e)),
+            Err(e) => Err(e),
         }
     }
 
