@@ -45,7 +45,7 @@ impl Client {
 
     /// Invite users to a channel/supergroup
     pub async fn invite_to_channel(
-        &mut self,
+        &self,
         chat: PackedChat,
         users: Vec<PackedChat>,
     ) -> Result<Option<(Option<i64>, Vec<i64>)>, InvocationError> {
@@ -100,7 +100,7 @@ impl Client {
 
     /// Adds a user to a chat and sends a service message on it
     pub async fn add_chat_user(
-        &mut self,
+        &self,
         chat: PackedChat,
         user: PackedChat,
         fwd_limit: i32,
