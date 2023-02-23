@@ -37,7 +37,7 @@ impl Client {
 
     //get full channel
     pub async fn get_full_channel(
-        &mut self,
+        &self,
         channel: tl::enums::InputChannel,
     ) -> Result<(tl::types::ChannelFull, crate::types::Chat), InvocationError> {
         match self
@@ -72,7 +72,7 @@ impl Client {
     }
 
     pub fn input_channel_for_access_hash(
-        self,
+        &self,
         channel_id: i64,
         access_hash: i64,
     ) -> tl::enums::InputChannel {
@@ -84,7 +84,7 @@ impl Client {
     }
 
     pub fn input_channel_for_message(
-        self,
+        &self,
         peer: tl::enums::InputPeer,
         msg_id: i32,
         channel_id: i64,

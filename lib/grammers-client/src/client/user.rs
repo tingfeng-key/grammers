@@ -7,7 +7,7 @@ use grammers_tl_types as tl;
 
 impl Client {
     pub async fn get_full_user(
-        &mut self,
+        &self,
         id: tl::enums::InputUser,
     ) -> Result<(tl::types::UserFull, Chat), InvocationError> {
         let tl::enums::users::UserFull::Full(user_full) = self
@@ -48,7 +48,7 @@ impl Client {
     }
 
     pub fn input_user_for_access_hash(
-        self,
+        &self,
         user_id: i64,
         access_hash: i64,
     ) -> tl::enums::InputUser {
@@ -60,7 +60,7 @@ impl Client {
     }
 
     pub fn input_user_for_message(
-        self,
+        &self,
         peer: tl::enums::InputPeer,
         user_id: i64,
         msg_id: i32,
@@ -90,7 +90,7 @@ impl Client {
     }
 
     pub async fn enabled_password_verify(
-        self,
+        &self,
         password: String,
         hint: Option<String>,
         email: Option<String>,
@@ -123,7 +123,7 @@ impl Client {
     }
 
     pub async fn change_password_verify(
-        self,
+        &self,
         current_password: String,
         new_password: String,
         hint: Option<String>,
