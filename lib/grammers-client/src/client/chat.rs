@@ -27,7 +27,7 @@ impl fmt::Display for ChatError {
 impl std::error::Error for ChatError {}
 
 impl Client {
-    pub async fn get_chats(self, id: Vec<i64>) -> Result<Vec<Chat>, InvocationError> {
+    pub async fn get_chats(&self, id: Vec<i64>) -> Result<Vec<Chat>, InvocationError> {
         match self.invoke(&tl::functions::messages::GetChats { id }).await {
             Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats
                 .chats
