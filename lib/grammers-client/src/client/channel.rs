@@ -10,7 +10,7 @@ const MAX_PARTICIPANT_LIMIT: i32 = 200;
 
 impl Client {
     pub async fn get_channels(
-        self,
+        &self,
         id: Vec<tl::enums::InputChannel>,
     ) -> Result<Vec<crate::types::Chat>, InvocationError> {
         match self

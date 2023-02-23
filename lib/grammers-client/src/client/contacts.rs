@@ -4,7 +4,7 @@ use grammers_tl_types as tl;
 
 impl Client {
     pub async fn contact_add(
-        self,
+        &self,
         add_phone_privacy_exception: bool,
         input_user: crate::types::InputUser,
         first_name: String,
@@ -57,7 +57,7 @@ impl Client {
     }
 
     pub async fn contact_search(
-        self,
+        &self,
         q: String,
         limit: i32,
     ) -> Result<Vec<crate::types::Chat>, InvocationError> {
@@ -75,7 +75,7 @@ impl Client {
         Ok(chats)
     }
 
-    pub async fn contacts_list(self) -> Result<Vec<crate::types::Chat>, InvocationError> {
+    pub async fn contacts_list(&self) -> Result<Vec<crate::types::Chat>, InvocationError> {
         use tl::enums::contacts::Contacts;
         Ok(
             match self

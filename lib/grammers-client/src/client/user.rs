@@ -36,7 +36,7 @@ impl Client {
     }
 
     pub async fn get_users(
-        self,
+        &self,
         id: Vec<tl::enums::InputUser>,
     ) -> Result<Vec<Chat>, InvocationError> {
         let users = self.invoke(&tl::functions::users::GetUsers { id }).await?;
