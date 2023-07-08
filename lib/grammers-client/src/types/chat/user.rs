@@ -294,10 +294,6 @@ impl User {
     pub fn lang_code(&self) -> Option<&str> {
         self.0.lang_code.as_deref()
     }
-
-    pub fn phone(&self) -> Option<&str> {
-        self.0.phone.as_deref()
-    }
 }
 
 impl From<User> for PackedChat {

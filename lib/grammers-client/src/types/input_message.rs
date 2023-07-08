@@ -470,6 +470,7 @@ impl InputSendMultiMedia {
                             }
                             .into(),
                             ttl_seconds: None,
+                            spoiler: true,
                         }
                         .into(),
                     ));
@@ -489,6 +490,7 @@ impl InputSendMultiMedia {
                             .into(),
                             ttl_seconds: None,
                             query: None,
+                            spoiler: true,
                         }
                         .into(),
                     ));
@@ -526,6 +528,7 @@ impl InputSendMultiMedia {
                 attributes: vec![tl::types::DocumentAttributeFilename { file_name }.into()],
                 stickers: None,
                 ttl_seconds: None,
+                spoiler: true,
             }
             .into(),
         ));

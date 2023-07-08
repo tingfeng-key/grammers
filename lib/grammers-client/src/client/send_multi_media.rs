@@ -29,6 +29,7 @@ impl Client {
                 send_as: None,
                 noforwards: false,
                 update_stickersets_order: false,
+                top_msg_id: None,
             })
             .await?;
 
@@ -58,6 +59,7 @@ impl Client {
             file: file.input_file,
             stickers: None,
             ttl_seconds: None,
+            spoiler: true,
         }
         .into();
     }
@@ -85,6 +87,7 @@ impl Client {
             ],
             stickers: None,
             ttl_seconds: None,
+            spoiler: true,
         }
         .into();
     }
@@ -102,6 +105,7 @@ impl Client {
             .into()],
             stickers: None,
             ttl_seconds: None,
+            spoiler: true,
         }
         .into();
     }
