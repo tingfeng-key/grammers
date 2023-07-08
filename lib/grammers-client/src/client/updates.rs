@@ -143,7 +143,7 @@ impl Client {
                             return Err(e);
                         }
                         InvocationError::Dropped => return Err(e),
-                        InvocationError::Read(_) => todo!(),
+                        InvocationError::Read(_) => return Err(e),
                     },
                 };
 
