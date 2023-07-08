@@ -795,6 +795,61 @@ impl Uploaded {
             tl::enums::InputFile::Big(f) => f.name.as_ref(),
         }
     }
+
+    pub fn to_phone(&self) -> tl::enums::InputMedia {
+        tl::types::InputMediaUploadedPhoto {
+            file: self.input_file.clone(),
+            stickers: None,
+            ttl_seconds: None,
+            spoiler: true,
+        }
+        .into()
+    }
+
+    pub fn to_video(&self) -> tl::enums::InputMedia {
+        tl::types::InputMediaUploadedDocument {
+            nosound_video: false,
+            force_file: false,
+            file: self.clone().input_file,
+            thumb: None,
+            mime_type: super::InputSendMultiMedia::get_file_mime(self),
+            attributes: vec![
+                tl::types::DocumentAttributeFilename {
+                    file_name: self.name().to_string(),
+                }
+                .into(),
+                tl::types::DocumentAttributeVideo {
+                    round_message: false,
+                    supports_streaming: true,
+                    duration: 0,
+                    w: 0,
+                    h: 0,
+                }
+                .into(),
+            ],
+            stickers: None,
+            ttl_seconds: None,
+            spoiler: true,
+        }
+        .into()
+    }
+    pub fn to_document(&self) -> tl::enums::InputMedia {
+        tl::types::InputMediaUploadedDocument {
+            nosound_video: false,
+            force_file: false,
+            file: self.clone().input_file,
+            thumb: None,
+            mime_type: super::InputSendMultiMedia::get_file_mime(&self),
+            attributes: vec![tl::types::DocumentAttributeFilename {
+                file_name: self.name().to_string(),
+            }
+            .into()],
+            stickers: None,
+            ttl_seconds: None,
+            spoiler: true,
+        }
+        .into()
+    }
 }
 
 impl Media {
