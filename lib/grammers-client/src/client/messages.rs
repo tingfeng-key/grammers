@@ -10,9 +10,11 @@
 use crate::types::{IterBuffer, Message};
 use crate::utils::{generate_random_id, generate_random_ids};
 use crate::{types, ChatMap, Client};
+use chrono::{DateTime, FixedOffset};
 pub use grammers_mtsender::{AuthorizationError, InvocationError};
 use grammers_session::PackedChat;
 use grammers_tl_types as tl;
+use grammers_tl_types::enums::InputPeer;
 use std::collections::HashMap;
 
 fn get_message_id(message: &tl::enums::Message) -> i32 {
@@ -180,7 +182,6 @@ pub type MessageIter = IterBuffer<tl::functions::messages::GetHistory, Message>;
 
 impl MessageIter {
     fn new(client: &Client, peer: PackedChat) -> Self {
-        // TODO let users tweak all the options from the request
         Self::from_request(
             client,
             MAX_LIMIT,
@@ -195,6 +196,16 @@ impl MessageIter {
                 hash: 0,
             },
         )
+    }
+
+    pub fn offset_id(mut self, offset: i32) -> Self {
+        self.request.offset_id = offset;
+        self
+    }
+
+    pub fn max_date(mut self, offset: i32) -> Self {
+        self.request.offset_date = offset;
+        self
     }
 
     /// Determines how many messages there are in total.
@@ -254,11 +265,60 @@ impl SearchIter {
         )
     }
 
+    pub fn offset_id(mut self, offset: i32) -> Self {
+        self.request.offset_id = offset;
+        self
+    }
+
     /// Changes the query of the search. Telegram servers perform a somewhat fuzzy search over
-    /// this query (so a world in singular may also return messages with the word in plural, for
+    /// this query (so a word in singular may also return messages with the word in plural, for
     /// example).
     pub fn query(mut self, query: &str) -> Self {
         self.request.q = query.to_string();
+        self
+    }
+
+    /// Restricts results to messages sent by the logged-in user
+    pub fn sent_by_self(mut self) -> Self {
+        self.request.from_id = Some(InputPeer::PeerSelf);
+        self
+    }
+
+    /// Returns only messages with date bigger than date_time.
+    ///
+    /// ```
+    /// use chrono::DateTime;
+    ///
+    /// # async fn f(chat: grammers_client::types::Chat, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Search messages sent after Jan 1st, 2021
+    /// let min_date = DateTime::parse_from_rfc3339("2021-01-01T00:00:00-00:00").unwrap();
+    ///
+    /// let mut messages = client.search_messages(&chat).min_date(&min_date);
+    ///
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn min_date(mut self, date_time: &DateTime<FixedOffset>) -> Self {
+        self.request.min_date = date_time.timestamp() as i32;
+        self
+    }
+
+    /// Returns only messages with date smaller than date_time
+    ///
+    /// ```
+    /// use chrono::DateTime;
+    ///
+    /// # async fn f(chat: grammers_client::types::Chat, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// // Search messages sent before Dec, 25th 2022
+    /// let max_date = DateTime::parse_from_rfc3339("2022-12-25T00:00:00-00:00").unwrap();
+    ///
+    /// let mut messages = client.search_messages(&chat).max_date(&max_date);
+    ///
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub fn max_date(mut self, date_time: &DateTime<FixedOffset>) -> Self {
+        self.request.max_date = date_time.timestamp() as i32;
         self
     }
 
@@ -323,8 +383,13 @@ impl GlobalSearchIter {
         )
     }
 
+    pub fn offset_id(mut self, offset: i32) -> Self {
+        self.request.offset_id = offset;
+        self
+    }
+
     /// Changes the query of the search. Telegram servers perform a somewhat fuzzy search over
-    /// this query (so a world in singular may also return messages with the word in plural, for
+    /// this query (so a word in singular may also return messages with the word in plural, for
     /// example).
     pub fn query(mut self, query: &str) -> Self {
         self.request.q = query.to_string();
@@ -413,6 +478,7 @@ impl Client {
                 clear_draft: message.clear_draft,
                 peer: chat.to_input_peer(),
                 reply_to_msg_id: message.reply_to,
+                top_msg_id: None,
                 media,
                 message: message.text.clone(),
                 random_id,
@@ -432,6 +498,7 @@ impl Client {
                 clear_draft: message.clear_draft,
                 peer: chat.to_input_peer(),
                 reply_to_msg_id: message.reply_to,
+                top_msg_id: None,
                 message: message.text.clone(),
                 random_id,
                 reply_markup: message.reply_markup.clone(),
@@ -591,6 +658,7 @@ impl Client {
             id: message_ids.to_vec(),
             random_id: generate_random_ids(message_ids.len()),
             to_peer: destination.into().to_input_peer(),
+            top_msg_id: None,
             schedule_date: None,
             send_as: None,
             noforwards: false,
@@ -916,6 +984,7 @@ impl Client {
     ) -> Result<(), InvocationError> {
         self.invoke(&tl::functions::messages::UnpinAllMessages {
             peer: chat.into().to_input_peer(),
+            top_msg_id: None,
         })
         .await?;
         Ok(())

@@ -10,11 +10,13 @@
 //! cargo run --example echo -- BOT_TOKEN
 //! ```
 
+use futures_util::future::{select, Either};
 use grammers_client::{Client, Config, InitParams, Update};
 use grammers_session::Session;
 use log;
 use simple_logger::SimpleLogger;
 use std::env;
+use std::pin::pin;
 use tokio::{runtime, task};
 
 type Result = std::result::Result<(), Box<dyn std::error::Error>>;
@@ -67,14 +69,29 @@ async fn async_main() -> Result {
 
     println!("Waiting for messages...");
 
-    // This code uses `select!` on Ctrl+C to gracefully stop the client and have a chance to
+    // This code uses `select` on Ctrl+C to gracefully stop the client and have a chance to
     // save the session. You could have fancier logic to save the session if you wanted to
     // (or even save it on every update). Or you could also ignore Ctrl+C and just use
     // `while let Some(updates) =  client.next_updates().await?`.
-    while let Some(update) = tokio::select! {
-        _ = tokio::signal::ctrl_c() => Ok(None),
-        result = client.next_update() => result,
-    }? {
+    //
+    // Using `tokio::select!` would be a lot cleaner but add a heavy dependency,
+    // so a manual `select` is used instead by pinning async blocks by hand.
+    loop {
+        let update = {
+            let exit = pin!(async { tokio::signal::ctrl_c().await });
+            let upd = pin!(async { client.next_update().await });
+
+            match select(exit, upd).await {
+                Either::Left(_) => None,
+                Either::Right((u, _)) => Some(u),
+            }
+        };
+
+        let update = match update {
+            None | Some(Ok(None)) => break,
+            Some(u) => u?.unwrap(),
+        };
+
         let handle = client.clone();
         task::spawn(async move {
             match handle_update(handle, update).await {

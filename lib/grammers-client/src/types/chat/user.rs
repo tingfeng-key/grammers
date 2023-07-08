@@ -69,9 +69,9 @@ impl fmt::Debug for User {
     }
 }
 
-// TODO: photo, status
+// TODO: photo
 impl User {
-    pub(crate) fn from_raw(user: tl::enums::User) -> Self {
+    fn _from_raw(user: tl::enums::User) -> Self {
         Self(match user {
             tl::enums::User::Empty(empty) => tl::types::User {
                 is_self: false,
@@ -105,9 +105,28 @@ impl User {
                 bot_inline_placeholder: None,
                 lang_code: None,
                 emoji_status: None,
+                usernames: None,
             },
             tl::enums::User::User(user) => user,
         })
+    }
+
+    #[cfg(feature = "unstable_raw")]
+    pub fn from_raw(user: tl::enums::User) -> Self {
+        Self::_from_raw(user)
+    }
+
+    #[cfg(not(feature = "unstable_raw"))]
+    pub(crate) fn from_raw(user: tl::enums::User) -> Self {
+        Self::_from_raw(user)
+    }
+
+    /// Return the user presence status (also known as "last seen").
+    pub fn status(&self) -> &grammers_tl_types::enums::UserStatus {
+        self.0
+            .status
+            .as_ref()
+            .unwrap_or(&grammers_tl_types::enums::UserStatus::Empty)
     }
 
     /// Return the unique identifier for this user.
@@ -173,6 +192,12 @@ impl User {
     /// as https://t.me/username.
     pub fn username(&self) -> Option<&str> {
         self.0.username.as_deref()
+    }
+
+    /// Return the phone number of this user, if they are not a bot and their privacy settings
+    /// allow you to see it.
+    pub fn phone(&self) -> Option<&str> {
+        self.0.phone.as_deref()
     }
 
     /// Does this user represent the account that's currently logged in?
@@ -284,5 +309,12 @@ impl From<User> for PackedChat {
 impl From<&User> for PackedChat {
     fn from(chat: &User) -> Self {
         chat.pack()
+    }
+}
+
+#[cfg(feature = "unstable_raw")]
+impl From<User> for tl::types::User {
+    fn from(user: User) -> Self {
+        user.0
     }
 }

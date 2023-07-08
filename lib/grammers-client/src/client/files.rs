@@ -9,7 +9,7 @@
 use crate::types::{Media, Uploaded};
 use crate::utils::{generate_random_id, AsyncMutex};
 use crate::Client;
-use futures_util::future::try_join_all;
+use futures_util::stream::{FuturesUnordered, StreamExt as _};
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
 use std::{io::SeekFrom, path::Path, sync::Arc};
@@ -65,7 +65,7 @@ impl DownloadIter {
     /// the range `MIN_CHUNK_SIZE..=MAX_CHUNK_SIZE`.
     pub fn chunk_size(mut self, size: i32) -> Self {
         assert!((MIN_CHUNK_SIZE..=MAX_CHUNK_SIZE).contains(&size) && size % MIN_CHUNK_SIZE == 0);
-        self.request.limit = size as i32;
+        self.request.limit = size;
         self
     }
 
@@ -355,7 +355,7 @@ impl Client {
 
         if big_file {
             let parts = Arc::new(parts);
-            let mut tasks = Vec::with_capacity(WORKER_COUNT);
+            let mut tasks = FuturesUnordered::new();
             for _ in 0..WORKER_COUNT {
                 let handle = self.clone();
                 let parts = Arc::clone(&parts);
@@ -383,7 +383,9 @@ impl Client {
                 tasks.push(task);
             }
 
-            try_join_all(tasks).await?;
+            while let Some(res) = tasks.next().await {
+                res?;
+            }
 
             Ok(Uploaded::from_raw(
                 tl::types::InputFileBig {

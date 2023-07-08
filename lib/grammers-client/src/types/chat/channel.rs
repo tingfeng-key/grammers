@@ -27,7 +27,7 @@ impl fmt::Debug for Channel {
 }
 
 impl Channel {
-    pub(crate) fn from_raw(chat: tl::enums::Chat) -> Self {
+    fn _from_raw(chat: tl::enums::Chat) -> Self {
         use tl::enums::Chat as C;
 
         match chat {
@@ -61,6 +61,7 @@ impl Channel {
                         gigagroup: false,
                         noforwards: false,
                         join_request: false,
+                        forum: false,
                         join_to_send: false,
                         id: channel.id,
                         access_hash: Some(channel.access_hash),
@@ -73,12 +74,23 @@ impl Channel {
                         banned_rights: None,
                         default_banned_rights: None,
                         participants_count: None,
+                        usernames: None,
                     })
                 } else {
                     panic!("tried to create broadcast channel from megagroup");
                 }
             }
         }
+    }
+
+    #[cfg(feature = "unstable_raw")]
+    pub fn from_raw(chat: tl::enums::Chat) -> Self {
+        Self::_from_raw(chat)
+    }
+
+    #[cfg(not(feature = "unstable_raw"))]
+    pub(crate) fn from_raw(chat: tl::enums::Chat) -> Self {
+        Self::_from_raw(chat)
     }
 
     /// Return the unique identifier for this channel.
@@ -113,6 +125,28 @@ impl Channel {
     pub fn username(&self) -> Option<&str> {
         self.0.username.as_deref()
     }
+
+    /// Return the permissions of the logged-in user in this channel.
+    pub fn admin_rights(&self) -> Option<&tl::types::ChatAdminRights> {
+        match &self.0.admin_rights {
+            Some(tl::enums::ChatAdminRights::Rights(rights)) => Some(rights),
+            None if self.0.creator => Some(&tl::types::ChatAdminRights {
+                add_admins: true,
+                other: true,
+                change_info: true,
+                post_messages: true,
+                anonymous: false,
+                ban_users: true,
+                delete_messages: true,
+                edit_messages: true,
+                invite_users: true,
+                manage_call: true,
+                pin_messages: true,
+                manage_topics: true,
+            }),
+            None => None,
+        }
+    }
 }
 
 impl From<Channel> for PackedChat {
@@ -124,5 +158,12 @@ impl From<Channel> for PackedChat {
 impl From<&Channel> for PackedChat {
     fn from(chat: &Channel) -> Self {
         chat.pack()
+    }
+}
+
+#[cfg(feature = "unstable_raw")]
+impl From<Channel> for tl::types::Channel {
+    fn from(channel: Channel) -> Self {
+        channel.0
     }
 }

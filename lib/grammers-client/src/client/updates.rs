@@ -10,11 +10,13 @@
 
 use super::Client;
 use crate::types::{ChatMap, Update};
+use futures_util::future::{select, Either};
 pub use grammers_mtsender::{AuthorizationError, InvocationError};
 use grammers_session::channel_id;
 pub use grammers_session::{PrematureEndReason, UpdateState};
 use grammers_tl_types as tl;
 use log::warn;
+use std::pin::pin;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::time::sleep_until;
@@ -56,6 +58,7 @@ impl Client {
                 let mut message_box = self.0.message_box.lock("client.next_update");
                 // This temporary is needed or message_box's lifetime is extended too much.
                 // See https://github.com/rust-lang/rust/issues/102423.
+                #[allow(clippy::let_and_return)]
                 let diff = message_box.get_difference();
                 diff
             } {
@@ -72,6 +75,7 @@ impl Client {
             if let Some(request) = {
                 let mut message_box = self.0.message_box.lock("client.next_update");
                 let chat_hashes = self.0.chat_hashes.lock("client.next_update");
+                #[allow(clippy::let_and_return)]
                 let diff = message_box.get_channel_difference(&chat_hashes);
                 diff
             } {
@@ -149,14 +153,19 @@ impl Client {
 
                 message_box.check_deadlines()
             };
-            tokio::select! {
-                step = self.step() => {
-                    log::trace!("stepped");
-                    step?
+
+            let step = {
+                let sleep = pin!(async { sleep_until(deadline.into()).await });
+                let step = pin!(async { self.step().await });
+
+                match select(sleep, step).await {
+                    Either::Left(_) => None,
+                    Either::Right((step, _)) => Some(step),
                 }
-                _ = sleep_until(deadline.into()) => {
-                    log::trace!("slept")
-                }
+            };
+
+            if let Some(step) = step {
+                step?;
             }
         }
     }

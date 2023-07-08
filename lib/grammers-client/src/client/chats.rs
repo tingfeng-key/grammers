@@ -210,6 +210,17 @@ impl ParticipantIter {
             Self::Channel(iter) => Ok(iter.pop_item()),
         }
     }
+
+    /// apply a filter on fetched participants, note that this filter will apply only on large `Channel` and not small groups
+    pub fn filter(mut self, filter: tl::enums::ChannelParticipantsFilter) -> Self {
+        match self {
+            ParticipantIter::Channel(ref mut c) => {
+                c.request.filter = filter;
+                self
+            }
+            _ => self,
+        }
+    }
 }
 
 pub enum ProfilePhotoIter {
@@ -817,12 +828,12 @@ impl Client {
                     .invoke(&tl::functions::messages::ImportChatInvite { hash })
                     .await?
                 {
-                    Updates::Combined(updates) => updates
+                    tl::enums::Updates::Combined(updates) => updates
                         .chats
                         .into_iter()
                         .map(|x| Chat::from_chat(x))
                         .collect::<Vec<Chat>>(),
-                    Updates::Updates(updates) => updates
+                    tl::enums::Updates::Updates(updates) => updates
                         .chats
                         .into_iter()
                         .map(|x| Chat::from_chat(x))
@@ -851,29 +862,35 @@ impl Client {
         use tl::enums::Updates;
 
         let chat = chat.into();
-        Ok(
-            match self
-                .invoke(&tl::functions::channels::JoinChannel {
-                    channel: chat.try_to_input_channel().unwrap(),
-                })
-                .await?
-            {
-                Updates::Combined(updates) => updates
+        let update_chat = match self
+            .invoke(&tl::functions::channels::JoinChannel {
+                channel: chat.try_to_input_channel().unwrap(),
+            })
+            .await?
+        {
+            Updates::Combined(updates) => Some(
+                updates
                     .chats
                     .into_iter()
-                    .map(|x| Chat::from_chat(x))
                     .filter(|x| x.id() == chat.id)
-                    .next(),
-                Updates::Updates(updates) => updates
+                    .collect::<Vec<tl::enums::Chat>>(),
+            ),
+            Updates::Updates(updates) => Some(
+                updates
                     .chats
                     .into_iter()
-                    .map(|x| Chat::from_chat(x))
                     .filter(|x| x.id() == chat.id)
-                    .next(),
+                    .collect::<Vec<tl::enums::Chat>>(),
+            ),
+            _ => None,
+        };
 
-                _ => None,
-            },
-        )
+        match update_chat {
+            Some(chats) if !chats.is_empty() => Ok(Some(Chat::from_chat(chats[0].clone()))),
+            Some(chats) if chats.is_empty() => Ok(None),
+            None => Ok(None),
+            Some(_) => Ok(None),
+        }
     }
 }
 

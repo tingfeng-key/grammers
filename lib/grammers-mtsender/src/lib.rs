@@ -9,12 +9,14 @@ mod errors;
 
 use bytes::{Buf, BytesMut};
 pub use errors::{AuthorizationError, InvocationError, ReadError};
+use futures_util::future::{pending, select, Either};
 use grammers_mtproto::mtp::{self, Mtp};
 use grammers_mtproto::transport::{self, Transport};
 use grammers_mtproto::{authentication, MsgId};
 use grammers_tl_types::{self as tl, Deserializable, RemoteCall};
 use log::{debug, info, trace, warn};
 use std::io;
+use std::pin::pin;
 use std::sync::atomic::{AtomicI64, Ordering};
 use std::time::SystemTime;
 use tl::Serializable;
@@ -328,48 +330,57 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         let write_len = self.write_buffer.len() - self.write_index;
 
         let (mut reader, mut writer) = self.stream.split();
-        if self.write_buffer.is_empty() {
-            // TODO this always has to read the header of the packet and then the rest (2 or more calls)
-            // it would be better to always perform calls in a circular buffer to have as much data from
-            // the network as possible at all times, not just reading what's needed
-            // (perhaps something similar could be done with the write buffer to write packet after packet)
-            //
-            // The `request_rx.recv()` can't return `None` because we're holding a `tx`.
-            trace!("reading bytes from the network");
-            tokio::select!(
-                request = self.request_rx.recv() => {
-                    self.requests.push(request.unwrap());
-                    Ok(Vec::new())
-                },
-                n = reader.read_buf(&mut self.read_buffer) => {
-                    self.on_net_read(n?)
-                },
-                _ = sleep_until(self.next_ping) => {
-                    self.on_ping_timeout();
-                    Ok(Vec::new())
+        // TODO this always has to read the header of the packet and then the rest (2 or more calls)
+        // it would be better to always perform calls in a circular buffer to have as much data from
+        // the network as possible at all times, not just reading what's needed
+        // (perhaps something similar could be done with the write buffer to write packet after packet)
+        //
+        // The `request_rx.recv()` can't return `None` because we're holding a `tx`.
+        trace!(
+            "reading bytes and sending up to {} bytes via network",
+            write_len
+        );
+
+        enum Sel {
+            Sleep,
+            Request(Option<Request>),
+            Read(io::Result<usize>),
+            Write(io::Result<usize>),
+        }
+
+        let sel = {
+            let sleep = pin!(async { sleep_until(self.next_ping).await });
+            let recv_req = pin!(async { self.request_rx.recv().await });
+            let recv_data = pin!(async { reader.read_buf(&mut self.read_buffer).await });
+            let send_data = pin!(async {
+                if self.write_buffer.is_empty() {
+                    pending().await
+                } else {
+                    writer.write(&self.write_buffer[self.write_index..]).await
                 }
-            )
-        } else {
-            trace!(
-                "reading bytes and sending up to {} bytes via network",
-                write_len
-            );
-            tokio::select! {
-                request = self.request_rx.recv() => {
-                    self.requests.push(request.unwrap());
-                    Ok(Vec::new())
-                },
-                n = reader.read_buf(&mut self.read_buffer) => {
-                    self.on_net_read(n?)
-                }
-                n = writer.write(&self.write_buffer[self.write_index..]) => {
-                    self.on_net_write(n?);
-                    Ok(Vec::new())
-                }
-                _ = sleep_until(self.next_ping) => {
-                    self.on_ping_timeout();
-                    Ok(Vec::new())
-                }
+            });
+
+            match select(select(sleep, recv_req), select(recv_data, send_data)).await {
+                Either::Left((Either::Left(_), _)) => Sel::Sleep,
+                Either::Left((Either::Right((request, _)), _)) => Sel::Request(request),
+                Either::Right((Either::Left((n, _)), _)) => Sel::Read(n),
+                Either::Right((Either::Right((n, _)), _)) => Sel::Write(n),
+            }
+        };
+
+        match sel {
+            Sel::Request(request) => {
+                self.requests.push(request.unwrap());
+                Ok(Vec::new())
+            }
+            Sel::Read(n) => self.on_net_read(n?),
+            Sel::Write(n) => {
+                self.on_net_write(n?);
+                Ok(Vec::new())
+            }
+            Sel::Sleep => {
+                self.on_ping_timeout();
+                Ok(Vec::new())
             }
         }
     }

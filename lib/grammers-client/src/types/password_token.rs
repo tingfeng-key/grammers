@@ -8,7 +8,8 @@
 use grammers_tl_types as tl;
 use tl::types::PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow;
 
-#[derive(Debug, Clone)]
+// TODO this should not be Clone, but check_password Err doesn't include it back yet
+#[derive(Clone, Debug)]
 pub struct PasswordToken {
     pub(crate) password: tl::types::account::Password,
 }

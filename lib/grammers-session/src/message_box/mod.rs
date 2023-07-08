@@ -392,7 +392,7 @@ impl MessageBox {
             date,
             seq_start,
             seq,
-            updates,
+            mut updates,
             users,
             chats,
         } = match adaptor::adapt(updates, chat_hashes) {
@@ -433,6 +433,26 @@ impl MessageBox {
             }
         }
 
+        // Telegram can send updates out of order (e.g. `ReadChannelInbox` first
+        // and then `NewChannelMessage`, both with the same `pts`, but the `count`
+        // is `0` and `1` respectively).
+        //
+        // We can't know beforehand if this would cause issues (i.e. if any of
+        // the updates is the first one we get to know about a specific channel)
+        // (other than doing a pre-scan to check if any has info about an entry
+        // we lack), so instead we sort preemptively. As a bonus there's less
+        // likelyhood of "possible gaps" by doing this.
+        // TODO give this more thought, perhaps possible gaps can't happen at all
+        //      (not ones which would be resolved by sorting anyway; same in telethon)
+        fn update_sort_key(update: &tl::enums::Update) -> i32 {
+            match PtsInfo::from_update(update) {
+                Some(pts) => pts.pts - pts.pts_count,
+                None => 0,
+            }
+        }
+
+        updates.sort_by_key(update_sort_key);
+
         result.extend(
             updates
                 .into_iter()
@@ -449,10 +469,7 @@ impl MessageBox {
                     .get_mut(&key)
                     .unwrap()
                     .updates
-                    .sort_by_key(|update| match PtsInfo::from_update(update) {
-                        Some(pts) => pts.pts - pts.pts_count,
-                        None => 0,
-                    });
+                    .sort_by_key(update_sort_key);
 
                 for _ in 0..self.possible_gaps[&key].updates.len() {
                     let update = self.possible_gaps.get_mut(&key).unwrap().updates.remove(0);
@@ -551,17 +568,30 @@ impl MessageBox {
         // (it's the first one) our `local_pts` must be `pts - pts_count`.
 
         // In a channel, we may immediately receive:
-        // * ReadChannelInbox (pts = X)
+        // * ReadChannelInbox (pts = X, pts_count = 0)
         // * NewChannelMessage (pts = X, pts_count = 1)
         //
-        // Notice how both `pts` are the same. The first one however would've triggered a gap
-        // because `local_pts` + `pts_count` of 0 would be less than `remote_pts`. So there is
-        // no risk by setting the `local_pts` to match the `remote_pts` here of missing the new
-        // message.
+        // Notice how both `pts` are the same. If they were to be applied out of order, the first
+        // one however would've triggered a gap because `local_pts` + `pts_count` of 0 would be
+        // less than `remote_pts`. So there is no risk by setting the `local_pts` to match the
+        // `remote_pts` here of missing the new message.
+        //
+        // The message would however be lost if we initialized the pts with the first one, since
+        // the second one would appear "already handled". To prevent this we set the pts to be
+        // one less when the count is 0 (which might be wrong and trigger a gap later on, but is
+        // unlikely). This will prevent us from losing updates in the unlikely scenario where these
+        // two updates arrive in different packets (and therefore couldn't be sorted beforehand).
         self.map
             .entry(pts.entry)
+            .and_modify(|e| e.pts = pts.pts)
             .or_insert_with(|| State {
-                pts: pts.pts,
+                // When a chat is migrated to a megagroup, the first update can be a `ReadChannelInbox`
+                // with `pts = 1, pts_count = 0` followed by a `NewChannelMessage` with `pts = 2, pts_count=1`.
+                // Note how the `pts` for the message is 2 and not 1 unlike the case described before!
+                // This is likely because the `pts` cannot be 0 (or it would fail with PERSISTENT_TIMESTAMP_EMPTY),
+                // which forces the first update to be 1. But if we got difference with 1 and the second update
+                // also used 1, we would miss it, so Telegram probably uses 2 to work around that.
+                pts: (pts.pts - (if pts.pts_count != 0 { 0 } else { 1 })).max(1),
                 deadline: next_updates_deadline(),
             })
             .pts = pts.pts;
@@ -583,7 +613,7 @@ impl MessageBox {
                     );
                 }
 
-                return Some(tl::functions::updates::GetDifference {
+                let gd = tl::functions::updates::GetDifference {
                     pts: self.map[&Entry::AccountWide].pts,
                     pts_total_limit: None,
                     date: self.date,
@@ -592,7 +622,9 @@ impl MessageBox {
                     } else {
                         NO_SEQ
                     },
-                });
+                };
+                trace!("requesting {:?}", gd);
+                return Some(gd);
             }
         }
         None
@@ -623,7 +655,7 @@ impl MessageBox {
             }
             tl::enums::updates::Difference::Difference(diff) => {
                 // TODO return Err(attempt to find users)
-                drop(chat_hashes.extend(&diff.users, &diff.chats));
+                let _ = chat_hashes.extend(&diff.users, &diff.chats);
 
                 debug!(
                     "handling full difference {:?}; no longer getting diff",
@@ -641,7 +673,7 @@ impl MessageBox {
                 intermediate_state: state,
             }) => {
                 // TODO return Err(attempt to find users)
-                drop(chat_hashes.extend(&users, &chats));
+                let _ = chat_hashes.extend(&users, &chats);
 
                 debug!("handling partial difference {:?}", state);
                 finish = false;
@@ -774,7 +806,7 @@ impl MessageBox {
             }
             .into();
             if let Some(state) = self.map.get(&entry) {
-                Some(tl::functions::updates::GetChannelDifference {
+                let gd = tl::functions::updates::GetChannelDifference {
                     force: false,
                     channel,
                     filter: tl::enums::ChannelMessagesFilter::Empty,
@@ -784,7 +816,9 @@ impl MessageBox {
                     } else {
                         defs::USER_CHANNEL_DIFF_LIMIT
                     },
-                })
+                };
+                trace!("requesting {:?}", gd);
+                Some(gd)
             } else {
                 panic!(
                     "Should not try to get difference for an entry {:?} without known state",
@@ -838,7 +872,7 @@ impl MessageBox {
             }
             tl::enums::updates::ChannelDifference::TooLong(diff) => {
                 // TODO return Err(attempt to find users)
-                drop(chat_hashes.extend(&diff.users, &diff.chats));
+                let _ = chat_hashes.extend(&diff.users, &diff.chats);
 
                 assert!(diff.r#final);
                 info!(
@@ -874,7 +908,7 @@ impl MessageBox {
                 },
             ) => {
                 // TODO return Err(attempt to find users)
-                drop(chat_hashes.extend(&users, &chats));
+                let _ = chat_hashes.extend(&users, &chats);
 
                 if r#final {
                     debug!(
@@ -920,7 +954,11 @@ impl MessageBox {
         reason: PrematureEndReason,
     ) {
         if let Some(channel_id) = channel_id(request) {
-            trace!("ending channel differene for {}", channel_id);
+            trace!(
+                "ending channel difference for {} because {:?}",
+                channel_id,
+                reason
+            );
             let entry = Entry::Channel(channel_id);
             match reason {
                 PrematureEndReason::TemporaryServerIssues => {
@@ -945,6 +983,7 @@ pub fn channel_id(request: &tl::functions::updates::GetChannelDifference) -> Opt
     }
 }
 
+#[derive(Debug)]
 pub enum PrematureEndReason {
     TemporaryServerIssues,
     Banned,
