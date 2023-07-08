@@ -83,7 +83,9 @@ impl Client {
 
                 let response = match maybe_response {
                     Ok(r) => r,
-                    Err(e) if e.is("PERSISTENT_TIMESTAMP_OUTDATED") => {
+                    Err(e)
+                        if e.is("PERSISTENT_TIMESTAMP_OUTDATED") || e.is("HISTORY_GET_FAILED") =>
+                    {
                         // According to Telegram's docs:
                         // "Channel internal replication issues, try again later (treat this like an RPC_CALL_FAIL)."
                         // We can treat this as "empty difference" and not update the local pts.
@@ -124,10 +126,25 @@ impl Client {
                         message_box.end_channel_difference(&request, PrematureEndReason::Banned);
                         continue;
                     }
-                    Err(e) => {
-                        println!("{:#?}", e);
-                        return Err(e);
-                    }
+                    Err(e) => match e {
+                        InvocationError::Rpc(e) => {
+                            if e.code == 500 {
+                                let mut message_box = self
+                                    .0
+                                    .message_box
+                                    .lock("client.next_update/end_channel_difference");
+
+                                message_box.end_channel_difference(
+                                    &request,
+                                    PrematureEndReason::TemporaryServerIssues,
+                                );
+                                continue;
+                            }
+                            return Err(e);
+                        }
+                        InvocationError::Dropped => return Err(e),
+                        InvocationError::Read(_) => todo!(),
+                    },
                 };
 
                 let (updates, users, chats) = {
