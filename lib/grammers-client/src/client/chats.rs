@@ -821,7 +821,6 @@ impl Client {
         &self,
         invite_link: &str,
     ) -> Result<Vec<Chat>, InvocationError> {
-        use tl::enums::Updates;
         match Self::parse_invite_link(invite_link) {
             Some(hash) => Ok(
                 match self
