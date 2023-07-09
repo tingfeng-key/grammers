@@ -162,7 +162,7 @@ impl Client {
         let request = GetParticipants {
             channel: tl::enums::InputChannel::Channel(input_channel),
             filter,
-            offset: (MAX_PARTICIPANT_LIMIT * page) as i32,
+            offset: (MAX_PARTICIPANT_LIMIT * page),
             limit: MAX_PARTICIPANT_LIMIT,
             hash: 0,
         };

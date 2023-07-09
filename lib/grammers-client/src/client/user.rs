@@ -13,9 +13,7 @@ impl Client {
         let tl::enums::users::UserFull::Full(user_full) = self
             .invoke(&tl::functions::users::GetFullUser { id })
             .await?;
-        let full_user = match user_full.full_user {
-            tl::enums::UserFull::Full(user) => user,
-        };
+        let tl::enums::UserFull::Full(full_user) = user_full.full_user;
 
         let user_base = match user_full.users.first() {
             Some(tl::enums::User::Empty(_)) => Err(InvocationError::Rpc(RpcError {

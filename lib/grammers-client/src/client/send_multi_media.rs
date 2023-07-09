@@ -46,26 +46,25 @@ impl Client {
         chat: PackedChat,
         media: tl::enums::InputMedia,
     ) -> Result<tl::enums::MessageMedia, InvocationError> {
-        Ok(self
-            .invoke(&tl::functions::messages::UploadMedia {
-                peer: chat.to_input_peer(),
-                media: media.into(),
-            })
-            .await?)
+        self.invoke(&tl::functions::messages::UploadMedia {
+            peer: chat.to_input_peer(),
+            media,
+        })
+        .await
     }
 
     pub fn phone(&self, file: Uploaded) -> tl::enums::InputMedia {
-        return tl::types::InputMediaUploadedPhoto {
+        tl::types::InputMediaUploadedPhoto {
             file: file.input_file,
             stickers: None,
             ttl_seconds: None,
             spoiler: true,
         }
-        .into();
+        .into()
     }
 
     pub fn video(&self, file: Uploaded) -> tl::enums::InputMedia {
-        return tl::types::InputMediaUploadedDocument {
+        tl::types::InputMediaUploadedDocument {
             nosound_video: false,
             force_file: false,
             file: file.clone().input_file,
@@ -89,11 +88,11 @@ impl Client {
             ttl_seconds: None,
             spoiler: true,
         }
-        .into();
+        .into()
     }
 
     pub fn document(&self, file: Uploaded) -> tl::enums::InputMedia {
-        return tl::types::InputMediaUploadedDocument {
+        tl::types::InputMediaUploadedDocument {
             nosound_video: false,
             force_file: false,
             file: file.clone().input_file,
@@ -107,6 +106,6 @@ impl Client {
             ttl_seconds: None,
             spoiler: true,
         }
-        .into();
+        .into()
     }
 }

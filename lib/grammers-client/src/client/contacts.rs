@@ -28,14 +28,14 @@ impl Client {
                 update
                     .users
                     .into_iter()
-                    .map(|x| crate::types::chat::User::from_raw(x))
+                    .map(crate::types::chat::User::from_raw)
                     .collect::<Vec<crate::types::chat::User>>(),
             ),
             Updates::Updates(update) => Some(
                 update
                     .users
                     .into_iter()
-                    .map(|x| crate::types::chat::User::from_raw(x))
+                    .map(crate::types::chat::User::from_raw)
                     .collect::<Vec<crate::types::chat::User>>(),
             ),
             _ => None,
@@ -43,13 +43,12 @@ impl Client {
         if let Some(users) = users_result {
             return match input_user.0 {
                 InputUser::Empty => Ok(None),
-                InputUser::UserSelf => Ok(users.into_iter().filter(|x| x.is_self()).next()),
-                InputUser::User(input_user) => Ok(users
-                    .into_iter()
-                    .filter(|x| x.id() == input_user.user_id)
-                    .next()),
+                InputUser::UserSelf => Ok(users.into_iter().find(|x| x.is_self())),
+                InputUser::User(input_user) => {
+                    Ok(users.into_iter().find(|x| x.id() == input_user.user_id))
+                }
                 InputUser::FromMessage(msg) => {
-                    Ok(users.into_iter().filter(|x| x.id() == msg.user_id).next())
+                    Ok(users.into_iter().find(|x| x.id() == msg.user_id))
                 }
             };
         }
@@ -85,7 +84,7 @@ impl Client {
                 Contacts::Contacts(contacts) => contacts
                     .users
                     .into_iter()
-                    .map(|x| crate::types::Chat::from_user(x))
+                    .map(crate::types::Chat::from_user)
                     .collect::<Vec<crate::types::Chat>>(),
                 Contacts::NotModified => vec![],
             },

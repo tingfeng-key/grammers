@@ -839,7 +839,7 @@ impl Uploaded {
             force_file: false,
             file: self.clone().input_file,
             thumb: None,
-            mime_type: super::InputSendMultiMedia::get_file_mime(&self),
+            mime_type: super::InputSendMultiMedia::get_file_mime(self),
             attributes: vec![tl::types::DocumentAttributeFilename {
                 file_name: self.name().to_string(),
             }

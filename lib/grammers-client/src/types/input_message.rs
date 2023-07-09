@@ -431,17 +431,17 @@ impl InputSendMultiMedia {
         media: tl::enums::InputMedia,
     ) -> tl::enums::InputSingleMedia {
         let random_id = crate::utils::generate_random_id();
-        return tl::types::InputSingleMedia {
+        tl::types::InputSingleMedia {
             media,
             random_id,
             message: describe.into(),
             entities: None,
         }
-        .into();
+        .into()
     }
 
     fn add_media(mut self, media: tl::enums::InputSingleMedia) -> Self {
-        match self.multi_media.len() == 0 {
+        match self.multi_media.is_empty() {
             false => {
                 self.multi_media.push(media);
             }
@@ -517,7 +517,7 @@ impl InputSendMultiMedia {
     pub fn document(self, file: Uploaded, descript: Option<String>) -> Self {
         let mime_type = Self::get_file_mime(&file);
         let file_name = file.name().to_string();
-        let that = self.add_media(Self::sing_media(
+        self.add_media(Self::sing_media(
             descript.unwrap_or_default(),
             tl::types::InputMediaUploadedDocument {
                 nosound_video: false,
@@ -531,8 +531,7 @@ impl InputSendMultiMedia {
                 spoiler: true,
             }
             .into(),
-        ));
-        that
+        ))
     }
 
     /// questions: https://stackoverflow.com/a/65881427

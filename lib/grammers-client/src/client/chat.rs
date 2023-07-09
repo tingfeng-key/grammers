@@ -32,12 +32,12 @@ impl Client {
             Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats
                 .chats
                 .into_iter()
-                .map(|item| crate::types::Chat::from_chat(item))
+                .map(crate::types::Chat::from_chat)
                 .collect()),
             Ok(tl::enums::messages::Chats::Slice(chat_slice)) => Ok(chat_slice
                 .chats
                 .into_iter()
-                .map(|item| crate::types::Chat::from_chat(item))
+                .map(crate::types::Chat::from_chat)
                 .collect()),
             Err(e) => Err(e),
         }
@@ -70,13 +70,12 @@ impl Client {
                     .chats
                     .into_iter()
                     .map(|x| x.id())
-                    .filter(|x| x == &chat.id)
-                    .next(),
+                    .find(|x| x == &chat.id),
                 update
                     .users
                     .into_iter()
                     .map(|x| x.id())
-                    .filter(|x| user_ids.contains(&x))
+                    .filter(|x| user_ids.contains(x))
                     .collect::<Vec<i64>>(),
             )),
             Updates::Updates(update) => Some((
@@ -84,13 +83,12 @@ impl Client {
                     .chats
                     .into_iter()
                     .map(|x| x.id())
-                    .filter(|x| x == &chat.id)
-                    .next(),
+                    .find(|x| x == &chat.id),
                 update
                     .users
                     .into_iter()
                     .map(|x| x.id())
-                    .filter(|x| user_ids.contains(&x))
+                    .filter(|x| user_ids.contains(x))
                     .collect::<Vec<i64>>(),
             )),
             _ => None,
@@ -121,29 +119,25 @@ impl Client {
                 update
                     .chats
                     .into_iter()
-                    .map(|x| crate::types::chat::Chat::from_chat(x))
-                    .filter(|x| x.id() == chat.id)
-                    .next(),
+                    .map(crate::types::chat::Chat::from_chat)
+                    .find(|x| x.id() == chat.id),
                 update
                     .users
                     .into_iter()
-                    .map(|x| crate::types::chat::User::from_raw(x))
-                    .filter(|x| x.id() == user.id)
-                    .next(),
+                    .map(crate::types::chat::User::from_raw)
+                    .find(|x| x.id() == user.id),
             )),
             Updates::Updates(update) => Some((
                 update
                     .chats
                     .into_iter()
-                    .map(|x| crate::types::chat::Chat::from_chat(x))
-                    .filter(|x| x.id() == chat.id)
-                    .next(),
+                    .map(crate::types::chat::Chat::from_chat)
+                    .find(|x| x.id() == chat.id),
                 update
                     .users
                     .into_iter()
-                    .map(|x| crate::types::chat::User::from_raw(x))
-                    .filter(|x| x.id() == user.id)
-                    .next(),
+                    .map(crate::types::chat::User::from_raw)
+                    .find(|x| x.id() == user.id),
             )),
             _ => None,
         };

@@ -542,21 +542,21 @@ impl Message {
     fn parse_username_from_string(entity_text: String) -> Option<String> {
         if entity_text.starts_with("https://t.me") {
             let new = entity_text.replace("https://t.me/", "");
-            if new.starts_with("+") {
+            if new.starts_with('+') {
                 return None;
             }
             return Some(new);
         }
 
-        if entity_text.starts_with("@") {
-            let username = entity_text.replace("@", "");
-            if username.contains("/") {
-                let urls = username.split("/").collect::<Vec<&str>>();
+        if entity_text.starts_with('@') {
+            let username = entity_text.replace('@', "");
+            if username.contains('/') {
+                let urls = username.split('/').collect::<Vec<&str>>();
                 return Some(urls[0].to_string());
             }
             return Some(username);
         }
-        return None;
+        None
     }
 
     pub fn parse_usernames_from_entities(&self) -> Vec<String> {
@@ -591,11 +591,11 @@ impl Message {
                     _ => None,
                 };
                 if let Some(username) = username {
-                    let username_split = username.split("/").collect::<Vec<&str>>();
+                    let username_split = username.split('/').collect::<Vec<&str>>();
                     let entity = match username_split.len() > 1 {
                         true => {
                             let username_querys =
-                                username_split[0].split("?").collect::<Vec<&str>>();
+                                username_split[0].split('/').collect::<Vec<&str>>();
                             match username_querys.len() > 1 {
                                 true => username_querys[0],
                                 false => username_split[0],
