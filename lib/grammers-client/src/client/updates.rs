@@ -127,7 +127,7 @@ impl Client {
                         continue;
                     }
                     Err(InvocationError::Rpc(rpc_error)) if rpc_error.code == 500 => {
-                        log::info!("500 err: {:#?}", rpc_error);
+                        log::warn!("rpc 500 err: {:#?}", rpc_error);
                         let mut message_box = self
                             .0
                             .message_box
