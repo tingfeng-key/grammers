@@ -147,6 +147,10 @@ impl Channel {
             None => None,
         }
     }
+
+    pub fn participants_count(&self) -> Option<i32> {
+        self.0.participants_count
+    }
 }
 
 impl From<Channel> for PackedChat {

@@ -150,6 +150,16 @@ impl Group {
             C::Channel(c) => Some(c.min),
         }
     }
+
+    pub fn participants_count(&self) -> Option<i32> {
+        use tl::enums::Chat as C;
+
+        match &self.0 {
+            C::Empty(_) | C::Forbidden(_) | C::ChannelForbidden(_) => None,
+            C::Channel(c) => c.participants_count,
+            C::Chat(c) => Some(c.participants_count),
+        }
+    }
 }
 
 impl From<Group> for PackedChat {
