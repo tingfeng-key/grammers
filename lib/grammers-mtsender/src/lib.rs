@@ -103,9 +103,6 @@ pub struct Sender<T: Transport, M: Mtp> {
     mtp_buffer: BytesMut,
 
     requests: Vec<Request>,
-    // Need to keep one sender to ensure there will always be at least one channel alive.
-    // Otherwise the receiver would always resolve to `None`.
-    request_tx: mpsc::UnboundedSender<Request>,
     request_rx: mpsc::UnboundedReceiver<Request>,
     next_ping: Instant,
 
@@ -175,7 +172,6 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                 mtp_buffer: BytesMut::with_capacity(MAXIMUM_DATA),
 
                 requests: vec![],
-                request_tx: tx.clone(),
                 request_rx: rx,
                 next_ping: Instant::now() + PING_DELAY,
 
@@ -212,7 +208,7 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         let socks_addr = match host {
             Host::Domain(domain) => {
                 let resolver =
-                    AsyncResolver::tokio(ResolverConfig::default(), ResolverOpts::default())?;
+                    AsyncResolver::tokio(ResolverConfig::default(), ResolverOpts::default());
                 let response = resolver.lookup_ip(domain).await?;
                 let socks_ip_addr = response.into_iter().next().ok_or(io::Error::new(
                     ErrorKind::NotFound,
@@ -260,7 +256,6 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                 mtp_buffer: BytesMut::with_capacity(MAXIMUM_DATA),
 
                 requests: vec![],
-                request_tx: tx.clone(),
                 request_rx: rx,
                 next_ping: Instant::now() + PING_DELAY,
 
@@ -415,11 +410,9 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
                 break;
             }
         }
-        let temp_vec = self.mtp.finalize();
-        self.mtp_buffer = temp_vec[..].into();
         self.write_buffer.clear();
-        self.transport
-            .pack(&self.mtp_buffer, &mut self.write_buffer);
+        self.mtp
+            .finalize(|mtp_buffer| self.transport.pack(&mtp_buffer, &mut self.write_buffer));
 
         // NOTE: we have to use the FILTERED requests, not the saved ones.
         // The key to finding this was printing the old and new state (but took ~2h to find).
@@ -537,11 +530,32 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
             match tl::enums::Updates::from_bytes(update) {
                 Ok(u) => Some(u),
                 Err(e) => {
-                    warn!(
-                        "telegram sent updates that failed to be deserialized: {}",
-                        e
-                    );
-                    None
+                    // Annoyingly enough, `messages.affectedMessages` also has `pts`.
+                    // Mostly received when deleting messages, so pretend that's the
+                    // update that actually occured.
+                    match tl::enums::messages::AffectedMessages::from_bytes(update) {
+                        Ok(tl::enums::messages::AffectedMessages::Messages(
+                            tl::types::messages::AffectedMessages { pts, pts_count },
+                        )) => Some(
+                            tl::types::UpdateShort {
+                                update: tl::types::UpdateDeleteMessages {
+                                    messages: Vec::new(),
+                                    pts,
+                                    pts_count,
+                                }
+                                .into(),
+                                date: 0,
+                            }
+                            .into(),
+                        ),
+                        Err(_) => {
+                            warn!(
+                                "telegram sent updates that failed to be deserialized: {}",
+                                e
+                            );
+                            None
+                        }
+                    }
                 }
             }
         }));
@@ -670,7 +684,6 @@ pub async fn generate_auth_key<T: Transport>(
                 .finish(auth_key),
             mtp_buffer: sender.mtp_buffer,
             requests: sender.requests,
-            request_tx: sender.request_tx,
             request_rx: sender.request_rx,
             next_ping: Instant::now() + PING_DELAY,
             read_buffer: sender.read_buffer,

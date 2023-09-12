@@ -386,37 +386,6 @@ impl Client {
         })
     }
 
-    pub async fn resolve_username_all(&self, username: &str) -> Result<Vec<Chat>, InvocationError> {
-        let mut res = vec![];
-        let tl::types::contacts::ResolvedPeer {
-            peer: _,
-            users,
-            chats,
-        } = match self
-            .invoke(&tl::functions::contacts::ResolveUsername {
-                username: username.into(),
-            })
-            .await
-        {
-            Ok(tl::enums::contacts::ResolvedPeer::Peer(p)) => p,
-            Err(err) if err.is("USERNAME_NOT_OCCUPIED") => return Ok(res),
-            Err(err) => return Err(err),
-        };
-
-        let mut chat_hashes = self.0.chat_hashes.lock("resolve_username");
-        // Telegram can return peers without hash (e.g. Users with 'min: true')
-        let _ = chat_hashes.extend(&users, &chats);
-        drop(chat_hashes);
-
-        for user in users {
-            res.push(Chat::from_user(user));
-        }
-        for chat in chats {
-            res.push(Chat::from_chat(chat));
-        }
-        Ok(res)
-    }
-
     /// Fetch full information about the currently logged-in user.
     ///
     /// Although this method is cheap to call, you might want to cache the results somewhere.
@@ -820,27 +789,12 @@ impl Client {
     pub async fn accept_invite_link(
         &self,
         invite_link: &str,
-    ) -> Result<Vec<Chat>, InvocationError> {
+    ) -> Result<tl::enums::Updates, InvocationError> {
         match Self::parse_invite_link(invite_link) {
-            Some(hash) => Ok(
-                match self
-                    .invoke(&tl::functions::messages::ImportChatInvite { hash })
-                    .await?
-                {
-                    tl::enums::Updates::Combined(updates) => updates
-                        .chats
-                        .into_iter()
-                        .map(|x| Chat::from_chat(x))
-                        .collect::<Vec<Chat>>(),
-                    tl::enums::Updates::Updates(updates) => updates
-                        .chats
-                        .into_iter()
-                        .map(|x| Chat::from_chat(x))
-                        .collect::<Vec<Chat>>(),
-
-                    _ => vec![],
-                },
-            ),
+            Some(hash) => {
+                self.invoke(&tl::functions::messages::ImportChatInvite { hash })
+                    .await
+            }
             None => Err(InvocationError::Rpc(RpcError {
                 code: 400,
                 name: "INVITE_HASH_INVALID".to_string(),
@@ -850,6 +804,10 @@ impl Client {
         }
     }
 
+    #[cfg_attr(
+        not(feature = "parse_invite_link"),
+        allow(rustdoc::broken_intra_doc_links)
+    )]
     /// Join a public group or channel.
     ///
     /// A channel is public if it has a username.

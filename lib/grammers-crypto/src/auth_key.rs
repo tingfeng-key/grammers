@@ -5,7 +5,7 @@
 // <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
-use sha1::Sha1;
+use crate::sha1;
 use std::fmt;
 
 #[derive(Clone)]
@@ -31,7 +31,7 @@ impl PartialEq for AuthKey {
 impl AuthKey {
     /// Creates a new authorization key from the given binary data.
     pub fn from_bytes(data: [u8; 256]) -> Self {
-        let sha = Sha1::from(&data[..]).digest().bytes();
+        let sha = sha1!(&data);
         let aux_hash = {
             let mut buffer = [0; 8];
             buffer.copy_from_slice(&sha[0..8]);
@@ -67,7 +67,7 @@ impl AuthKey {
         };
 
         let mut result = [0u8; 16];
-        result.copy_from_slice(&Sha1::from(data).digest().bytes()[4..]);
+        result.copy_from_slice(&sha1!(data)[4..]);
         result
     }
 }

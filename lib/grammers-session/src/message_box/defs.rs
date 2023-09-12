@@ -12,6 +12,20 @@ use std::time::{Duration, Instant};
 /// Telegram sends `seq` equal to `0` when "it doesn't matter", so we use that value too.
 pub(super) const NO_SEQ: i32 = 0;
 
+/// It has been observed that Telegram may send updates with `qts` equal to `0` (for
+/// example with `ChannelParticipant`), interleaved with non-zero `qts` values. This
+/// presumably means that the ordering should be "ignored" in that case.
+///
+/// One can speculate this is done because the field is not optional in the TL definition.
+///
+/// Not ignoring the `pts` information in those updates can lead to failures resolving gaps.
+pub(super) const NO_PTS: i32 = 0;
+
+/// Non-update types like `messages.affectedMessages` can contain `pts` that should still be
+/// processed. Because there's no `date`, a value of `0` is used as the sentinel value for
+/// the `date` when constructing the dummy `Updates` (in order to handle them uniformly).
+pub(super) const NO_DATE: i32 = 0;
+
 // See https://core.telegram.org/method/updates.getChannelDifference.
 pub(super) const BOT_CHANNEL_DIFF_LIMIT: i32 = 100000;
 pub(super) const USER_CHANNEL_DIFF_LIMIT: i32 = 100;
@@ -57,9 +71,6 @@ pub struct MessageBox {
     pub(super) date: i32,
     pub(super) seq: i32,
 
-    /// Holds the entry with the closest deadline (optimization to avoid recalculating the minimum deadline).
-    pub(super) next_deadline: Option<Entry>,
-
     /// Which entries have a gap and may soon trigger a need to get difference.
     ///
     /// If a gap is found, stores the required information to resolve it (when should it timeout and what updates
@@ -72,9 +83,12 @@ pub struct MessageBox {
     /// For which entries are we currently getting difference.
     pub(super) getting_diff_for: HashSet<Entry>,
 
-    /// Temporarily stores which entries should have their update deadline reset.
-    /// Stored in the message box in order to reuse the allocation.
-    pub(super) reset_deadlines_for: HashSet<Entry>,
+    /// Holds the entry with the closest deadline.
+    /// This field is merely an optimization, to avoid recalculating the closest deadline.
+    pub(super) next_deadline: Option<Entry>,
+
+    /// This field is merely an optimization, to reuse the same allocation.
+    pub(super) tmp_entries: HashSet<Entry>,
 }
 
 /// Represents the information needed to correctly handle a specific `tl::enums::Update`.
@@ -112,9 +126,3 @@ pub(super) struct PossibleGap {
 
 #[derive(Debug)]
 pub struct Gap;
-
-#[derive(PartialEq)]
-pub(super) enum ResetDeadline {
-    No,
-    Yes,
-}

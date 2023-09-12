@@ -45,7 +45,7 @@ impl Transport for Intermediate {
             self.init = true;
         }
 
-        output.put_u32_le(input.len() as _);
+        output.put_i32_le(input.len() as _);
         output.put(input);
     }
 
@@ -55,10 +55,13 @@ impl Transport for Intermediate {
         }
         let needle = &mut &input[..];
 
-        let len = needle.get_u32_le() as usize;
-        if needle.len() < len {
+        let len = needle.get_i32_le();
+        if (needle.len() as i32) < len {
             return Err(Error::MissingBytes);
         }
+
+        let len = len as usize;
+
         output.put(&needle[..len]);
 
         Ok(len + 4)
@@ -115,5 +118,21 @@ mod tests {
         transport.pack(&input, &mut packed);
         transport.unpack(&packed[4..], &mut unpacked).unwrap();
         assert_eq!(input, unpacked);
+    }
+
+    #[test]
+    fn unpack_two_at_once() {
+        let (mut transport, input, mut packed) = setup_pack(128);
+        let mut unpacked = BytesMut::new();
+        transport.pack(&input, &mut packed);
+        let two_input = packed
+            .iter()
+            .copied()
+            .skip(4)
+            .chain(packed.iter().copied().skip(4))
+            .collect::<Vec<_>>();
+        let n = transport.unpack(&two_input, &mut unpacked).unwrap();
+        assert_eq!(input, unpacked);
+        assert_eq!(n, packed.len() - 4);
     }
 }

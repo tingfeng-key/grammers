@@ -26,11 +26,13 @@ mod adaptor;
 mod defs;
 
 use super::ChatHashCache;
+use crate::generated::enums::ChannelState as ChannelStateEnum;
+use crate::generated::types::ChannelState;
 use crate::message_box::defs::PossibleGap;
 use crate::UpdateState;
 pub(crate) use defs::Entry;
 pub use defs::{Gap, MessageBox};
-use defs::{PtsInfo, ResetDeadline, State, NO_SEQ, POSSIBLE_GAP_TIMEOUT};
+use defs::{PtsInfo, State, NO_DATE, NO_PTS, NO_SEQ, POSSIBLE_GAP_TIMEOUT};
 use grammers_tl_types as tl;
 use log::{debug, info, trace, warn};
 use std::cmp::Ordering;
@@ -53,12 +55,12 @@ impl MessageBox {
         trace!("created new message box with no previous state");
         Self {
             map: HashMap::new(),
-            date: 1,
-            seq: 0,
-            next_deadline: None,
+            date: 1, // non-zero or getting difference will fail
+            seq: NO_SEQ,
             possible_gaps: HashMap::new(),
             getting_diff_for: HashSet::new(),
-            reset_deadlines_for: HashSet::new(),
+            next_deadline: None,
+            tmp_entries: HashSet::new(),
         }
     }
 
@@ -81,21 +83,24 @@ impl MessageBox {
                 deadline,
             },
         );
-        map.extend(
-            state
-                .channels
-                .iter()
-                .map(|(&id, &pts)| (Entry::Channel(id), State { pts, deadline })),
-        );
+        map.extend(state.channels.iter().map(|ChannelStateEnum::State(c)| {
+            (
+                Entry::Channel(c.channel_id),
+                State {
+                    pts: c.pts,
+                    deadline,
+                },
+            )
+        }));
 
         Self {
             map,
             date: state.date,
             seq: state.seq,
-            next_deadline: Some(Entry::AccountWide),
             possible_gaps: HashMap::new(),
             getting_diff_for: HashSet::new(),
-            reset_deadlines_for: HashSet::new(),
+            next_deadline: Some(Entry::AccountWide),
+            tmp_entries: HashSet::new(),
         }
     }
 
@@ -108,19 +113,25 @@ impl MessageBox {
                 .map
                 .get(&Entry::AccountWide)
                 .map(|s| s.pts)
-                .unwrap_or(0),
+                .unwrap_or(NO_PTS),
             qts: self
                 .map
                 .get(&Entry::SecretChats)
                 .map(|s| s.pts)
-                .unwrap_or(0),
+                .unwrap_or(NO_PTS),
             date: self.date,
             seq: self.seq,
             channels: self
                 .map
                 .iter()
                 .filter_map(|(entry, s)| match entry {
-                    Entry::Channel(id) => Some((*id, s.pts)),
+                    Entry::Channel(id) => Some(
+                        ChannelState {
+                            channel_id: *id,
+                            pts: s.pts,
+                        }
+                        .into(),
+                    ),
                     _ => None,
                 })
                 .collect(),
@@ -132,8 +143,8 @@ impl MessageBox {
         self.map
             .get(&Entry::AccountWide)
             .map(|s| s.pts)
-            .unwrap_or(NO_SEQ)
-            == NO_SEQ
+            .unwrap_or(NO_PTS)
+            == NO_PTS
     }
 
     /// Return the next deadline when receiving updates should timeout.
@@ -159,11 +170,11 @@ impl MessageBox {
                 deadline
             };
 
-        if now > deadline {
+        if now >= deadline {
             // Check all expired entries and add them to the list that needs getting difference.
             self.getting_diff_for
                 .extend(self.possible_gaps.iter().filter_map(|(entry, gap)| {
-                    if now > gap.deadline {
+                    if now >= gap.deadline {
                         info!("gap was not resolved after waiting for {:?}", entry);
                         Some(entry)
                     } else {
@@ -173,7 +184,7 @@ impl MessageBox {
 
             self.getting_diff_for
                 .extend(self.map.iter().filter_map(|(entry, state)| {
-                    if now > state.deadline {
+                    if now >= state.deadline {
                         debug!("too much time has passed without updates for {:?}", entry);
                         Some(entry)
                     } else {
@@ -192,18 +203,28 @@ impl MessageBox {
         deadline
     }
 
-    /// Reset the deadline for the periods without updates for a given entry.
+    /// Reset the deadline for the periods without updates for all input entries.
     ///
     /// It also updates the next deadline time to reflect the new closest deadline.
-    fn reset_deadline(&mut self, entry: Entry, deadline: Instant) {
-        if let Some(state) = self.map.get_mut(&entry) {
-            state.deadline = deadline;
-            debug!("reset deadline {:?} for {:?}", deadline, entry);
-        } else {
-            panic!("did not reset deadline for {:?} as it had no entry", entry);
+    fn reset_deadlines(&mut self, entries: &HashSet<Entry>, deadline: Instant) {
+        if entries.is_empty() {
+            return;
+        }
+        for entry in entries {
+            if let Some(state) = self.map.get_mut(&entry) {
+                state.deadline = deadline;
+                debug!("reset deadline {:?} for {:?}", deadline, entry);
+            } else {
+                panic!("did not reset deadline for {:?} as it had no entry", entry);
+            }
         }
 
-        if self.next_deadline == Some(entry) {
+        if self
+            .next_deadline
+            .as_ref()
+            .map(|next| entries.contains(next))
+            .unwrap_or(false)
+        {
             // If the updated deadline was the closest one, recalculate the new minimum.
             self.next_deadline = Some(
                 self.map
@@ -219,8 +240,18 @@ impl MessageBox {
         {
             // If the updated deadline is smaller than the next deadline, change the next deadline to be the new one.
             // An unrelated deadline was updated, so the closest one remains unchanged.
-            self.next_deadline = Some(entry);
+            // Any entry will do, as they all share the same new deadline.
+            self.next_deadline = Some(*entries.iter().next().unwrap());
         }
+    }
+
+    /// Convenience to reset a single entry's deadline.
+    fn reset_deadline(&mut self, entry: Entry, deadline: Instant) {
+        let mut entries = mem::take(&mut self.tmp_entries);
+        entries.insert(entry);
+        self.reset_deadlines(&entries, deadline);
+        entries.clear();
+        self.tmp_entries = entries;
     }
 
     /// Convenience to reset a channel's deadline, with optional timeout.
@@ -232,17 +263,6 @@ impl MessageBox {
                     .map(|t| Duration::from_secs(t as _))
                     .unwrap_or(defs::NO_UPDATES_TIMEOUT),
         );
-    }
-
-    /// Reset all the deadlines in `reset_deadlines_for` and then empty the set.
-    fn apply_deadlines_reset(&mut self) {
-        let next_deadline = next_updates_deadline();
-        let mut reset_deadlines_for = mem::take(&mut self.reset_deadlines_for);
-        reset_deadlines_for
-            .iter()
-            .for_each(|&entry| self.reset_deadline(entry, next_deadline));
-        reset_deadlines_for.clear();
-        self.reset_deadlines_for = reset_deadlines_for;
     }
 
     /// Sets the update state.
@@ -379,8 +399,14 @@ impl MessageBox {
         &mut self,
         updates: tl::enums::Updates,
         chat_hashes: &ChatHashCache,
-        result: &mut Vec<tl::enums::Update>,
-    ) -> Result<(Vec<tl::enums::User>, Vec<tl::enums::Chat>), Gap> {
+    ) -> Result<
+        (
+            Vec<tl::enums::Update>,
+            Vec<tl::enums::User>,
+            Vec<tl::enums::Chat>,
+        ),
+        Gap,
+    > {
         trace!("processing updates: {:?}", updates);
         // Top level, when handling received `updates` and `updatesCombined`.
         // `updatesCombined` groups all the fields we care about, which is why we use it.
@@ -415,7 +441,7 @@ impl MessageBox {
                         "skipping updates that were already handled at seq = {}",
                         self.seq
                     );
-                    return Ok((users, chats));
+                    return Ok((Vec::new(), users, chats));
                 }
                 Ordering::Less => {
                     debug!(
@@ -426,40 +452,63 @@ impl MessageBox {
                     return Err(Gap);
                 }
             }
+        }
 
-            self.date = date;
-            if seq != NO_SEQ {
-                self.seq = seq;
+        fn update_sort_key(update: &tl::enums::Update) -> i32 {
+            match PtsInfo::from_update(update) {
+                Some(pts) => pts.pts - pts.pts_count,
+                None => NO_PTS,
             }
         }
 
         // Telegram can send updates out of order (e.g. `ReadChannelInbox` first
         // and then `NewChannelMessage`, both with the same `pts`, but the `count`
-        // is `0` and `1` respectively).
-        //
-        // We can't know beforehand if this would cause issues (i.e. if any of
-        // the updates is the first one we get to know about a specific channel)
-        // (other than doing a pre-scan to check if any has info about an entry
-        // we lack), so instead we sort preemptively. As a bonus there's less
-        // likelyhood of "possible gaps" by doing this.
-        // TODO give this more thought, perhaps possible gaps can't happen at all
-        //      (not ones which would be resolved by sorting anyway; same in telethon)
-        fn update_sort_key(update: &tl::enums::Update) -> i32 {
-            match PtsInfo::from_update(update) {
-                Some(pts) => pts.pts - pts.pts_count,
-                None => 0,
-            }
-        }
-
+        // is `0` and `1` respectively), so we sort them first.
         updates.sort_by_key(update_sort_key);
 
-        result.extend(
-            updates
-                .into_iter()
-                .filter_map(|u| self.apply_pts_info(u, ResetDeadline::Yes)),
-        );
+        // Adding `possible_gaps.len()` is a guesstimate. Often it's just one update.
+        let mut result = Vec::with_capacity(updates.len() + self.possible_gaps.len());
 
-        self.apply_deadlines_reset();
+        // This loop does a lot at once to reduce the amount of times we need to iterate over
+        // the updates as an optimization.
+        //
+        // It mutates the local pts state, remembers possible gaps, builds a set of entries for
+        // which the deadlines should be reset, and determines whether any local pts was changed
+        // so that the seq can be updated too (which could otherwise have been done earlier).
+        let mut any_pts_applied = false;
+        let mut reset_deadlines_for = mem::take(&mut self.tmp_entries);
+        for update in updates {
+            let (entry, update) = self.apply_pts_info(update);
+            if let Some(entry) = entry {
+                // As soon as we receive an update of any form related to messages (has `PtsInfo`),
+                // the "no updates" period for that entry is reset. All the deadlines are reset at
+                // once via the temporary entries buffer as an optimization.
+                reset_deadlines_for.insert(entry);
+            }
+            if let Some(update) = update {
+                result.push(update);
+                any_pts_applied |= entry.is_some();
+            }
+        }
+        self.reset_deadlines(&reset_deadlines_for, next_updates_deadline());
+        reset_deadlines_for.clear();
+        self.tmp_entries = reset_deadlines_for;
+
+        // > If the updates were applied, local *Updates* state must be updated
+        // > with `seq` (unless it's 0) and `date` from the constructor.
+        //
+        // By "were applied", we assume it means "some other pts was applied".
+        // Updates which can be applied in any order, such as `UpdateChat`,
+        // should not cause `seq` to be updated (or upcoming updates such as
+        // `UpdateChatParticipant` could be missed).
+        if any_pts_applied {
+            if date != NO_DATE {
+                self.date = date;
+            }
+            if seq != NO_SEQ {
+                self.seq = seq;
+            }
+        }
 
         if !self.possible_gaps.is_empty() {
             // For each update in possible gaps, see if the gap has been resolved already.
@@ -475,7 +524,7 @@ impl MessageBox {
                     let update = self.possible_gaps.get_mut(&key).unwrap().updates.remove(0);
                     // If this fails to apply, it will get re-inserted at the end.
                     // All should fail, so the order will be preserved (it would've cycled once).
-                    if let Some(update) = self.apply_pts_info(update, ResetDeadline::No) {
+                    if let (_, Some(update)) = self.apply_pts_info(update) {
                         result.push(update);
                     }
                 }
@@ -488,7 +537,7 @@ impl MessageBox {
             }
         }
 
-        Ok((users, chats))
+        Ok((result, users, chats))
     }
 
     /// Tries to apply the input update if its `PtsInfo` follows the correct order.
@@ -499,28 +548,17 @@ impl MessageBox {
     fn apply_pts_info(
         &mut self,
         update: tl::enums::Update,
-        reset_deadline: ResetDeadline,
-    ) -> Option<tl::enums::Update> {
+    ) -> (Option<Entry>, Option<tl::enums::Update>) {
         if let tl::enums::Update::ChannelTooLong(u) = update {
             self.try_begin_get_diff(Entry::Channel(u.channel_id));
-            return None;
+            return (None, None);
         }
 
         let pts = match PtsInfo::from_update(&update) {
             Some(pts) => pts,
             // No pts means that the update can be applied in any order.
-            None => return Some(update),
+            None => return (None, Some(update)),
         };
-
-        // As soon as we receive an update of any form related to messages (has `PtsInfo`),
-        // the "no updates" period for that entry is reset.
-        //
-        // Build the `HashSet` to avoid calling `reset_deadline` more than once for the same entry.
-        //
-        // By the time this method returns, self.map will have an entry for which we can reset its deadline.
-        if reset_deadline == ResetDeadline::Yes {
-            self.reset_deadlines_for.insert(pts.entry);
-        }
 
         if self.getting_diff_for.contains(&pts.entry) {
             debug!(
@@ -529,7 +567,7 @@ impl MessageBox {
             );
             // Note: early returning here also prevents gap from being inserted (which they should
             // not be while getting difference).
-            return None;
+            return (Some(pts.entry), None);
         }
 
         if let Some(state) = self.map.get(&pts.entry) {
@@ -543,7 +581,7 @@ impl MessageBox {
                         "skipping update for {:?} (local {:?}, count {:?}, remote {:?})",
                         pts.entry, local_pts, pts.pts_count, pts.pts
                     );
-                    return None;
+                    return (Some(pts.entry), None);
                 }
                 Ordering::Less => {
                     info!(
@@ -560,43 +598,22 @@ impl MessageBox {
                         .updates
                         .push(update);
 
-                    return None;
+                    return (Some(pts.entry), None);
                 }
             }
         }
         // else, there is no previous `pts` known, and because this update has to be "right"
         // (it's the first one) our `local_pts` must be `pts - pts_count`.
 
-        // In a channel, we may immediately receive:
-        // * ReadChannelInbox (pts = X, pts_count = 0)
-        // * NewChannelMessage (pts = X, pts_count = 1)
-        //
-        // Notice how both `pts` are the same. If they were to be applied out of order, the first
-        // one however would've triggered a gap because `local_pts` + `pts_count` of 0 would be
-        // less than `remote_pts`. So there is no risk by setting the `local_pts` to match the
-        // `remote_pts` here of missing the new message.
-        //
-        // The message would however be lost if we initialized the pts with the first one, since
-        // the second one would appear "already handled". To prevent this we set the pts to be
-        // one less when the count is 0 (which might be wrong and trigger a gap later on, but is
-        // unlikely). This will prevent us from losing updates in the unlikely scenario where these
-        // two updates arrive in different packets (and therefore couldn't be sorted beforehand).
         self.map
             .entry(pts.entry)
-            .and_modify(|e| e.pts = pts.pts)
             .or_insert_with(|| State {
-                // When a chat is migrated to a megagroup, the first update can be a `ReadChannelInbox`
-                // with `pts = 1, pts_count = 0` followed by a `NewChannelMessage` with `pts = 2, pts_count=1`.
-                // Note how the `pts` for the message is 2 and not 1 unlike the case described before!
-                // This is likely because the `pts` cannot be 0 (or it would fail with PERSISTENT_TIMESTAMP_EMPTY),
-                // which forces the first update to be 1. But if we got difference with 1 and the second update
-                // also used 1, we would miss it, so Telegram probably uses 2 to work around that.
-                pts: (pts.pts - (if pts.pts_count != 0 { 0 } else { 1 })).max(1),
+                pts: NO_PTS,
                 deadline: next_updates_deadline(),
             })
             .pts = pts.pts;
 
-        Some(update)
+        (Some(pts.entry), Some(update))
     }
 }
 
@@ -620,7 +637,7 @@ impl MessageBox {
                     qts: if self.map.contains_key(&Entry::SecretChats) {
                         self.map[&Entry::SecretChats].pts
                     } else {
-                        NO_SEQ
+                        NO_PTS
                     },
                 };
                 trace!("requesting {:?}", gd);
@@ -743,19 +760,18 @@ impl MessageBox {
 
         // other_updates can contain things like UpdateChannelTooLong and UpdateNewChannelMessage.
         // We need to process those as if they were socket updates to discard any we have already handled.
-        let mut result_updates = vec![];
         let us = tl::enums::Updates::Updates(tl::types::Updates {
             updates,
             users,
             chats,
-            date: 1,
+            date: NO_DATE,
             seq: NO_SEQ,
         });
 
         // It is possible that the result from `GetDifference` includes users with `min = true`.
         // TODO in that case, we will have to resort to getUsers.
-        let (users, chats) = self
-            .process_updates(us, chat_hashes, &mut result_updates)
+        let (mut result_updates, users, chats) = self
+            .process_updates(us, chat_hashes)
             .expect("gap is detected while applying difference");
 
         result_updates.extend(
@@ -764,15 +780,15 @@ impl MessageBox {
                 .map(|message| {
                     tl::types::UpdateNewMessage {
                         message,
-                        pts: NO_SEQ,
-                        pts_count: NO_SEQ,
+                        pts: NO_PTS,
+                        pts_count: 0,
                     }
                     .into()
                 })
                 .chain(new_encrypted_messages.into_iter().map(|message| {
                     tl::types::UpdateNewEncryptedMessage {
                         message,
-                        qts: NO_SEQ,
+                        qts: NO_PTS,
                     }
                     .into()
                 })),
@@ -921,23 +937,22 @@ impl MessageBox {
                 }
 
                 self.map.get_mut(&entry).unwrap().pts = pts;
-                let mut result_updates = vec![];
                 let us = tl::enums::Updates::Updates(tl::types::Updates {
                     updates,
                     users,
                     chats,
-                    date: 1,
+                    date: NO_DATE,
                     seq: NO_SEQ,
                 });
-                let (users, chats) = self
-                    .process_updates(us, chat_hashes, &mut result_updates)
+                let (mut result_updates, users, chats) = self
+                    .process_updates(us, chat_hashes)
                     .expect("gap is detected while applying channel difference");
 
                 result_updates.extend(new_messages.into_iter().map(|message| {
                     tl::types::UpdateNewChannelMessage {
                         message,
-                        pts: NO_SEQ,
-                        pts_count: NO_SEQ,
+                        pts: NO_PTS,
+                        pts_count: 0,
                     }
                     .into()
                 }));
