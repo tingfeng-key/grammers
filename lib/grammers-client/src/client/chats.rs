@@ -820,7 +820,7 @@ impl Client {
     pub async fn accept_invite_link(
         &self,
         invite_link: &str,
-    ) -> Result<tl::enums::Updates, InvocationError> {
+    ) -> Result<Vec<Chat>, InvocationError> {
         match Self::parse_invite_link(invite_link) {
             Some(hash) => Ok(
                 match self
