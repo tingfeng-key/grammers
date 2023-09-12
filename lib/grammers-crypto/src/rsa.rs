@@ -60,11 +60,11 @@ pub fn encrypt_hashed(data: &[u8], key: &Key, random_bytes: &[u8; 256]) -> Vec<u
         };
 
         // aes_encrypted := AES256_IGE(data_with_hash, temp_key, 0); -- AES256-IGE encryption with zero IV.
-        let aes_encrypted = ige_encrypt(&data_with_hash, &temp_key, &[0u8; 32]);
+        let aes_encrypted = ige_encrypt(&data_with_hash, temp_key, &[0u8; 32]);
 
         // temp_key_xor := temp_key XOR SHA256(aes_encrypted); -- adjusted key, 32 bytes
         let temp_key_xor = {
-            let mut xored = temp_key.clone();
+            let mut xored = *temp_key;
             xored
                 .iter_mut()
                 .zip(sha256!(&aes_encrypted))

@@ -66,7 +66,7 @@ impl PasswordToken {
         }
     }
 
-    pub fn to_fa(&self, current_password: String) -> (Vec<u8>, Vec<u8>) {
+    pub fn to_fa(&self, current_password: String) -> ([u8; 32], [u8; 256]) {
         use grammers_crypto::two_factor_auth::calculate_2fa;
         let current_algo = self.current_algo().unwrap();
         calculate_2fa(
@@ -87,8 +87,8 @@ impl PasswordToken {
         let (m1, a) = self.to_fa(current_password);
         tl::types::InputCheckPasswordSrp {
             srp_id: self.srp_id(),
-            a,
-            m1,
+            a: a.to_vec(),
+            m1: m1.to_vec(),
         }
         .into()
     }
@@ -119,7 +119,7 @@ impl PasswordToken {
                     new_password,
                 );
                 // println!("{:#?}", new_password_hash);
-                Some((new_algo.clone(), new_password_hash))
+                Some((new_algo.clone(), new_password_hash.to_vec()))
             }
             None => None,
         }

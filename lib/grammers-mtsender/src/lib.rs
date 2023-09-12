@@ -412,28 +412,24 @@ impl<T: Transport, M: Mtp> Sender<T, M> {
         }
         self.write_buffer.clear();
         self.mtp
-            .finalize(|mtp_buffer| self.transport.pack(&mtp_buffer, &mut self.write_buffer));
+            .finalize(|mtp_buffer| self.transport.pack(mtp_buffer, &mut self.write_buffer));
 
         // NOTE: we have to use the FILTERED requests, not the saved ones.
         // The key to finding this was printing the old and new state (but took ~2h to find).
         // Otherwise we will likely change from Sent to Serialized and enter an infinite loop.
         // This will very easily cause transport flood (using self, trying to upload two files at once).
         // TODO add a test for this
-        requests
-            .into_iter()
-            .zip(msg_ids.into_iter())
-            .for_each(|(req, msg_id)| {
-                assert!(req.body.len() >= 4);
-                let req_id =
-                    u32::from_le_bytes([req.body[0], req.body[1], req.body[2], req.body[3]]);
-                debug!(
-                    "serialized request {:x} ({}) with {:?}",
-                    req_id,
-                    tl::name_for_id(req_id),
-                    msg_id
-                );
-                req.state = RequestState::Serialized(msg_id);
-            });
+        requests.into_iter().zip(msg_ids).for_each(|(req, msg_id)| {
+            assert!(req.body.len() >= 4);
+            let req_id = u32::from_le_bytes([req.body[0], req.body[1], req.body[2], req.body[3]]);
+            debug!(
+                "serialized request {:x} ({}) with {:?}",
+                req_id,
+                tl::name_for_id(req_id),
+                msg_id
+            );
+            req.state = RequestState::Serialized(msg_id);
+        });
     }
 
     /// Handle `n` more read bytes being ready to process by the transport.

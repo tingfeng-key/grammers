@@ -75,7 +75,7 @@ impl Transport for Full {
         // payload len
         let len = needle.get_i32_le();
         if len < 12 {
-            return Err(Error::BadLen { got: len as i32 });
+            return Err(Error::BadLen { got: len });
         }
 
         if total_len < len {

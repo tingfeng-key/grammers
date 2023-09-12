@@ -106,7 +106,7 @@ fn do_encrypt_data_v2(plaintext: &[u8], auth_key: &AuthKey, random_padding: &[u8
         // "[...] the resulting message length be divisible by 16 bytes"
         let padding_len = determine_padding_v2_length(plaintext.len());
         // `.concat()` is faster than `.extend()` according to flamegraph
-        vec![plaintext, &random_padding[..padding_len]].concat()
+        [plaintext, &random_padding[..padding_len]].concat()
     };
 
     // Encryption is done by the client

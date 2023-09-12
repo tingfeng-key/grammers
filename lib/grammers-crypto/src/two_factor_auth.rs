@@ -101,7 +101,7 @@ pub fn compute_password_hash(
     g: &i32,
     p: &[u8],
     password: impl AsRef<[u8]>,
-) -> Vec<u8> {
+) -> [u8; 256] {
     // Prepare our parameters
     let big_p = BigUint::from_bytes_be(p);
 
