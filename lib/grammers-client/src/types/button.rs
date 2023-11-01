@@ -54,6 +54,7 @@ pub fn switch_inline<T: Into<String>, Q: Into<String>>(text: T, query: Q) -> Inl
             text: text.into(),
             query: query.into(),
             same_peer: true,
+            peer_types: None,
         }
         .into(),
     )
@@ -70,6 +71,7 @@ pub fn switch_inline_elsewhere<T: Into<String>, Q: Into<String>>(text: T, query:
             text: text.into(),
             query: query.into(),
             same_peer: false,
+            peer_types: None,
         }
         .into(),
     )
@@ -82,6 +84,17 @@ pub fn switch_inline_elsewhere<T: Into<String>, Q: Into<String>>(text: T, query:
 pub fn url<T: Into<String>, U: Into<String>>(text: T, url: U) -> Inline {
     Inline(
         tl::types::KeyboardButtonUrl {
+            text: text.into(),
+            url: url.into(),
+        }
+        .into(),
+    )
+}
+
+/// An inline button that when clicked will open the specified URL in an in-app browser.
+pub fn webview<T: Into<String>, U: Into<String>>(text: T, url: U) -> Inline {
+    Inline(
+        tl::types::KeyboardButtonWebView {
             text: text.into(),
             url: url.into(),
         }

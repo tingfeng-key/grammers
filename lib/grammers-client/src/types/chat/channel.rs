@@ -62,6 +62,9 @@ impl Channel {
                         noforwards: false,
                         join_request: false,
                         forum: false,
+                        stories_hidden: false,
+                        stories_hidden_min: false,
+                        stories_unavailable: true,
                         join_to_send: false,
                         id: channel.id,
                         access_hash: Some(channel.access_hash),
@@ -75,6 +78,9 @@ impl Channel {
                         default_banned_rights: None,
                         participants_count: None,
                         usernames: None,
+                        stories_max_id: None,
+                        color: None,
+                        background_emoji_id: None,
                     })
                 } else {
                     panic!("tried to create broadcast channel from megagroup");
@@ -126,6 +132,14 @@ impl Channel {
         self.0.username.as_deref()
     }
 
+    /// Return the photo of this channel, if any.
+    pub fn photo(&self) -> Option<&tl::types::ChatPhoto> {
+        match &self.0.photo {
+            tl::enums::ChatPhoto::Empty => None,
+            tl::enums::ChatPhoto::Photo(photo) => Some(photo),
+        }
+    }
+
     /// Return the permissions of the logged-in user in this channel.
     pub fn admin_rights(&self) -> Option<&tl::types::ChatAdminRights> {
         match &self.0.admin_rights {
@@ -143,6 +157,9 @@ impl Channel {
                 manage_call: true,
                 pin_messages: true,
                 manage_topics: true,
+                post_stories: true,
+                edit_stories: true,
+                delete_stories: true,
             }),
             None => None,
         }

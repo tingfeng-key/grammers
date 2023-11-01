@@ -7,7 +7,7 @@
 // except according to those terms.
 
 /// The schema layer from which the definitions were generated.
-pub const LAYER: i32 = 155;
+pub const LAYER: i32 = 166;
 
 /// Return the name from the `.tl` definition corresponding to the provided definition identifier.
 pub fn name_for_id(id: u32) -> &'static str {
@@ -46,6 +46,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x971fa843 => "inputMediaGeoLive",
         0xf94e5f1 => "inputMediaPoll",
         0xe66fbf7b => "inputMediaDice",
+        0x89fdd778 => "inputMediaStory",
+        0xc21b8849 => "inputMediaWebPage",
         0x1ca48f57 => "inputChatPhotoEmpty",
         0xbdcdaec0 => "inputChatUploadedPhoto",
         0x8953ad37 => "inputChatPhoto",
@@ -77,7 +79,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xb3cea0e4 => "storage.fileMp4",
         0x1081464c => "storage.fileWebp",
         0xd3bc4b7a => "userEmpty",
-        0x8f97c628 => "user",
+        0xeb602f25 => "user",
         0x4f11bae1 => "userProfilePhotoEmpty",
         0x82d1f706 => "userProfilePhoto",
         0x9d05049 => "userStatusEmpty",
@@ -89,10 +91,10 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x29562865 => "chatEmpty",
         0x41cbf256 => "chat",
         0x6592a1a7 => "chatForbidden",
-        0x83259464 => "channel",
+        0x1981ea7e => "channel",
         0x17d493d5 => "channelForbidden",
         0xc9d31138 => "chatFull",
-        0xf2355507 => "channelFull",
+        0x723027bd => "channelFull",
         0xc02d4007 => "chatParticipant",
         0xe46bcee4 => "chatParticipantCreator",
         0xa0933f5b => "chatParticipantAdmin",
@@ -108,14 +110,16 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x56e0d474 => "messageMediaGeo",
         0x70322949 => "messageMediaContact",
         0x9f84f49e => "messageMediaUnsupported",
-        0x9cb070d7 => "messageMediaDocument",
-        0xa32dd600 => "messageMediaWebPage",
+        0x4cf4d72d => "messageMediaDocument",
+        0xddf10c3b => "messageMediaWebPage",
         0x2ec0533f => "messageMediaVenue",
         0xfdb19008 => "messageMediaGame",
         0xf6a548d3 => "messageMediaInvoice",
         0xb940c666 => "messageMediaGeoLive",
         0x4bd6e798 => "messageMediaPoll",
         0x3f7ee58b => "messageMediaDice",
+        0x68cb6283 => "messageMediaStory",
+        0x58260664 => "messageMediaGiveaway",
         0xb6aef7b0 => "messageActionEmpty",
         0xbd47cbad => "messageActionChatCreate",
         0xb5a1ce5a => "messageActionChatEditTitle",
@@ -148,11 +152,15 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xebbca3cb => "messageActionChatJoinedByRequest",
         0x47dd8079 => "messageActionWebViewDataSentMe",
         0xb4c38cb5 => "messageActionWebViewDataSent",
-        0xaba0f5c6 => "messageActionGiftPremium",
+        0xc83d6aec => "messageActionGiftPremium",
         0xd999256 => "messageActionTopicCreate",
         0xc0944820 => "messageActionTopicEdit",
         0x57de635e => "messageActionSuggestProfilePhoto",
         0xfe77345d => "messageActionRequestedPeer",
+        0xbc44a927 => "messageActionSetChatWallPaper",
+        0xc0787d6d => "messageActionSetSameChatWallPaper",
+        0xd2cfdb0e => "messageActionGiftCode",
+        0x332ba9ed => "messageActionGiveawayLaunch",
         0xd58a08c6 => "dialog",
         0x71bd134c => "dialogFolder",
         0x2331b22d => "photoEmpty",
@@ -175,8 +183,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x4a95e84e => "inputNotifyChats",
         0xb1db7c7e => "inputNotifyBroadcasts",
         0x5c467992 => "inputNotifyForumTopic",
-        0xdf1f002b => "inputPeerNotifySettings",
-        0xa83b0426 => "peerNotifySettings",
+        0xcacb6ae2 => "inputPeerNotifySettings",
+        0x99622c0c => "peerNotifySettings",
         0xa518110d => "peerSettings",
         0xa437c3ed => "wallPaper",
         0xe0804116 => "wallPaperNoFile",
@@ -190,7 +198,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xf5ddd6e7 => "inputReportReasonFake",
         0xa8eb2be => "inputReportReasonIllegalDrugs",
         0x9ec7863d => "inputReportReasonPersonalDetails",
-        0xf8d32aed => "userFull",
+        0xb9b12c6c => "userFull",
         0x145ade0b => "contact",
         0xc13e3c50 => "importedContact",
         0x16d9703b => "contactStatus",
@@ -235,6 +243,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x7761198 => "updateChatParticipants",
         0xe5bdf8de => "updateUserStatus",
         0xa7848924 => "updateUserName",
+        0x8951abef => "updateNewAuthorization",
         0x12bcbd9a => "updateNewEncryptedMessage",
         0x1710f156 => "updateEncryptedChatTyping",
         0xb4a2e88d => "updateEncryption",
@@ -249,7 +258,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x9c974fdf => "updateReadHistoryInbox",
         0x2f2f21bf => "updateReadHistoryOutbox",
         0x7f891213 => "updateWebPage",
-        0x68c13933 => "updateReadMessagesContents",
+        0xf8227181 => "updateReadMessagesContents",
         0x108d941f => "updateChannelTooLong",
         0x635b4c09 => "updateChannel",
         0x62ba04d9 => "updateNewChannelMessage",
@@ -298,7 +307,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x8216fba3 => "updateTheme",
         0x871fb939 => "updateGeoLiveViewed",
         0x564fe691 => "updateLoginToken",
-        0x106395c9 => "updateMessagePollVote",
+        0x24f40e77 => "updateMessagePollVote",
         0x26ffde7d => "updateDialogFilter",
         0xa5d72105 => "updateDialogFilterOrder",
         0x3504914f => "updateDialogFilters",
@@ -306,7 +315,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xd29a27f4 => "updateChannelMessageForwards",
         0xd6b19546 => "updateReadChannelDiscussionInbox",
         0x695c9e7c => "updateReadChannelDiscussionOutbox",
-        0x246a4b22 => "updatePeerBlocked",
+        0xebe07752 => "updatePeerBlocked",
         0x8c88c923 => "updateChannelUserTyping",
         0xed85eab5 => "updatePinnedMessages",
         0x5bb98608 => "updatePinnedChannelMessages",
@@ -338,6 +347,11 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x20529438 => "updateUser",
         0xec05b097 => "updateAutoSaveSettings",
         0xccf08ad6 => "updateGroupInvitePrivacyForbidden",
+        0x75b3b798 => "updateStory",
+        0xf74e932b => "updateReadStories",
+        0x1bf335b9 => "updateStoryID",
+        0x2c084dc1 => "updateStoriesStealthMode",
+        0x7d627683 => "updateSentStoryReaction",
         0xa56c2a3e => "updates.state",
         0x5d75a138 => "updates.differenceEmpty",
         0xf49ca0 => "updates.difference",
@@ -417,6 +431,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x352dafa => "inputPrivacyKeyPhoneNumber",
         0xd1219bdd => "inputPrivacyKeyAddedByPhone",
         0xaee69d68 => "inputPrivacyKeyVoiceMessages",
+        0x3823cc40 => "inputPrivacyKeyAbout",
         0xbc2eab30 => "privacyKeyStatusTimestamp",
         0x500e6dfa => "privacyKeyChatInvite",
         0x3d662b7b => "privacyKeyPhoneCall",
@@ -426,6 +441,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xd19ae46d => "privacyKeyPhoneNumber",
         0x42ffd42b => "privacyKeyAddedByPhone",
         0x697f414 => "privacyKeyVoiceMessages",
+        0xa486b761 => "privacyKeyAbout",
         0xd09e07b => "inputPrivacyValueAllowContacts",
         0x184b35ce => "inputPrivacyValueAllowAll",
         0x131cc67f => "inputPrivacyValueAllowUsers",
@@ -434,6 +450,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x90110467 => "inputPrivacyValueDisallowUsers",
         0x840649cf => "inputPrivacyValueAllowChatParticipants",
         0xe94f0f86 => "inputPrivacyValueDisallowChatParticipants",
+        0x2f453e49 => "inputPrivacyValueAllowCloseFriends",
         0xfffe1bac => "privacyValueAllowContacts",
         0x65427b82 => "privacyValueAllowAll",
         0xb8905fb2 => "privacyValueAllowUsers",
@@ -442,12 +459,13 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe4621141 => "privacyValueDisallowUsers",
         0x6b134e8e => "privacyValueAllowChatParticipants",
         0x41c87565 => "privacyValueDisallowChatParticipants",
+        0xf7e8d89b => "privacyValueAllowCloseFriends",
         0x50a04e45 => "account.privacyRules",
         0xb8d0afdf => "accountDaysTTL",
         0x6c37c15c => "documentAttributeImageSize",
         0x11b58939 => "documentAttributeAnimated",
         0x6319d612 => "documentAttributeSticker",
-        0xef02ce6 => "documentAttributeVideo",
+        0xd38ff1c2 => "documentAttributeVideo",
         0x9852f9c6 => "documentAttributeAudio",
         0x15590068 => "documentAttributeFilename",
         0x9801d2f7 => "documentAttributeHasStickers",
@@ -458,8 +476,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe86602c3 => "messages.allStickersNotModified",
         0xcdbbcebb => "messages.allStickers",
         0x84d19185 => "messages.affectedMessages",
-        0xeb1477e8 => "webPageEmpty",
-        0xc586da1c => "webPagePending",
+        0x211a1788 => "webPageEmpty",
+        0xb0d13e47 => "webPagePending",
         0xe89c45b2 => "webPage",
         0x7311ca11 => "webPageNotModified",
         0xad01d61d => "authorization",
@@ -472,7 +490,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xab4a819 => "chatInviteExported",
         0xed107ab7 => "chatInvitePublicJoinRequests",
         0x5a686d7c => "chatInviteAlready",
-        0x300c44c1 => "chatInvite",
+        0xcde0ec40 => "chatInvite",
         0x61695cb0 => "chatInvitePeek",
         0xffb62b95 => "inputStickerSetEmpty",
         0x9de7a269 => "inputStickerSetID",
@@ -494,7 +512,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x35bbdb6b => "keyboardButtonCallback",
         0xb16a6c29 => "keyboardButtonRequestPhone",
         0xfc796b3f => "keyboardButtonRequestGeoLocation",
-        0x568a748 => "keyboardButtonSwitchInline",
+        0x93b9fbb5 => "keyboardButtonSwitchInline",
         0x50f41ccf => "keyboardButtonGame",
         0xafd93fbb => "keyboardButtonBuy",
         0x10b78d29 => "keyboardButtonUrlAuth",
@@ -527,10 +545,10 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x4c4e743f => "messageEntityCashtag",
         0x9c4e7e8b => "messageEntityUnderline",
         0xbf0693d4 => "messageEntityStrike",
-        0x20df5d0 => "messageEntityBlockquote",
         0x761e6af4 => "messageEntityBankCard",
         0x32ca960f => "messageEntitySpoiler",
         0xc8cf05f8 => "messageEntityCustomEmoji",
+        0x20df5d0 => "messageEntityBlockquote",
         0xee8c1e86 => "inputChannelEmpty",
         0xf35aec28 => "inputChannel",
         0x5b934f9d => "inputChannelFromMessage",
@@ -568,6 +586,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xa6edbffd => "inputBotInlineMessageMediaContact",
         0x4b425864 => "inputBotInlineMessageGame",
         0xd7e78225 => "inputBotInlineMessageMediaInvoice",
+        0xbddcc510 => "inputBotInlineMessageMediaWebPage",
         0x88bf9319 => "inputBotInlineResult",
         0xa8d864a7 => "inputBotInlineResultPhoto",
         0xfff8fdc4 => "inputBotInlineResultDocument",
@@ -578,6 +597,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x8a86659c => "botInlineMessageMediaVenue",
         0x18d1cdc2 => "botInlineMessageMediaContact",
         0x354a9b09 => "botInlineMessageMediaInvoice",
+        0x809ad9a6 => "botInlineMessageMediaWebPage",
         0x11965f3a => "botInlineResult",
         0x17db940b => "botInlineMediaResult",
         0xe021f2f6 => "messages.botResults",
@@ -593,7 +613,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x5353e5a7 => "auth.sentCodeTypeCall",
         0xab03c6d9 => "auth.sentCodeTypeFlashCall",
         0x82006484 => "auth.sentCodeTypeMissedCall",
-        0x5a159841 => "auth.sentCodeTypeEmailCode",
+        0xf450f59b => "auth.sentCodeTypeEmailCode",
         0xa5491dea => "auth.sentCodeTypeSetUpEmailRequired",
         0xd9565c39 => "auth.sentCodeTypeFragmentSms",
         0xe57b1432 => "auth.sentCodeTypeFirebaseSms",
@@ -617,7 +637,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x70b772a8 => "contacts.topPeers",
         0xb52c939d => "contacts.topPeersDisabled",
         0x1b0c841a => "draftMessageEmpty",
-        0xfd8e711f => "draftMessage",
+        0x3fccf7ef => "draftMessage",
         0xc6dc0c66 => "messages.featuredStickersNotModified",
         0xbe382906 => "messages.featuredStickers",
         0xb17f890 => "messages.recentStickersNotModified",
@@ -688,7 +708,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xfaf7e8c9 => "phoneCallDiscardReasonBusy",
         0x7d748d04 => "dataJSON",
         0xcb296bf8 => "labeledPrice",
-        0x3e85a91b => "invoice",
+        0x5db95a15 => "invoice",
         0xea02c27e => "paymentCharge",
         0x1e8caaeb => "postAddress",
         0x909c3f94 => "paymentRequestedInfo",
@@ -759,7 +779,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xf92424d2 => "channelAdminLogEventActionParticipantMute",
         0xe64429c0 => "channelAdminLogEventActionParticipantUnmute",
         0x56d6a247 => "channelAdminLogEventActionToggleGroupCallSetting",
-        0x5cdada77 => "channelAdminLogEventActionParticipantJoinByInvite",
+        0xfe9fc158 => "channelAdminLogEventActionParticipantJoinByInvite",
         0x5a50fca4 => "channelAdminLogEventActionExportedInviteDelete",
         0x410a134e => "channelAdminLogEventActionExportedInviteRevoke",
         0xe90ebb59 => "channelAdminLogEventActionExportedInviteEdit",
@@ -776,6 +796,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xae168909 => "channelAdminLogEventActionDeleteTopic",
         0x5d8d353b => "channelAdminLogEventActionPinTopic",
         0x64f36dfc => "channelAdminLogEventActionToggleAntiSpam",
+        0x3c2b247b => "channelAdminLogEventActionChangeColor",
+        0x445fc434 => "channelAdminLogEventActionChangeBackgroundEmoji",
         0x1fad68cd => "channelAdminLogEvent",
         0xed8af74d => "channels.adminLogResults",
         0xea107ae4 => "channelAdminLogEventsFilter",
@@ -879,7 +901,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x6ca9c2e9 => "pollAnswer",
         0x86e18161 => "poll",
         0x3b6ddad2 => "pollAnswerVoters",
-        0xdcb82ea3 => "pollResults",
+        0x7adf2420 => "pollResults",
         0xf041e250 => "chatOnlines",
         0x47a971e0 => "statsURL",
         0x5fb224d5 => "chatAdminRights",
@@ -891,7 +913,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xcdc3858c => "account.wallPapers",
         0xad253d78 => "codeSettings",
         0x1dc1bca4 => "wallPaperSettings",
-        0x8efab953 => "autoDownloadSettings",
+        0xbaa57628 => "autoDownloadSettings",
         0x63cacf26 => "account.autoDownloadSettings",
         0xd5b3b9f9 => "emojiKeyword",
         0x236df622 => "emojiKeywordDeleted",
@@ -928,14 +950,13 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x8fde504f => "inputThemeSettings",
         0xfa58b6d4 => "themeSettings",
         0x54b56617 => "webPageAttributeTheme",
-        0x34d247b4 => "messageUserVote",
-        0x3ca5b0ec => "messageUserVoteInputOption",
-        0x8a65e557 => "messageUserVoteMultiple",
-        0x823f649 => "messages.votesList",
+        0x2e94c3e7 => "webPageAttributeStory",
+        0x4899484e => "messages.votesList",
         0xf568028a => "bankCardOpenUrl",
         0x3e24e573 => "payments.bankCardData",
         0x7438f7e8 => "dialogFilter",
         0x363293ae => "dialogFilterDefault",
+        0xd64a04a8 => "dialogFilterChatlist",
         0x77744d4a => "dialogFilterSuggested",
         0xb637edaf => "statsDateRangeDays",
         0xcb43acde => "statsAbsValueAndPrev",
@@ -954,7 +975,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xd7584c87 => "statsGroupTopAdmin",
         0x535f779d => "statsGroupTopInviter",
         0xef7ff916 => "stats.megagroupStats",
-        0xbea2f424 => "globalPrivacySettings",
+        0x734c4ccb => "globalPrivacySettings",
         0x4203c5ef => "help.countryCode",
         0xc3878e23 => "help.country",
         0x93cc1f32 => "help.countriesListNotModified",
@@ -962,7 +983,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x455b853d => "messageViews",
         0xb6c4f543 => "messages.messageViews",
         0xa6341782 => "messages.discussionMessage",
-        0xa6d57763 => "messageReplyHeader",
+        0x6eebcabd => "messageReplyHeader",
+        0x9c98bfc1 => "messageReplyStoryHeader",
         0x83d60fc2 => "messageReplies",
         0xe8fd8014 => "peerBlocked",
         0x8999f295 => "stats.messageStats",
@@ -977,6 +999,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xd766c50a => "inlineQueryPeerTypeChat",
         0x5ec4be43 => "inlineQueryPeerTypeMegagroup",
         0x6334ee9a => "inlineQueryPeerTypeBroadcast",
+        0xe3b2d0c => "inlineQueryPeerTypeBotPM",
         0x1662af0b => "messages.historyImport",
         0x5e0fb7b9 => "messages.historyImportParsed",
         0xef8d3e6c => "messages.affectedFoundMessages",
@@ -1003,7 +1026,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe3779861 => "account.resetPasswordFailedWait",
         0xe9effc7d => "account.resetPasswordRequestedWait",
         0xe926d63e => "account.resetPasswordOk",
-        0xfc25b828 => "sponsoredMessage",
+        0xdaafff6b => "sponsoredMessage",
         0xc9ee1d87 => "messages.sponsoredMessages",
         0x1839490f => "messages.sponsoredMessagesEmpty",
         0xc9b0539f => "searchResultsCalendarPeriod",
@@ -1026,7 +1049,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x2dbf3432 => "phone.groupCallStreamRtmpUrl",
         0x4576f3f0 => "attachMenuBotIconColor",
         0xb2a7386b => "attachMenuBotIcon",
-        0xc8aa2cd2 => "attachMenuBot",
+        0xd90d8dfe => "attachMenuBot",
         0xf1d88a5c => "attachMenuBotsNotModified",
         0x3c4301c0 => "attachMenuBots",
         0x93bf667f => "attachMenuBotsBot",
@@ -1051,11 +1074,14 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x7bfbdefc => "attachMenuPeerTypeBroadcast",
         0xc5b56859 => "inputInvoiceMessage",
         0xc326caef => "inputInvoiceSlug",
+        0x98986c0d => "inputInvoicePremiumGiftCode",
         0xaed0cbd9 => "payments.exportedInvoice",
         0x93752c52 => "messages.transcribedAudio",
         0x5334759c => "help.premiumPromo",
         0xa6751e66 => "inputStorePaymentPremiumSubscription",
         0x616f7fe8 => "inputStorePaymentGiftPremium",
+        0xa3805f3f => "inputStorePaymentPremiumGiftCode",
+        0x7c9375e6 => "inputStorePaymentPremiumGiveaway",
         0x74c34319 => "premiumGiftOption",
         0x88f8f21b => "paymentFormMethod",
         0x2de11aae => "emojiStatusEmpty",
@@ -1113,6 +1139,50 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x3c1b4f0d => "appWebViewResultUrl",
         0xb57295d5 => "inlineBotWebView",
         0x4a4ff172 => "readParticipantDate",
+        0xf3e0da33 => "inputChatlistDialogFilter",
+        0xc5181ac => "exportedChatlistInvite",
+        0x10e6e3a6 => "chatlists.exportedChatlistInvite",
+        0x10ab6dc7 => "chatlists.exportedInvites",
+        0xfa87f659 => "chatlists.chatlistInviteAlready",
+        0x1dcd839d => "chatlists.chatlistInvite",
+        0x93bd878d => "chatlists.chatlistUpdates",
+        0xe8a775b0 => "bots.botInfo",
+        0xb6cc2d5c => "messagePeerVote",
+        0x74cda504 => "messagePeerVoteInputOption",
+        0x4628f6e6 => "messagePeerVoteMultiple",
+        0x3db8ec63 => "sponsoredWebPage",
+        0x8d595cd6 => "storyViews",
+        0x51e6ee4f => "storyItemDeleted",
+        0xffadc913 => "storyItemSkipped",
+        0x44c457ce => "storyItem",
+        0x1158fe3e => "stories.allStoriesNotModified",
+        0x6efc5e81 => "stories.allStories",
+        0x5dd8c3c8 => "stories.stories",
+        0xb0bdeac5 => "storyView",
+        0x46e9b9ec => "stories.storyViewsList",
+        0xde9eed1d => "stories.storyViews",
+        0x73ec805 => "inputReplyToMessage",
+        0x15b0f283 => "inputReplyToStory",
+        0x3fc9053b => "exportedStoryLink",
+        0x712e27fd => "storiesStealthMode",
+        0x3d1ea4e => "mediaAreaCoordinates",
+        0xbe82db9c => "mediaAreaVenue",
+        0xb282217f => "inputMediaAreaVenue",
+        0xdf8b3b22 => "mediaAreaGeoPoint",
+        0x14455871 => "mediaAreaSuggestedReaction",
+        0x9a35e999 => "peerStories",
+        0xcae68768 => "stories.peerStories",
+        0xfd5e12bd => "messages.webPage",
+        0x257e962b => "premiumGiftCodeOption",
+        0xb722f158 => "payments.checkedGiftCode",
+        0x4367daa0 => "payments.giveawayInfo",
+        0xcd5570 => "payments.giveawayInfoResults",
+        0xb2539d54 => "prepaidGiveaway",
+        0x2a1c8c71 => "boost",
+        0x86f8613c => "premium.boostsList",
+        0xc448415c => "myBoost",
+        0x9ae228e2 => "premium.myBoosts",
+        0x4959427a => "premium.boostsStatus",
         0xcb9f372d => "invokeAfterMsg",
         0x3dc4b4f0 => "invokeAfterMsgs",
         0xc1cd5ea9 => "initConnection",
@@ -1141,6 +1211,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xd36bf79 => "auth.checkRecoveryPassword",
         0x2db873a9 => "auth.importWebTokenAuthorization",
         0x89464b50 => "auth.requestFirebaseSms",
+        0x7e960193 => "auth.resetLoginEmail",
         0xec86017a => "account.registerDevice",
         0x6a0d3206 => "account.unregisterDevice",
         0x84be5b93 => "account.updateNotifySettings",
@@ -1190,7 +1261,7 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xcff43f61 => "account.setContactSignUpNotification",
         0x53577479 => "account.getNotifyExceptions",
         0xfc8ddbea => "account.getWallPaper",
-        0xdd853661 => "account.uploadWallPaper",
+        0xe39a8f03 => "account.uploadWallPaper",
         0x6c5a5b37 => "account.saveWallPaper",
         0xfeed5769 => "account.installWallPaper",
         0xbb3b9804 => "account.resetWallPapers",
@@ -1228,6 +1299,9 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xadcbbcda => "account.getAutoSaveSettings",
         0xd69b8361 => "account.saveAutoSaveSettings",
         0x53bc0020 => "account.deleteAutoSaveExceptions",
+        0xca8ae8ba => "account.invalidateSignInCodes",
+        0xa001cc43 => "account.updateColor",
+        0xa60ab9ce => "account.getDefaultBackgroundEmojis",
         0xd91a548 => "users.getUsers",
         0xb60f5918 => "users.getFullUser",
         0x90c894b5 => "users.setSecureValueErrors",
@@ -1237,9 +1311,9 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x2c800be5 => "contacts.importContacts",
         0x96a0e00 => "contacts.deleteContacts",
         0x1013fd9e => "contacts.deleteByPhones",
-        0x68cc1411 => "contacts.block",
-        0xbea65d50 => "contacts.unblock",
-        0xf57c350f => "contacts.getBlocked",
+        0x2e2e8734 => "contacts.block",
+        0xb550d328 => "contacts.unblock",
+        0x9a868f80 => "contacts.getBlocked",
         0x11f812d8 => "contacts.search",
         0xf93ccba3 => "contacts.resolveUsername",
         0x973478b6 => "contacts.getTopPeers",
@@ -1254,6 +1328,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x8af94344 => "contacts.resolvePhone",
         0xf8654027 => "contacts.exportContactToken",
         0x13005788 => "contacts.importContactToken",
+        0xba6705f0 => "contacts.editCloseFriends",
+        0x94c65c76 => "contacts.setBlocked",
         0x63c66506 => "messages.getMessages",
         0xa0f4cb4f => "messages.getDialogs",
         0x4423e6c5 => "messages.getHistory",
@@ -1263,8 +1339,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe58e95d2 => "messages.deleteMessages",
         0x5a954c0 => "messages.receivedMessages",
         0x58943ee2 => "messages.setTyping",
-        0x1cc20387 => "messages.sendMessage",
-        0x7547c966 => "messages.sendMedia",
+        0x280d096f => "messages.sendMessage",
+        0x72ccc23d => "messages.sendMedia",
         0xc661bbc4 => "messages.forwardMessages",
         0xcf1592db => "messages.reportSpam",
         0xefd9a6a2 => "messages.getPeerSettings",
@@ -1308,14 +1384,14 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x327a30cb => "messages.saveGif",
         0x514e999d => "messages.getInlineBotResults",
         0xbb12a419 => "messages.setInlineBotResults",
-        0xd3fbdccb => "messages.sendInlineBotResult",
+        0xf7bc68ba => "messages.sendInlineBotResult",
         0xfda68d36 => "messages.getMessageEditData",
         0x48f71778 => "messages.editMessage",
         0x83557dba => "messages.editInlineBotMessage",
         0x9342ca07 => "messages.getBotCallbackAnswer",
         0xd58f130a => "messages.setBotCallbackAnswer",
         0xe470bcfd => "messages.getPeerDialogs",
-        0xb4331e3f => "messages.saveDraft",
+        0x7ff3b806 => "messages.saveDraft",
         0x6a3f8d65 => "messages.getAllDrafts",
         0x64780b14 => "messages.getFeaturedStickers",
         0x5b118126 => "messages.readFeaturedStickers",
@@ -1330,21 +1406,20 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe822649d => "messages.getGameHighScores",
         0xf635e1b => "messages.getInlineGameHighScores",
         0xe40ca104 => "messages.getCommonChats",
-        0x875f74be => "messages.getAllChats",
-        0x32ca8f91 => "messages.getWebPage",
+        0x8d9692a3 => "messages.getWebPage",
         0xa731e257 => "messages.toggleDialogPin",
         0x3b1adf37 => "messages.reorderPinnedDialogs",
         0xd6b94df2 => "messages.getPinnedDialogs",
         0xe5f672fa => "messages.setBotShippingResults",
         0x9c2dd95 => "messages.setBotPrecheckoutResults",
         0x519bc2b1 => "messages.uploadMedia",
-        0xc97df020 => "messages.sendScreenshotNotification",
+        0xa1405817 => "messages.sendScreenshotNotification",
         0x4f1aaa9 => "messages.getFavedStickers",
         0xb9ffc55b => "messages.faveSticker",
         0xf107e790 => "messages.getUnreadMentions",
         0x36e5bf4d => "messages.readMentions",
         0x702a40e0 => "messages.getRecentLocations",
-        0xb6f11a1c => "messages.sendMultiMedia",
+        0x456e8987 => "messages.sendMultiMedia",
         0x5057c497 => "messages.uploadEncryptedFile",
         0x35705b8a => "messages.searchStickerSets",
         0x1cff7e08 => "messages.getSplitRanges",
@@ -1416,9 +1491,9 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x16fcc2cb => "messages.getAttachMenuBots",
         0x77216192 => "messages.getAttachMenuBot",
         0x69f59d69 => "messages.toggleBotInAttachMenu",
-        0x178b480b => "messages.requestWebView",
-        0x7ff34309 => "messages.prolongWebView",
-        0x299bec8e => "messages.requestSimpleWebView",
+        0x269dc2c1 => "messages.requestWebView",
+        0xb0d81a83 => "messages.prolongWebView",
+        0x1a46500a => "messages.requestSimpleWebView",
         0xa4314f5 => "messages.sendWebViewResultMessage",
         0xdc0242c8 => "messages.sendWebViewData",
         0x269e9a49 => "messages.transcribeAudio",
@@ -1441,11 +1516,12 @@ pub fn name_for_id(id: u32) -> &'static str {
         0xe47cb579 => "messages.togglePeerTranslations",
         0x34fdc5c3 => "messages.getBotApp",
         0x8c5a3b3c => "messages.requestAppWebView",
+        0x8ffacae1 => "messages.setChatWallPaper",
         0xedd4882a => "updates.getState",
-        0x25939651 => "updates.getDifference",
+        0x19c2f763 => "updates.getDifference",
         0x3173d78 => "updates.getChannelDifference",
-        0x1c3d5956 => "photos.updateProfilePhoto",
-        0x93c9a51 => "photos.uploadProfilePhoto",
+        0x9e82039 => "photos.updateProfilePhoto",
+        0x388a3b5 => "photos.uploadProfilePhoto",
         0x87cf7f2f => "photos.deletePhotos",
         0x91cd32a8 => "photos.getUserPhotos",
         0xe14c4a71 => "photos.uploadContactProfilePhoto",
@@ -1535,6 +1611,8 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x68f3e4eb => "channels.toggleAntiSpam",
         0xa850a693 => "channels.reportAntiSpamFalsePositive",
         0x6a6e7854 => "channels.toggleParticipantsHidden",
+        0x18afbc93 => "channels.clickSponsoredMessage",
+        0x621a201f => "channels.updateColor",
         0xaa2769ed => "bots.sendCustomRequest",
         0xe6213f4d => "bots.answerWebhookJSONQuery",
         0x517165a => "bots.setBotCommands",
@@ -1544,8 +1622,13 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x9c60eb28 => "bots.getBotMenuButton",
         0x788464e1 => "bots.setBotBroadcastDefaultAdminRights",
         0x925ec9ea => "bots.setBotGroupDefaultAdminRights",
-        0xa365df7a => "bots.setBotInfo",
-        0x75ec12e6 => "bots.getBotInfo",
+        0x10cf3123 => "bots.setBotInfo",
+        0xdcd914fd => "bots.getBotInfo",
+        0x9709b1c2 => "bots.reorderUsernames",
+        0x53ca973 => "bots.toggleUsername",
+        0x1359f4e6 => "bots.canSendMessage",
+        0xf132e3ef => "bots.allowSendMessage",
+        0x87fc5e7 => "bots.invokeWebViewCustomMethod",
         0x37148dbb => "payments.getPaymentForm",
         0x2478d1cc => "payments.getPaymentReceipt",
         0xb6c8f12b => "payments.validateRequestedInfo",
@@ -1557,6 +1640,11 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x80ed747d => "payments.assignAppStoreTransaction",
         0xdffd50d3 => "payments.assignPlayMarketTransaction",
         0x9fc19eb6 => "payments.canPurchasePremium",
+        0x2757ba54 => "payments.getPremiumGiftCodeOptions",
+        0x8e51b4c1 => "payments.checkGiftCode",
+        0xf6e26854 => "payments.applyGiftCode",
+        0xf4239425 => "payments.getGiveawayInfo",
+        0x5ff58f20 => "payments.launchPrepaidGiveaway",
         0x9021ab67 => "stickers.createStickerSet",
         0xf7760f51 => "stickers.removeStickerFromSet",
         0xffb6d4ca => "stickers.changeStickerPosition",
@@ -1604,12 +1692,49 @@ pub fn name_for_id(id: u32) -> &'static str {
         0x42c6978f => "langpack.getLanguages",
         0x6a596502 => "langpack.getLanguage",
         0x6847d0ab => "folders.editPeerFolders",
-        0x1c295881 => "folders.deleteFolder",
         0xab42441a => "stats.getBroadcastStats",
         0x621d5fa0 => "stats.loadAsyncGraph",
         0xdcdf8607 => "stats.getMegagroupStats",
         0x5630281b => "stats.getMessagePublicForwards",
         0xb6e0a3f5 => "stats.getMessageStats",
+        0x8472478e => "chatlists.exportChatlistInvite",
+        0x719c5c5e => "chatlists.deleteExportedInvite",
+        0x653db63d => "chatlists.editExportedInvite",
+        0xce03da83 => "chatlists.getExportedInvites",
+        0x41c10fff => "chatlists.checkChatlistInvite",
+        0xa6b1e39a => "chatlists.joinChatlistInvite",
+        0x89419521 => "chatlists.getChatlistUpdates",
+        0xe089f8f5 => "chatlists.joinChatlistUpdates",
+        0x66e486fb => "chatlists.hideChatlistUpdates",
+        0xfdbcd714 => "chatlists.getLeaveChatlistSuggestions",
+        0x74fae13a => "chatlists.leaveChatlist",
+        0xc7dfdfdd => "stories.canSendStory",
+        0xbcb73644 => "stories.sendStory",
+        0xb583ba46 => "stories.editStory",
+        0xae59db5f => "stories.deleteStories",
+        0x9a75a1ef => "stories.togglePinned",
+        0xeeb0d625 => "stories.getAllStories",
+        0x5821a5dc => "stories.getPinnedStories",
+        0xb4352016 => "stories.getStoriesArchive",
+        0x5774ca74 => "stories.getStoriesByID",
+        0x7c2557c4 => "stories.toggleAllStoriesHidden",
+        0xa556dac8 => "stories.readStories",
+        0xb2028afb => "stories.incrementStoryViews",
+        0x7ed23c57 => "stories.getStoryViewsList",
+        0x28e16cc8 => "stories.getStoriesViews",
+        0x7b8def20 => "stories.exportStoryLink",
+        0x1923fa8c => "stories.report",
+        0x57bbd166 => "stories.activateStealthMode",
+        0x7fd736b2 => "stories.sendReaction",
+        0x2c4ada50 => "stories.getPeerStories",
+        0x9b5ae7f9 => "stories.getAllReadPeerStories",
+        0x535983c3 => "stories.getPeerMaxIDs",
+        0xa56a8b60 => "stories.getChatsToSend",
+        0xbd0415c4 => "stories.togglePeerStoriesHidden",
+        0x60f67660 => "premium.getBoostsList",
+        0xbe77b4a => "premium.getMyBoosts",
+        0x6b7da746 => "premium.applyBoost",
+        0x42f1f61 => "premium.getBoostsStatus",
         0x5162463 => "resPQ",
         0x83c95aec => "p_q_inner_data",
         0xa9f55f95 => "p_q_inner_data_dc",
@@ -1779,24 +1904,37 @@ pub mod types {
         pub inactive: bool,
         pub has_settings: bool,
         pub request_write_access: bool,
+        pub show_in_attach_menu: bool,
+        pub show_in_side_menu: bool,
+        pub side_menu_disclaimer_needed: bool,
         pub bot_id: i64,
         pub short_name: String,
-        pub peer_types: Vec<crate::enums::AttachMenuPeerType>,
+        pub peer_types: Option<Vec<crate::enums::AttachMenuPeerType>>,
         pub icons: Vec<crate::enums::AttachMenuBotIcon>,
     }
     impl crate::Identifiable for AttachMenuBot {
-        const CONSTRUCTOR_ID: u32 = 3366595794;
+        const CONSTRUCTOR_ID: u32 = 3641544190;
     }
     impl crate::Serializable for AttachMenuBot {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.inactive { 1 } else { 0 }
                 | if self.has_settings { 2 } else { 0 }
-                | if self.request_write_access { 4 } else { 0 })
+                | if self.request_write_access { 4 } else { 0 }
+                | if self.show_in_attach_menu { 8 } else { 0 }
+                | if self.show_in_side_menu { 16 } else { 0 }
+                | if self.side_menu_disclaimer_needed {
+                    32
+                } else {
+                    0
+                }
+                | if self.peer_types.is_some() { 8 } else { 0 })
             .serialize(buf);
             self.bot_id.serialize(buf);
             self.short_name.serialize(buf);
-            self.peer_types.serialize(buf);
+            if let Some(ref x) = self.peer_types {
+                x.serialize(buf);
+            }
             self.icons.serialize(buf);
         }
     }
@@ -1806,14 +1944,24 @@ pub mod types {
             let inactive = (flags & 1) != 0;
             let has_settings = (flags & 2) != 0;
             let request_write_access = (flags & 4) != 0;
+            let show_in_attach_menu = (flags & 8) != 0;
+            let show_in_side_menu = (flags & 16) != 0;
+            let side_menu_disclaimer_needed = (flags & 32) != 0;
             let bot_id = i64::deserialize(buf)?;
             let short_name = String::deserialize(buf)?;
-            let peer_types = Vec::<crate::enums::AttachMenuPeerType>::deserialize(buf)?;
+            let peer_types = if (flags & 8) != 0 {
+                Some(Vec::<crate::enums::AttachMenuPeerType>::deserialize(buf)?)
+            } else {
+                None
+            };
             let icons = Vec::<crate::enums::AttachMenuBotIcon>::deserialize(buf)?;
             Ok(AttachMenuBot {
                 inactive,
                 has_settings,
                 request_write_access,
+                show_in_attach_menu,
+                show_in_side_menu,
+                side_menu_disclaimer_needed,
                 bot_id,
                 short_name,
                 peer_types,
@@ -2097,6 +2245,7 @@ pub mod types {
         pub password_pending: bool,
         pub encrypted_requests_disabled: bool,
         pub call_requests_disabled: bool,
+        pub unconfirmed: bool,
         pub hash: i64,
         pub device_model: String,
         pub platform: String,
@@ -2124,7 +2273,8 @@ pub mod types {
                 } else {
                     0
                 }
-                | if self.call_requests_disabled { 16 } else { 0 })
+                | if self.call_requests_disabled { 16 } else { 0 }
+                | if self.unconfirmed { 32 } else { 0 })
             .serialize(buf);
             self.hash.serialize(buf);
             self.device_model.serialize(buf);
@@ -2148,6 +2298,7 @@ pub mod types {
             let password_pending = (flags & 4) != 0;
             let encrypted_requests_disabled = (flags & 8) != 0;
             let call_requests_disabled = (flags & 16) != 0;
+            let unconfirmed = (flags & 32) != 0;
             let hash = i64::deserialize(buf)?;
             let device_model = String::deserialize(buf)?;
             let platform = String::deserialize(buf)?;
@@ -2166,6 +2317,7 @@ pub mod types {
                 password_pending,
                 encrypted_requests_disabled,
                 call_requests_disabled,
+                unconfirmed,
                 hash,
                 device_model,
                 platform,
@@ -2194,13 +2346,16 @@ pub mod types {
         pub video_preload_large: bool,
         pub audio_preload_next: bool,
         pub phonecalls_less_data: bool,
+        pub stories_preload: bool,
         pub photo_size_max: i32,
         pub video_size_max: i64,
         pub file_size_max: i64,
         pub video_upload_maxbitrate: i32,
+        pub small_queue_active_operations_max: i32,
+        pub large_queue_active_operations_max: i32,
     }
     impl crate::Identifiable for AutoDownloadSettings {
-        const CONSTRUCTOR_ID: u32 = 2398796115;
+        const CONSTRUCTOR_ID: u32 = 3131405864;
     }
     impl crate::Serializable for AutoDownloadSettings {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -2208,12 +2363,15 @@ pub mod types {
                 | if self.disabled { 1 } else { 0 }
                 | if self.video_preload_large { 2 } else { 0 }
                 | if self.audio_preload_next { 4 } else { 0 }
-                | if self.phonecalls_less_data { 8 } else { 0 })
+                | if self.phonecalls_less_data { 8 } else { 0 }
+                | if self.stories_preload { 16 } else { 0 })
             .serialize(buf);
             self.photo_size_max.serialize(buf);
             self.video_size_max.serialize(buf);
             self.file_size_max.serialize(buf);
             self.video_upload_maxbitrate.serialize(buf);
+            self.small_queue_active_operations_max.serialize(buf);
+            self.large_queue_active_operations_max.serialize(buf);
         }
     }
     impl crate::Deserializable for AutoDownloadSettings {
@@ -2223,19 +2381,25 @@ pub mod types {
             let video_preload_large = (flags & 2) != 0;
             let audio_preload_next = (flags & 4) != 0;
             let phonecalls_less_data = (flags & 8) != 0;
+            let stories_preload = (flags & 16) != 0;
             let photo_size_max = i32::deserialize(buf)?;
             let video_size_max = i64::deserialize(buf)?;
             let file_size_max = i64::deserialize(buf)?;
             let video_upload_maxbitrate = i32::deserialize(buf)?;
+            let small_queue_active_operations_max = i32::deserialize(buf)?;
+            let large_queue_active_operations_max = i32::deserialize(buf)?;
             Ok(AutoDownloadSettings {
                 disabled,
                 video_preload_large,
                 audio_preload_next,
                 phonecalls_less_data,
+                stories_preload,
                 photo_size_max,
                 video_size_max,
                 file_size_max,
                 video_upload_maxbitrate,
+                small_queue_active_operations_max,
+                large_queue_active_operations_max,
             })
         }
     }
@@ -2663,6 +2827,100 @@ pub mod types {
         fn from(x: crate::enums::BindAuthKeyInner) -> Self {
             match x {
                 crate::enums::BindAuthKeyInner::Inner(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct Boost {
+        pub gift: bool,
+        pub giveaway: bool,
+        pub unclaimed: bool,
+        pub id: String,
+        pub user_id: Option<i64>,
+        pub giveaway_msg_id: Option<i32>,
+        pub date: i32,
+        pub expires: i32,
+        pub used_gift_slug: Option<String>,
+        pub multiplier: Option<i32>,
+    }
+    impl crate::Identifiable for Boost {
+        const CONSTRUCTOR_ID: u32 = 706514033;
+    }
+    impl crate::Serializable for Boost {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.gift { 2 } else { 0 }
+                | if self.giveaway { 4 } else { 0 }
+                | if self.unclaimed { 8 } else { 0 }
+                | if self.user_id.is_some() { 1 } else { 0 }
+                | if self.giveaway_msg_id.is_some() { 4 } else { 0 }
+                | if self.used_gift_slug.is_some() { 16 } else { 0 }
+                | if self.multiplier.is_some() { 32 } else { 0 })
+            .serialize(buf);
+            self.id.serialize(buf);
+            if let Some(ref x) = self.user_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.giveaway_msg_id {
+                x.serialize(buf);
+            }
+            self.date.serialize(buf);
+            self.expires.serialize(buf);
+            if let Some(ref x) = self.used_gift_slug {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.multiplier {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for Boost {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let gift = (flags & 2) != 0;
+            let giveaway = (flags & 4) != 0;
+            let unclaimed = (flags & 8) != 0;
+            let id = String::deserialize(buf)?;
+            let user_id = if (flags & 1) != 0 {
+                Some(i64::deserialize(buf)?)
+            } else {
+                None
+            };
+            let giveaway_msg_id = if (flags & 4) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let date = i32::deserialize(buf)?;
+            let expires = i32::deserialize(buf)?;
+            let used_gift_slug = if (flags & 16) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let multiplier = if (flags & 32) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(Boost {
+                gift,
+                giveaway,
+                unclaimed,
+                id,
+                user_id,
+                giveaway_msg_id,
+                date,
+                expires,
+                used_gift_slug,
+                multiplier,
+            })
+        }
+    }
+    impl From<crate::enums::Boost> for Boost {
+        fn from(x: crate::enums::Boost) -> Self {
+            match x {
+                crate::enums::Boost::Boost(x) => x,
             }
         }
     }
@@ -3142,6 +3400,7 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct BotInlineMessageMediaAuto {
+        pub invert_media: bool,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
         pub reply_markup: Option<crate::enums::ReplyMarkup>,
@@ -3152,6 +3411,7 @@ pub mod types {
     impl crate::Serializable for BotInlineMessageMediaAuto {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
+                | if self.invert_media { 8 } else { 0 }
                 | if self.entities.is_some() { 2 } else { 0 }
                 | if self.reply_markup.is_some() { 4 } else { 0 })
             .serialize(buf);
@@ -3167,6 +3427,7 @@ pub mod types {
     impl crate::Deserializable for BotInlineMessageMediaAuto {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
+            let invert_media = (flags & 8) != 0;
             let message = String::deserialize(buf)?;
             let entities = if (flags & 2) != 0 {
                 Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
@@ -3179,6 +3440,7 @@ pub mod types {
                 None
             };
             Ok(BotInlineMessageMediaAuto {
+                invert_media,
                 message,
                 entities,
                 reply_markup,
@@ -3467,8 +3729,87 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct BotInlineMessageMediaWebPage {
+        pub invert_media: bool,
+        pub force_large_media: bool,
+        pub force_small_media: bool,
+        pub manual: bool,
+        pub safe: bool,
+        pub message: String,
+        pub entities: Option<Vec<crate::enums::MessageEntity>>,
+        pub url: String,
+        pub reply_markup: Option<crate::enums::ReplyMarkup>,
+    }
+    impl crate::Identifiable for BotInlineMessageMediaWebPage {
+        const CONSTRUCTOR_ID: u32 = 2157631910;
+    }
+    impl crate::Serializable for BotInlineMessageMediaWebPage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.invert_media { 8 } else { 0 }
+                | if self.force_large_media { 16 } else { 0 }
+                | if self.force_small_media { 32 } else { 0 }
+                | if self.manual { 128 } else { 0 }
+                | if self.safe { 256 } else { 0 }
+                | if self.entities.is_some() { 2 } else { 0 }
+                | if self.reply_markup.is_some() { 4 } else { 0 })
+            .serialize(buf);
+            self.message.serialize(buf);
+            if let Some(ref x) = self.entities {
+                x.serialize(buf);
+            }
+            self.url.serialize(buf);
+            if let Some(ref x) = self.reply_markup {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for BotInlineMessageMediaWebPage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let invert_media = (flags & 8) != 0;
+            let force_large_media = (flags & 16) != 0;
+            let force_small_media = (flags & 32) != 0;
+            let manual = (flags & 128) != 0;
+            let safe = (flags & 256) != 0;
+            let message = String::deserialize(buf)?;
+            let entities = if (flags & 2) != 0 {
+                Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let url = String::deserialize(buf)?;
+            let reply_markup = if (flags & 4) != 0 {
+                Some(crate::enums::ReplyMarkup::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(BotInlineMessageMediaWebPage {
+                invert_media,
+                force_large_media,
+                force_small_media,
+                manual,
+                safe,
+                message,
+                entities,
+                url,
+                reply_markup,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::BotInlineMessage> for BotInlineMessageMediaWebPage {
+        type Error = ();
+        fn try_from(x: crate::enums::BotInlineMessage) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::BotInlineMessage::MediaWebPage(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct BotInlineMessageText {
         pub no_webpage: bool,
+        pub invert_media: bool,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
         pub reply_markup: Option<crate::enums::ReplyMarkup>,
@@ -3480,6 +3821,7 @@ pub mod types {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.no_webpage { 1 } else { 0 }
+                | if self.invert_media { 8 } else { 0 }
                 | if self.entities.is_some() { 2 } else { 0 }
                 | if self.reply_markup.is_some() { 4 } else { 0 })
             .serialize(buf);
@@ -3496,6 +3838,7 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let no_webpage = (flags & 1) != 0;
+            let invert_media = (flags & 8) != 0;
             let message = String::deserialize(buf)?;
             let entities = if (flags & 2) != 0 {
                 Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
@@ -3509,6 +3852,7 @@ pub mod types {
             };
             Ok(BotInlineMessageText {
                 no_webpage,
+                invert_media,
                 message,
                 entities,
                 reply_markup,
@@ -3768,6 +4112,9 @@ pub mod types {
         pub join_to_send: bool,
         pub join_request: bool,
         pub forum: bool,
+        pub stories_hidden: bool,
+        pub stories_hidden_min: bool,
+        pub stories_unavailable: bool,
         pub id: i64,
         pub access_hash: Option<i64>,
         pub title: String,
@@ -3780,9 +4127,12 @@ pub mod types {
         pub default_banned_rights: Option<crate::enums::ChatBannedRights>,
         pub participants_count: Option<i32>,
         pub usernames: Option<Vec<crate::enums::Username>>,
+        pub stories_max_id: Option<i32>,
+        pub color: Option<i32>,
+        pub background_emoji_id: Option<i64>,
     }
     impl crate::Identifiable for Channel {
-        const CONSTRUCTOR_ID: u32 = 2200278116;
+        const CONSTRUCTOR_ID: u32 = 427944574;
     }
     impl crate::Serializable for Channel {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -3835,7 +4185,19 @@ pub mod types {
                     0
                 })
             .serialize(buf);
-            (0u32 | if self.usernames.is_some() { 1 } else { 0 }).serialize(buf);
+            (0u32
+                | if self.stories_hidden { 2 } else { 0 }
+                | if self.stories_hidden_min { 4 } else { 0 }
+                | if self.stories_unavailable { 8 } else { 0 }
+                | if self.usernames.is_some() { 1 } else { 0 }
+                | if self.stories_max_id.is_some() { 16 } else { 0 }
+                | if self.color.is_some() { 64 } else { 0 }
+                | if self.background_emoji_id.is_some() {
+                    32
+                } else {
+                    0
+                })
+            .serialize(buf);
             self.id.serialize(buf);
             if let Some(ref x) = self.access_hash {
                 x.serialize(buf);
@@ -3864,6 +4226,15 @@ pub mod types {
             if let Some(ref x) = self.usernames {
                 x.serialize(buf);
             }
+            if let Some(ref x) = self.stories_max_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.color {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.background_emoji_id {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for Channel {
@@ -3890,6 +4261,9 @@ pub mod types {
             let join_request = (flags & 536870912) != 0;
             let forum = (flags & 1073741824) != 0;
             let flags2 = u32::deserialize(buf)?;
+            let stories_hidden = (flags2 & 2) != 0;
+            let stories_hidden_min = (flags2 & 4) != 0;
+            let stories_unavailable = (flags2 & 8) != 0;
             let id = i64::deserialize(buf)?;
             let access_hash = if (flags & 8192) != 0 {
                 Some(i64::deserialize(buf)?)
@@ -3934,6 +4308,21 @@ pub mod types {
             } else {
                 None
             };
+            let stories_max_id = if (flags2 & 16) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let color = if (flags2 & 64) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let background_emoji_id = if (flags2 & 32) != 0 {
+                Some(i64::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(Channel {
                 creator,
                 left,
@@ -3955,6 +4344,9 @@ pub mod types {
                 join_to_send,
                 join_request,
                 forum,
+                stories_hidden,
+                stories_hidden_min,
+                stories_unavailable,
                 id,
                 access_hash,
                 title,
@@ -3967,6 +4359,9 @@ pub mod types {
                 default_banned_rights,
                 participants_count,
                 usernames,
+                stories_max_id,
+                color,
+                background_emoji_id,
             })
         }
     }
@@ -4082,6 +4477,74 @@ pub mod types {
         fn try_from(x: crate::enums::ChannelAdminLogEventAction) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::ChannelAdminLogEventAction::ChangeAvailableReactions(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct ChannelAdminLogEventActionChangeBackgroundEmoji {
+        pub prev_value: i64,
+        pub new_value: i64,
+    }
+    impl crate::Identifiable for ChannelAdminLogEventActionChangeBackgroundEmoji {
+        const CONSTRUCTOR_ID: u32 = 1147126836;
+    }
+    impl crate::Serializable for ChannelAdminLogEventActionChangeBackgroundEmoji {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.prev_value.serialize(buf);
+            self.new_value.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for ChannelAdminLogEventActionChangeBackgroundEmoji {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let prev_value = i64::deserialize(buf)?;
+            let new_value = i64::deserialize(buf)?;
+            Ok(ChannelAdminLogEventActionChangeBackgroundEmoji {
+                prev_value,
+                new_value,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::ChannelAdminLogEventAction>
+        for ChannelAdminLogEventActionChangeBackgroundEmoji
+    {
+        type Error = ();
+        fn try_from(x: crate::enums::ChannelAdminLogEventAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::ChannelAdminLogEventAction::ChangeBackgroundEmoji(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct ChannelAdminLogEventActionChangeColor {
+        pub prev_value: i32,
+        pub new_value: i32,
+    }
+    impl crate::Identifiable for ChannelAdminLogEventActionChangeColor {
+        const CONSTRUCTOR_ID: u32 = 1009460347;
+    }
+    impl crate::Serializable for ChannelAdminLogEventActionChangeColor {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.prev_value.serialize(buf);
+            self.new_value.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for ChannelAdminLogEventActionChangeColor {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let prev_value = i32::deserialize(buf)?;
+            let new_value = i32::deserialize(buf)?;
+            Ok(ChannelAdminLogEventActionChangeColor {
+                prev_value,
+                new_value,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::ChannelAdminLogEventAction> for ChannelAdminLogEventActionChangeColor {
+        type Error = ();
+        fn try_from(x: crate::enums::ChannelAdminLogEventAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::ChannelAdminLogEventAction::ChangeColor(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -4723,20 +5186,27 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct ChannelAdminLogEventActionParticipantJoinByInvite {
+        pub via_chatlist: bool,
         pub invite: crate::enums::ExportedChatInvite,
     }
     impl crate::Identifiable for ChannelAdminLogEventActionParticipantJoinByInvite {
-        const CONSTRUCTOR_ID: u32 = 1557846647;
+        const CONSTRUCTOR_ID: u32 = 4271882584;
     }
     impl crate::Serializable for ChannelAdminLogEventActionParticipantJoinByInvite {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.via_chatlist { 1 } else { 0 }).serialize(buf);
             self.invite.serialize(buf);
         }
     }
     impl crate::Deserializable for ChannelAdminLogEventActionParticipantJoinByInvite {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let via_chatlist = (flags & 1) != 0;
             let invite = crate::enums::ExportedChatInvite::deserialize(buf)?;
-            Ok(ChannelAdminLogEventActionParticipantJoinByInvite { invite })
+            Ok(ChannelAdminLogEventActionParticipantJoinByInvite {
+                via_chatlist,
+                invite,
+            })
         }
     }
     impl TryFrom<crate::enums::ChannelAdminLogEventAction>
@@ -5533,6 +6003,7 @@ pub mod types {
         pub antispam: bool,
         pub participants_hidden: bool,
         pub translations_disabled: bool,
+        pub stories_pinned_available: bool,
         pub id: i64,
         pub about: String,
         pub participants_count: Option<i32>,
@@ -5568,9 +6039,10 @@ pub mod types {
         pub recent_requesters: Option<Vec<i64>>,
         pub default_send_as: Option<crate::enums::Peer>,
         pub available_reactions: Option<crate::enums::ChatReactions>,
+        pub stories: Option<crate::enums::PeerStories>,
     }
     impl crate::Identifiable for ChannelFull {
-        const CONSTRUCTOR_ID: u32 = 4063581447;
+        const CONSTRUCTOR_ID: u32 = 1915758525;
     }
     impl crate::Serializable for ChannelFull {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -5678,7 +6150,9 @@ pub mod types {
                 | if self.can_delete_channel { 1 } else { 0 }
                 | if self.antispam { 2 } else { 0 }
                 | if self.participants_hidden { 4 } else { 0 }
-                | if self.translations_disabled { 8 } else { 0 })
+                | if self.translations_disabled { 8 } else { 0 }
+                | if self.stories_pinned_available { 32 } else { 0 }
+                | if self.stories.is_some() { 16 } else { 0 })
             .serialize(buf);
             self.id.serialize(buf);
             self.about.serialize(buf);
@@ -5767,6 +6241,9 @@ pub mod types {
             if let Some(ref x) = self.available_reactions {
                 x.serialize(buf);
             }
+            if let Some(ref x) = self.stories {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for ChannelFull {
@@ -5785,6 +6262,7 @@ pub mod types {
             let antispam = (flags2 & 2) != 0;
             let participants_hidden = (flags2 & 4) != 0;
             let translations_disabled = (flags2 & 8) != 0;
+            let stories_pinned_available = (flags2 & 32) != 0;
             let id = i64::deserialize(buf)?;
             let about = String::deserialize(buf)?;
             let participants_count = if (flags & 1) != 0 {
@@ -5924,6 +6402,11 @@ pub mod types {
             } else {
                 None
             };
+            let stories = if (flags2 & 16) != 0 {
+                Some(crate::enums::PeerStories::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(ChannelFull {
                 can_view_participants,
                 can_set_username,
@@ -5937,6 +6420,7 @@ pub mod types {
                 antispam,
                 participants_hidden,
                 translations_disabled,
+                stories_pinned_available,
                 id,
                 about,
                 participants_count,
@@ -5972,6 +6456,7 @@ pub mod types {
                 recent_requesters,
                 default_send_as,
                 available_reactions,
+                stories,
             })
         }
     }
@@ -6714,6 +7199,9 @@ pub mod types {
         pub manage_call: bool,
         pub other: bool,
         pub manage_topics: bool,
+        pub post_stories: bool,
+        pub edit_stories: bool,
+        pub delete_stories: bool,
     }
     impl crate::Identifiable for ChatAdminRights {
         const CONSTRUCTOR_ID: u32 = 1605510357;
@@ -6732,7 +7220,10 @@ pub mod types {
                 | if self.anonymous { 1024 } else { 0 }
                 | if self.manage_call { 2048 } else { 0 }
                 | if self.other { 4096 } else { 0 }
-                | if self.manage_topics { 8192 } else { 0 })
+                | if self.manage_topics { 8192 } else { 0 }
+                | if self.post_stories { 16384 } else { 0 }
+                | if self.edit_stories { 32768 } else { 0 }
+                | if self.delete_stories { 65536 } else { 0 })
             .serialize(buf);
         }
     }
@@ -6751,6 +7242,9 @@ pub mod types {
             let manage_call = (flags & 2048) != 0;
             let other = (flags & 4096) != 0;
             let manage_topics = (flags & 8192) != 0;
+            let post_stories = (flags & 16384) != 0;
+            let edit_stories = (flags & 32768) != 0;
+            let delete_stories = (flags & 65536) != 0;
             Ok(ChatAdminRights {
                 change_info,
                 post_messages,
@@ -6764,6 +7258,9 @@ pub mod types {
                 manage_call,
                 other,
                 manage_topics,
+                post_stories,
+                edit_stories,
+                delete_stories,
             })
         }
     }
@@ -7199,14 +7696,18 @@ pub mod types {
         pub public: bool,
         pub megagroup: bool,
         pub request_needed: bool,
+        pub verified: bool,
+        pub scam: bool,
+        pub fake: bool,
         pub title: String,
         pub about: Option<String>,
         pub photo: crate::enums::Photo,
         pub participants_count: i32,
         pub participants: Option<Vec<crate::enums::User>>,
+        pub color: i32,
     }
     impl crate::Identifiable for ChatInvite {
-        const CONSTRUCTOR_ID: u32 = 806110401;
+        const CONSTRUCTOR_ID: u32 = 3454069824;
     }
     impl crate::Serializable for ChatInvite {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -7216,6 +7717,9 @@ pub mod types {
                 | if self.public { 4 } else { 0 }
                 | if self.megagroup { 8 } else { 0 }
                 | if self.request_needed { 64 } else { 0 }
+                | if self.verified { 128 } else { 0 }
+                | if self.scam { 256 } else { 0 }
+                | if self.fake { 512 } else { 0 }
                 | if self.about.is_some() { 32 } else { 0 }
                 | if self.participants.is_some() { 16 } else { 0 })
             .serialize(buf);
@@ -7228,6 +7732,7 @@ pub mod types {
             if let Some(ref x) = self.participants {
                 x.serialize(buf);
             }
+            self.color.serialize(buf);
         }
     }
     impl crate::Deserializable for ChatInvite {
@@ -7238,6 +7743,9 @@ pub mod types {
             let public = (flags & 4) != 0;
             let megagroup = (flags & 8) != 0;
             let request_needed = (flags & 64) != 0;
+            let verified = (flags & 128) != 0;
+            let scam = (flags & 256) != 0;
+            let fake = (flags & 512) != 0;
             let title = String::deserialize(buf)?;
             let about = if (flags & 32) != 0 {
                 Some(String::deserialize(buf)?)
@@ -7251,17 +7759,22 @@ pub mod types {
             } else {
                 None
             };
+            let color = i32::deserialize(buf)?;
             Ok(ChatInvite {
                 channel,
                 broadcast,
                 public,
                 megagroup,
                 request_needed,
+                verified,
+                scam,
+                fake,
                 title,
                 about,
                 photo,
                 participants_count,
                 participants,
+                color,
             })
         }
     }
@@ -7422,6 +7935,7 @@ pub mod types {
     #[derive(Debug, Clone, PartialEq)]
     pub struct ChatInviteImporter {
         pub requested: bool,
+        pub via_chatlist: bool,
         pub user_id: i64,
         pub date: i32,
         pub about: Option<String>,
@@ -7434,6 +7948,7 @@ pub mod types {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.requested { 1 } else { 0 }
+                | if self.via_chatlist { 8 } else { 0 }
                 | if self.about.is_some() { 4 } else { 0 }
                 | if self.approved_by.is_some() { 2 } else { 0 })
             .serialize(buf);
@@ -7451,6 +7966,7 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let requested = (flags & 1) != 0;
+            let via_chatlist = (flags & 8) != 0;
             let user_id = i64::deserialize(buf)?;
             let date = i32::deserialize(buf)?;
             let about = if (flags & 4) != 0 {
@@ -7465,6 +7981,7 @@ pub mod types {
             };
             Ok(ChatInviteImporter {
                 requested,
+                via_chatlist,
                 user_id,
                 date,
                 about,
@@ -8960,6 +9477,65 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct DialogFilterChatlist {
+        pub has_my_invites: bool,
+        pub id: i32,
+        pub title: String,
+        pub emoticon: Option<String>,
+        pub pinned_peers: Vec<crate::enums::InputPeer>,
+        pub include_peers: Vec<crate::enums::InputPeer>,
+    }
+    impl crate::Identifiable for DialogFilterChatlist {
+        const CONSTRUCTOR_ID: u32 = 3595175080;
+    }
+    impl crate::Serializable for DialogFilterChatlist {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.has_my_invites { 67108864 } else { 0 }
+                | if self.emoticon.is_some() { 33554432 } else { 0 })
+            .serialize(buf);
+            self.id.serialize(buf);
+            self.title.serialize(buf);
+            if let Some(ref x) = self.emoticon {
+                x.serialize(buf);
+            }
+            self.pinned_peers.serialize(buf);
+            self.include_peers.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for DialogFilterChatlist {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let has_my_invites = (flags & 67108864) != 0;
+            let id = i32::deserialize(buf)?;
+            let title = String::deserialize(buf)?;
+            let emoticon = if (flags & 33554432) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let pinned_peers = Vec::<crate::enums::InputPeer>::deserialize(buf)?;
+            let include_peers = Vec::<crate::enums::InputPeer>::deserialize(buf)?;
+            Ok(DialogFilterChatlist {
+                has_my_invites,
+                id,
+                title,
+                emoticon,
+                pinned_peers,
+                include_peers,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::DialogFilter> for DialogFilterChatlist {
+        type Error = ();
+        fn try_from(x: crate::enums::DialogFilter) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::DialogFilter::Chatlist(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct DialogFilterDefault {}
     impl crate::Identifiable for DialogFilterDefault {
         const CONSTRUCTOR_ID: u32 = 909284270;
@@ -9471,22 +10047,33 @@ pub mod types {
     pub struct DocumentAttributeVideo {
         pub round_message: bool,
         pub supports_streaming: bool,
-        pub duration: i32,
+        pub nosound: bool,
+        pub duration: f64,
         pub w: i32,
         pub h: i32,
+        pub preload_prefix_size: Option<i32>,
     }
     impl crate::Identifiable for DocumentAttributeVideo {
-        const CONSTRUCTOR_ID: u32 = 250621158;
+        const CONSTRUCTOR_ID: u32 = 3549426114;
     }
     impl crate::Serializable for DocumentAttributeVideo {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.round_message { 1 } else { 0 }
-                | if self.supports_streaming { 2 } else { 0 })
+                | if self.supports_streaming { 2 } else { 0 }
+                | if self.nosound { 8 } else { 0 }
+                | if self.preload_prefix_size.is_some() {
+                    4
+                } else {
+                    0
+                })
             .serialize(buf);
             self.duration.serialize(buf);
             self.w.serialize(buf);
             self.h.serialize(buf);
+            if let Some(ref x) = self.preload_prefix_size {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for DocumentAttributeVideo {
@@ -9494,15 +10081,23 @@ pub mod types {
             let flags = u32::deserialize(buf)?;
             let round_message = (flags & 1) != 0;
             let supports_streaming = (flags & 2) != 0;
-            let duration = i32::deserialize(buf)?;
+            let nosound = (flags & 8) != 0;
+            let duration = f64::deserialize(buf)?;
             let w = i32::deserialize(buf)?;
             let h = i32::deserialize(buf)?;
+            let preload_prefix_size = if (flags & 4) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(DocumentAttributeVideo {
                 round_message,
                 supports_streaming,
+                nosound,
                 duration,
                 w,
                 h,
+                preload_prefix_size,
             })
         }
     }
@@ -9545,26 +10140,33 @@ pub mod types {
     #[derive(Debug, Clone, PartialEq)]
     pub struct DraftMessage {
         pub no_webpage: bool,
-        pub reply_to_msg_id: Option<i32>,
+        pub invert_media: bool,
+        pub reply_to: Option<crate::enums::InputReplyTo>,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
+        pub media: Option<crate::enums::InputMedia>,
         pub date: i32,
     }
     impl crate::Identifiable for DraftMessage {
-        const CONSTRUCTOR_ID: u32 = 4253970719;
+        const CONSTRUCTOR_ID: u32 = 1070397423;
     }
     impl crate::Serializable for DraftMessage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.no_webpage { 2 } else { 0 }
-                | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                | if self.entities.is_some() { 8 } else { 0 })
+                | if self.invert_media { 64 } else { 0 }
+                | if self.reply_to.is_some() { 16 } else { 0 }
+                | if self.entities.is_some() { 8 } else { 0 }
+                | if self.media.is_some() { 32 } else { 0 })
             .serialize(buf);
-            if let Some(ref x) = self.reply_to_msg_id {
+            if let Some(ref x) = self.reply_to {
                 x.serialize(buf);
             }
             self.message.serialize(buf);
             if let Some(ref x) = self.entities {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.media {
                 x.serialize(buf);
             }
             self.date.serialize(buf);
@@ -9574,8 +10176,9 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let no_webpage = (flags & 2) != 0;
-            let reply_to_msg_id = if (flags & 1) != 0 {
-                Some(i32::deserialize(buf)?)
+            let invert_media = (flags & 64) != 0;
+            let reply_to = if (flags & 16) != 0 {
+                Some(crate::enums::InputReplyTo::deserialize(buf)?)
             } else {
                 None
             };
@@ -9585,12 +10188,19 @@ pub mod types {
             } else {
                 None
             };
+            let media = if (flags & 32) != 0 {
+                Some(crate::enums::InputMedia::deserialize(buf)?)
+            } else {
+                None
+            };
             let date = i32::deserialize(buf)?;
             Ok(DraftMessage {
                 no_webpage,
-                reply_to_msg_id,
+                invert_media,
+                reply_to,
                 message,
                 entities,
+                media,
                 date,
             })
         }
@@ -10516,6 +11126,39 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct ExportedChatlistInvite {
+        pub title: String,
+        pub url: String,
+        pub peers: Vec<crate::enums::Peer>,
+    }
+    impl crate::Identifiable for ExportedChatlistInvite {
+        const CONSTRUCTOR_ID: u32 = 206668204;
+    }
+    impl crate::Serializable for ExportedChatlistInvite {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32).serialize(buf);
+            self.title.serialize(buf);
+            self.url.serialize(buf);
+            self.peers.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for ExportedChatlistInvite {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let _flags = u32::deserialize(buf)?;
+            let title = String::deserialize(buf)?;
+            let url = String::deserialize(buf)?;
+            let peers = Vec::<crate::enums::Peer>::deserialize(buf)?;
+            Ok(ExportedChatlistInvite { title, url, peers })
+        }
+    }
+    impl From<crate::enums::ExportedChatlistInvite> for ExportedChatlistInvite {
+        fn from(x: crate::enums::ExportedChatlistInvite) -> Self {
+            match x {
+                crate::enums::ExportedChatlistInvite::Invite(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct ExportedContactToken {
         pub url: String,
         pub expires: i32,
@@ -10568,6 +11211,31 @@ pub mod types {
         fn from(x: crate::enums::ExportedMessageLink) -> Self {
             match x {
                 crate::enums::ExportedMessageLink::Link(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct ExportedStoryLink {
+        pub link: String,
+    }
+    impl crate::Identifiable for ExportedStoryLink {
+        const CONSTRUCTOR_ID: u32 = 1070138683;
+    }
+    impl crate::Serializable for ExportedStoryLink {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.link.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for ExportedStoryLink {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let link = String::deserialize(buf)?;
+            Ok(ExportedStoryLink { link })
+        }
+    }
+    impl From<crate::enums::ExportedStoryLink> for ExportedStoryLink {
+        fn from(x: crate::enums::ExportedStoryLink) -> Self {
+            match x {
+                crate::enums::ExportedStoryLink::Link(x) => x,
             }
         }
     }
@@ -11042,35 +11710,36 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct GlobalPrivacySettings {
-        pub archive_and_mute_new_noncontact_peers: Option<bool>,
+        pub archive_and_mute_new_noncontact_peers: bool,
+        pub keep_archived_unmuted: bool,
+        pub keep_archived_folders: bool,
     }
     impl crate::Identifiable for GlobalPrivacySettings {
-        const CONSTRUCTOR_ID: u32 = 3198350372;
+        const CONSTRUCTOR_ID: u32 = 1934380235;
     }
     impl crate::Serializable for GlobalPrivacySettings {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
-                | if self.archive_and_mute_new_noncontact_peers.is_some() {
+                | if self.archive_and_mute_new_noncontact_peers {
                     1
                 } else {
                     0
-                })
+                }
+                | if self.keep_archived_unmuted { 2 } else { 0 }
+                | if self.keep_archived_folders { 4 } else { 0 })
             .serialize(buf);
-            if let Some(ref x) = self.archive_and_mute_new_noncontact_peers {
-                x.serialize(buf);
-            }
         }
     }
     impl crate::Deserializable for GlobalPrivacySettings {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
-            let archive_and_mute_new_noncontact_peers = if (flags & 1) != 0 {
-                Some(bool::deserialize(buf)?)
-            } else {
-                None
-            };
+            let archive_and_mute_new_noncontact_peers = (flags & 1) != 0;
+            let keep_archived_unmuted = (flags & 2) != 0;
+            let keep_archived_folders = (flags & 4) != 0;
             Ok(GlobalPrivacySettings {
                 archive_and_mute_new_noncontact_peers,
+                keep_archived_unmuted,
+                keep_archived_folders,
             })
         }
     }
@@ -11687,6 +12356,28 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InlineQueryPeerTypeBotPm {}
+    impl crate::Identifiable for InlineQueryPeerTypeBotPm {
+        const CONSTRUCTOR_ID: u32 = 238759180;
+    }
+    impl crate::Serializable for InlineQueryPeerTypeBotPm {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for InlineQueryPeerTypeBotPm {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(InlineQueryPeerTypeBotPm {})
+        }
+    }
+    impl TryFrom<crate::enums::InlineQueryPeerType> for InlineQueryPeerTypeBotPm {
+        type Error = ();
+        fn try_from(x: crate::enums::InlineQueryPeerType) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InlineQueryPeerType::BotPm => Ok(InlineQueryPeerTypeBotPm {}),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InlineQueryPeerTypeBroadcast {}
     impl crate::Identifiable for InlineQueryPeerTypeBroadcast {
         const CONSTRUCTOR_ID: u32 = 1664413338;
@@ -12010,6 +12701,7 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct InputBotInlineMessageMediaAuto {
+        pub invert_media: bool,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
         pub reply_markup: Option<crate::enums::ReplyMarkup>,
@@ -12020,6 +12712,7 @@ pub mod types {
     impl crate::Serializable for InputBotInlineMessageMediaAuto {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
+                | if self.invert_media { 8 } else { 0 }
                 | if self.entities.is_some() { 2 } else { 0 }
                 | if self.reply_markup.is_some() { 4 } else { 0 })
             .serialize(buf);
@@ -12035,6 +12728,7 @@ pub mod types {
     impl crate::Deserializable for InputBotInlineMessageMediaAuto {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
+            let invert_media = (flags & 8) != 0;
             let message = String::deserialize(buf)?;
             let entities = if (flags & 2) != 0 {
                 Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
@@ -12047,6 +12741,7 @@ pub mod types {
                 None
             };
             Ok(InputBotInlineMessageMediaAuto {
+                invert_media,
                 message,
                 entities,
                 reply_markup,
@@ -12331,8 +13026,83 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputBotInlineMessageMediaWebPage {
+        pub invert_media: bool,
+        pub force_large_media: bool,
+        pub force_small_media: bool,
+        pub optional: bool,
+        pub message: String,
+        pub entities: Option<Vec<crate::enums::MessageEntity>>,
+        pub url: String,
+        pub reply_markup: Option<crate::enums::ReplyMarkup>,
+    }
+    impl crate::Identifiable for InputBotInlineMessageMediaWebPage {
+        const CONSTRUCTOR_ID: u32 = 3185362192;
+    }
+    impl crate::Serializable for InputBotInlineMessageMediaWebPage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.invert_media { 8 } else { 0 }
+                | if self.force_large_media { 16 } else { 0 }
+                | if self.force_small_media { 32 } else { 0 }
+                | if self.optional { 64 } else { 0 }
+                | if self.entities.is_some() { 2 } else { 0 }
+                | if self.reply_markup.is_some() { 4 } else { 0 })
+            .serialize(buf);
+            self.message.serialize(buf);
+            if let Some(ref x) = self.entities {
+                x.serialize(buf);
+            }
+            self.url.serialize(buf);
+            if let Some(ref x) = self.reply_markup {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for InputBotInlineMessageMediaWebPage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let invert_media = (flags & 8) != 0;
+            let force_large_media = (flags & 16) != 0;
+            let force_small_media = (flags & 32) != 0;
+            let optional = (flags & 64) != 0;
+            let message = String::deserialize(buf)?;
+            let entities = if (flags & 2) != 0 {
+                Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let url = String::deserialize(buf)?;
+            let reply_markup = if (flags & 4) != 0 {
+                Some(crate::enums::ReplyMarkup::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(InputBotInlineMessageMediaWebPage {
+                invert_media,
+                force_large_media,
+                force_small_media,
+                optional,
+                message,
+                entities,
+                url,
+                reply_markup,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::InputBotInlineMessage> for InputBotInlineMessageMediaWebPage {
+        type Error = ();
+        fn try_from(x: crate::enums::InputBotInlineMessage) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputBotInlineMessage::MediaWebPage(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputBotInlineMessageText {
         pub no_webpage: bool,
+        pub invert_media: bool,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
         pub reply_markup: Option<crate::enums::ReplyMarkup>,
@@ -12344,6 +13114,7 @@ pub mod types {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.no_webpage { 1 } else { 0 }
+                | if self.invert_media { 8 } else { 0 }
                 | if self.entities.is_some() { 2 } else { 0 }
                 | if self.reply_markup.is_some() { 4 } else { 0 })
             .serialize(buf);
@@ -12360,6 +13131,7 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let no_webpage = (flags & 1) != 0;
+            let invert_media = (flags & 8) != 0;
             let message = String::deserialize(buf)?;
             let entities = if (flags & 2) != 0 {
                 Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
@@ -12373,6 +13145,7 @@ pub mod types {
             };
             Ok(InputBotInlineMessageText {
                 no_webpage,
+                invert_media,
                 message,
                 entities,
                 reply_markup,
@@ -12841,6 +13614,31 @@ pub mod types {
             match x {
                 crate::enums::InputChatPhoto::InputChatUploadedPhoto(x) => Ok(x),
                 _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputChatlistDialogFilter {
+        pub filter_id: i32,
+    }
+    impl crate::Identifiable for InputChatlistDialogFilter {
+        const CONSTRUCTOR_ID: u32 = 4091599411;
+    }
+    impl crate::Serializable for InputChatlistDialogFilter {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.filter_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputChatlistDialogFilter {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let filter_id = i32::deserialize(buf)?;
+            Ok(InputChatlistDialogFilter { filter_id })
+        }
+    }
+    impl From<crate::enums::InputChatlist> for InputChatlistDialogFilter {
+        fn from(x: crate::enums::InputChatlist) -> Self {
+            match x {
+                crate::enums::InputChatlist::DialogFilter(x) => x,
             }
         }
     }
@@ -13665,6 +14463,36 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputInvoicePremiumGiftCode {
+        pub purpose: crate::enums::InputStorePaymentPurpose,
+        pub option: crate::enums::PremiumGiftCodeOption,
+    }
+    impl crate::Identifiable for InputInvoicePremiumGiftCode {
+        const CONSTRUCTOR_ID: u32 = 2560125965;
+    }
+    impl crate::Serializable for InputInvoicePremiumGiftCode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.purpose.serialize(buf);
+            self.option.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputInvoicePremiumGiftCode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let purpose = crate::enums::InputStorePaymentPurpose::deserialize(buf)?;
+            let option = crate::enums::PremiumGiftCodeOption::deserialize(buf)?;
+            Ok(InputInvoicePremiumGiftCode { purpose, option })
+        }
+    }
+    impl TryFrom<crate::enums::InputInvoice> for InputInvoicePremiumGiftCode {
+        type Error = ();
+        fn try_from(x: crate::enums::InputInvoice) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputInvoice::PremiumGiftCode(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputInvoiceSlug {
         pub slug: String,
     }
@@ -13772,6 +14600,43 @@ pub mod types {
         fn try_from(x: crate::enums::KeyboardButton) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::KeyboardButton::InputKeyboardButtonUserProfile(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputMediaAreaVenue {
+        pub coordinates: crate::enums::MediaAreaCoordinates,
+        pub query_id: i64,
+        pub result_id: String,
+    }
+    impl crate::Identifiable for InputMediaAreaVenue {
+        const CONSTRUCTOR_ID: u32 = 2994872703;
+    }
+    impl crate::Serializable for InputMediaAreaVenue {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.coordinates.serialize(buf);
+            self.query_id.serialize(buf);
+            self.result_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputMediaAreaVenue {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let coordinates = crate::enums::MediaAreaCoordinates::deserialize(buf)?;
+            let query_id = i64::deserialize(buf)?;
+            let result_id = String::deserialize(buf)?;
+            Ok(InputMediaAreaVenue {
+                coordinates,
+                query_id,
+                result_id,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MediaArea> for InputMediaAreaVenue {
+        type Error = ();
+        fn try_from(x: crate::enums::MediaArea) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MediaArea::InputMediaAreaVenue(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -14347,6 +15212,36 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputMediaStory {
+        pub peer: crate::enums::InputPeer,
+        pub id: i32,
+    }
+    impl crate::Identifiable for InputMediaStory {
+        const CONSTRUCTOR_ID: u32 = 2315114360;
+    }
+    impl crate::Serializable for InputMediaStory {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputMediaStory {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::InputPeer::deserialize(buf)?;
+            let id = i32::deserialize(buf)?;
+            Ok(InputMediaStory { peer, id })
+        }
+    }
+    impl TryFrom<crate::enums::InputMedia> for InputMediaStory {
+        type Error = ();
+        fn try_from(x: crate::enums::InputMedia) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputMedia::Story(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputMediaUploadedDocument {
         pub nosound_video: bool,
         pub force_file: bool,
@@ -14534,6 +15429,50 @@ pub mod types {
         fn try_from(x: crate::enums::InputMedia) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::InputMedia::Venue(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputMediaWebPage {
+        pub force_large_media: bool,
+        pub force_small_media: bool,
+        pub optional: bool,
+        pub url: String,
+    }
+    impl crate::Identifiable for InputMediaWebPage {
+        const CONSTRUCTOR_ID: u32 = 3256584265;
+    }
+    impl crate::Serializable for InputMediaWebPage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.force_large_media { 1 } else { 0 }
+                | if self.force_small_media { 2 } else { 0 }
+                | if self.optional { 4 } else { 0 })
+            .serialize(buf);
+            self.url.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputMediaWebPage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let force_large_media = (flags & 1) != 0;
+            let force_small_media = (flags & 2) != 0;
+            let optional = (flags & 4) != 0;
+            let url = String::deserialize(buf)?;
+            Ok(InputMediaWebPage {
+                force_large_media,
+                force_small_media,
+                optional,
+                url,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::InputMedia> for InputMediaWebPage {
+        type Error = ();
+        fn try_from(x: crate::enums::InputMedia) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputMedia::WebPage(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -15458,9 +16397,12 @@ pub mod types {
         pub silent: Option<bool>,
         pub mute_until: Option<i32>,
         pub sound: Option<crate::enums::NotificationSound>,
+        pub stories_muted: Option<bool>,
+        pub stories_hide_sender: Option<bool>,
+        pub stories_sound: Option<crate::enums::NotificationSound>,
     }
     impl crate::Identifiable for InputPeerNotifySettings {
-        const CONSTRUCTOR_ID: u32 = 3743350827;
+        const CONSTRUCTOR_ID: u32 = 3402328802;
     }
     impl crate::Serializable for InputPeerNotifySettings {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -15468,7 +16410,14 @@ pub mod types {
                 | if self.show_previews.is_some() { 1 } else { 0 }
                 | if self.silent.is_some() { 2 } else { 0 }
                 | if self.mute_until.is_some() { 4 } else { 0 }
-                | if self.sound.is_some() { 8 } else { 0 })
+                | if self.sound.is_some() { 8 } else { 0 }
+                | if self.stories_muted.is_some() { 64 } else { 0 }
+                | if self.stories_hide_sender.is_some() {
+                    128
+                } else {
+                    0
+                }
+                | if self.stories_sound.is_some() { 256 } else { 0 })
             .serialize(buf);
             if let Some(ref x) = self.show_previews {
                 x.serialize(buf);
@@ -15480,6 +16429,15 @@ pub mod types {
                 x.serialize(buf);
             }
             if let Some(ref x) = self.sound {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_muted {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_hide_sender {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_sound {
                 x.serialize(buf);
             }
         }
@@ -15507,11 +16465,29 @@ pub mod types {
             } else {
                 None
             };
+            let stories_muted = if (flags & 64) != 0 {
+                Some(bool::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_hide_sender = if (flags & 128) != 0 {
+                Some(bool::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_sound = if (flags & 256) != 0 {
+                Some(crate::enums::NotificationSound::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(InputPeerNotifySettings {
                 show_previews,
                 silent,
                 mute_until,
                 sound,
+                stories_muted,
+                stories_hide_sender,
+                stories_sound,
             })
         }
     }
@@ -15869,6 +16845,28 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputPrivacyKeyAbout {}
+    impl crate::Identifiable for InputPrivacyKeyAbout {
+        const CONSTRUCTOR_ID: u32 = 941870144;
+    }
+    impl crate::Serializable for InputPrivacyKeyAbout {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for InputPrivacyKeyAbout {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(InputPrivacyKeyAbout {})
+        }
+    }
+    impl TryFrom<crate::enums::InputPrivacyKey> for InputPrivacyKeyAbout {
+        type Error = ();
+        fn try_from(x: crate::enums::InputPrivacyKey) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputPrivacyKey::About => Ok(InputPrivacyKeyAbout {}),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputPrivacyKeyAddedByPhone {}
     impl crate::Identifiable for InputPrivacyKeyAddedByPhone {
         const CONSTRUCTOR_ID: u32 = 3508640733;
@@ -16120,6 +17118,30 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputPrivacyValueAllowCloseFriends {}
+    impl crate::Identifiable for InputPrivacyValueAllowCloseFriends {
+        const CONSTRUCTOR_ID: u32 = 793067081;
+    }
+    impl crate::Serializable for InputPrivacyValueAllowCloseFriends {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for InputPrivacyValueAllowCloseFriends {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(InputPrivacyValueAllowCloseFriends {})
+        }
+    }
+    impl TryFrom<crate::enums::InputPrivacyRule> for InputPrivacyValueAllowCloseFriends {
+        type Error = ();
+        fn try_from(x: crate::enums::InputPrivacyRule) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputPrivacyRule::InputPrivacyValueAllowCloseFriends => {
+                    Ok(InputPrivacyValueAllowCloseFriends {})
+                }
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputPrivacyValueAllowContacts {}
     impl crate::Identifiable for InputPrivacyValueAllowContacts {
         const CONSTRUCTOR_ID: u32 = 218751099;
@@ -16270,6 +17292,116 @@ pub mod types {
         fn try_from(x: crate::enums::InputPrivacyRule) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::InputPrivacyRule::InputPrivacyValueDisallowUsers(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputReplyToMessage {
+        pub reply_to_msg_id: i32,
+        pub top_msg_id: Option<i32>,
+        pub reply_to_peer_id: Option<crate::enums::InputPeer>,
+        pub quote_text: Option<String>,
+        pub quote_entities: Option<Vec<crate::enums::MessageEntity>>,
+    }
+    impl crate::Identifiable for InputReplyToMessage {
+        const CONSTRUCTOR_ID: u32 = 121554949;
+    }
+    impl crate::Serializable for InputReplyToMessage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.top_msg_id.is_some() { 1 } else { 0 }
+                | if self.reply_to_peer_id.is_some() {
+                    2
+                } else {
+                    0
+                }
+                | if self.quote_text.is_some() { 4 } else { 0 }
+                | if self.quote_entities.is_some() { 8 } else { 0 })
+            .serialize(buf);
+            self.reply_to_msg_id.serialize(buf);
+            if let Some(ref x) = self.top_msg_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.reply_to_peer_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.quote_text {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.quote_entities {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for InputReplyToMessage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let reply_to_msg_id = i32::deserialize(buf)?;
+            let top_msg_id = if (flags & 1) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let reply_to_peer_id = if (flags & 2) != 0 {
+                Some(crate::enums::InputPeer::deserialize(buf)?)
+            } else {
+                None
+            };
+            let quote_text = if (flags & 4) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let quote_entities = if (flags & 8) != 0 {
+                Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(InputReplyToMessage {
+                reply_to_msg_id,
+                top_msg_id,
+                reply_to_peer_id,
+                quote_text,
+                quote_entities,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::InputReplyTo> for InputReplyToMessage {
+        type Error = ();
+        fn try_from(x: crate::enums::InputReplyTo) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputReplyTo::Message(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputReplyToStory {
+        pub user_id: crate::enums::InputUser,
+        pub story_id: i32,
+    }
+    impl crate::Identifiable for InputReplyToStory {
+        const CONSTRUCTOR_ID: u32 = 363917955;
+    }
+    impl crate::Serializable for InputReplyToStory {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.user_id.serialize(buf);
+            self.story_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputReplyToStory {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let user_id = crate::enums::InputUser::deserialize(buf)?;
+            let story_id = i32::deserialize(buf)?;
+            Ok(InputReplyToStory { user_id, story_id })
+        }
+    }
+    impl TryFrom<crate::enums::InputReplyTo> for InputReplyToStory {
+        type Error = ();
+        fn try_from(x: crate::enums::InputReplyTo) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputReplyTo::Story(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -17194,6 +18326,137 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct InputStorePaymentPremiumGiftCode {
+        pub users: Vec<crate::enums::InputUser>,
+        pub boost_peer: Option<crate::enums::InputPeer>,
+        pub currency: String,
+        pub amount: i64,
+    }
+    impl crate::Identifiable for InputStorePaymentPremiumGiftCode {
+        const CONSTRUCTOR_ID: u32 = 2743099199;
+    }
+    impl crate::Serializable for InputStorePaymentPremiumGiftCode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.boost_peer.is_some() { 1 } else { 0 }).serialize(buf);
+            self.users.serialize(buf);
+            if let Some(ref x) = self.boost_peer {
+                x.serialize(buf);
+            }
+            self.currency.serialize(buf);
+            self.amount.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputStorePaymentPremiumGiftCode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let users = Vec::<crate::enums::InputUser>::deserialize(buf)?;
+            let boost_peer = if (flags & 1) != 0 {
+                Some(crate::enums::InputPeer::deserialize(buf)?)
+            } else {
+                None
+            };
+            let currency = String::deserialize(buf)?;
+            let amount = i64::deserialize(buf)?;
+            Ok(InputStorePaymentPremiumGiftCode {
+                users,
+                boost_peer,
+                currency,
+                amount,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::InputStorePaymentPurpose> for InputStorePaymentPremiumGiftCode {
+        type Error = ();
+        fn try_from(x: crate::enums::InputStorePaymentPurpose) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputStorePaymentPurpose::InputStorePaymentPremiumGiftCode(x) => {
+                    Ok(x)
+                }
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct InputStorePaymentPremiumGiveaway {
+        pub only_new_subscribers: bool,
+        pub boost_peer: crate::enums::InputPeer,
+        pub additional_peers: Option<Vec<crate::enums::InputPeer>>,
+        pub countries_iso2: Option<Vec<String>>,
+        pub random_id: i64,
+        pub until_date: i32,
+        pub currency: String,
+        pub amount: i64,
+    }
+    impl crate::Identifiable for InputStorePaymentPremiumGiveaway {
+        const CONSTRUCTOR_ID: u32 = 2090038758;
+    }
+    impl crate::Serializable for InputStorePaymentPremiumGiveaway {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.only_new_subscribers { 1 } else { 0 }
+                | if self.additional_peers.is_some() {
+                    2
+                } else {
+                    0
+                }
+                | if self.countries_iso2.is_some() { 4 } else { 0 })
+            .serialize(buf);
+            self.boost_peer.serialize(buf);
+            if let Some(ref x) = self.additional_peers {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.countries_iso2 {
+                x.serialize(buf);
+            }
+            self.random_id.serialize(buf);
+            self.until_date.serialize(buf);
+            self.currency.serialize(buf);
+            self.amount.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for InputStorePaymentPremiumGiveaway {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let only_new_subscribers = (flags & 1) != 0;
+            let boost_peer = crate::enums::InputPeer::deserialize(buf)?;
+            let additional_peers = if (flags & 2) != 0 {
+                Some(Vec::<crate::enums::InputPeer>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let countries_iso2 = if (flags & 4) != 0 {
+                Some(Vec::<String>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let random_id = i64::deserialize(buf)?;
+            let until_date = i32::deserialize(buf)?;
+            let currency = String::deserialize(buf)?;
+            let amount = i64::deserialize(buf)?;
+            Ok(InputStorePaymentPremiumGiveaway {
+                only_new_subscribers,
+                boost_peer,
+                additional_peers,
+                countries_iso2,
+                random_id,
+                until_date,
+                currency,
+                amount,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::InputStorePaymentPurpose> for InputStorePaymentPremiumGiveaway {
+        type Error = ();
+        fn try_from(x: crate::enums::InputStorePaymentPurpose) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::InputStorePaymentPurpose::InputStorePaymentPremiumGiveaway(x) => {
+                    Ok(x)
+                }
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct InputStorePaymentPremiumSubscription {
         pub restore: bool,
         pub upgrade: bool,
@@ -17793,10 +19056,10 @@ pub mod types {
         pub prices: Vec<crate::enums::LabeledPrice>,
         pub max_tip_amount: Option<i64>,
         pub suggested_tip_amounts: Option<Vec<i64>>,
-        pub recurring_terms_url: Option<String>,
+        pub terms_url: Option<String>,
     }
     impl crate::Identifiable for Invoice {
-        const CONSTRUCTOR_ID: u32 = 1048946971;
+        const CONSTRUCTOR_ID: u32 = 1572428309;
     }
     impl crate::Serializable for Invoice {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -17824,11 +19087,7 @@ pub mod types {
                 } else {
                     0
                 }
-                | if self.recurring_terms_url.is_some() {
-                    512
-                } else {
-                    0
-                })
+                | if self.terms_url.is_some() { 1024 } else { 0 })
             .serialize(buf);
             self.currency.serialize(buf);
             self.prices.serialize(buf);
@@ -17838,7 +19097,7 @@ pub mod types {
             if let Some(ref x) = self.suggested_tip_amounts {
                 x.serialize(buf);
             }
-            if let Some(ref x) = self.recurring_terms_url {
+            if let Some(ref x) = self.terms_url {
                 x.serialize(buf);
             }
         }
@@ -17867,7 +19126,7 @@ pub mod types {
             } else {
                 None
             };
-            let recurring_terms_url = if (flags & 512) != 0 {
+            let terms_url = if (flags & 1024) != 0 {
                 Some(String::deserialize(buf)?)
             } else {
                 None
@@ -17886,7 +19145,7 @@ pub mod types {
                 prices,
                 max_tip_amount,
                 suggested_tip_amounts,
-                recurring_terms_url,
+                terms_url,
             })
         }
     }
@@ -18453,15 +19712,22 @@ pub mod types {
         pub same_peer: bool,
         pub text: String,
         pub query: String,
+        pub peer_types: Option<Vec<crate::enums::InlineQueryPeerType>>,
     }
     impl crate::Identifiable for KeyboardButtonSwitchInline {
-        const CONSTRUCTOR_ID: u32 = 90744648;
+        const CONSTRUCTOR_ID: u32 = 2478439349;
     }
     impl crate::Serializable for KeyboardButtonSwitchInline {
         fn serialize(&self, buf: crate::serialize::Buffer) {
-            (0u32 | if self.same_peer { 1 } else { 0 }).serialize(buf);
+            (0u32
+                | if self.same_peer { 1 } else { 0 }
+                | if self.peer_types.is_some() { 2 } else { 0 })
+            .serialize(buf);
             self.text.serialize(buf);
             self.query.serialize(buf);
+            if let Some(ref x) = self.peer_types {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for KeyboardButtonSwitchInline {
@@ -18470,10 +19736,16 @@ pub mod types {
             let same_peer = (flags & 1) != 0;
             let text = String::deserialize(buf)?;
             let query = String::deserialize(buf)?;
+            let peer_types = if (flags & 2) != 0 {
+                Some(Vec::<crate::enums::InlineQueryPeerType>::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(KeyboardButtonSwitchInline {
                 same_peer,
                 text,
                 query,
+                peer_types,
             })
         }
     }
@@ -18952,6 +20224,174 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct MediaAreaCoordinates {
+        pub x: f64,
+        pub y: f64,
+        pub w: f64,
+        pub h: f64,
+        pub rotation: f64,
+    }
+    impl crate::Identifiable for MediaAreaCoordinates {
+        const CONSTRUCTOR_ID: u32 = 64088654;
+    }
+    impl crate::Serializable for MediaAreaCoordinates {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.x.serialize(buf);
+            self.y.serialize(buf);
+            self.w.serialize(buf);
+            self.h.serialize(buf);
+            self.rotation.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MediaAreaCoordinates {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let x = f64::deserialize(buf)?;
+            let y = f64::deserialize(buf)?;
+            let w = f64::deserialize(buf)?;
+            let h = f64::deserialize(buf)?;
+            let rotation = f64::deserialize(buf)?;
+            Ok(MediaAreaCoordinates {
+                x,
+                y,
+                w,
+                h,
+                rotation,
+            })
+        }
+    }
+    impl From<crate::enums::MediaAreaCoordinates> for MediaAreaCoordinates {
+        fn from(x: crate::enums::MediaAreaCoordinates) -> Self {
+            match x {
+                crate::enums::MediaAreaCoordinates::Coordinates(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MediaAreaGeoPoint {
+        pub coordinates: crate::enums::MediaAreaCoordinates,
+        pub geo: crate::enums::GeoPoint,
+    }
+    impl crate::Identifiable for MediaAreaGeoPoint {
+        const CONSTRUCTOR_ID: u32 = 3750443810;
+    }
+    impl crate::Serializable for MediaAreaGeoPoint {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.coordinates.serialize(buf);
+            self.geo.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MediaAreaGeoPoint {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let coordinates = crate::enums::MediaAreaCoordinates::deserialize(buf)?;
+            let geo = crate::enums::GeoPoint::deserialize(buf)?;
+            Ok(MediaAreaGeoPoint { coordinates, geo })
+        }
+    }
+    impl TryFrom<crate::enums::MediaArea> for MediaAreaGeoPoint {
+        type Error = ();
+        fn try_from(x: crate::enums::MediaArea) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MediaArea::GeoPoint(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MediaAreaSuggestedReaction {
+        pub dark: bool,
+        pub flipped: bool,
+        pub coordinates: crate::enums::MediaAreaCoordinates,
+        pub reaction: crate::enums::Reaction,
+    }
+    impl crate::Identifiable for MediaAreaSuggestedReaction {
+        const CONSTRUCTOR_ID: u32 = 340088945;
+    }
+    impl crate::Serializable for MediaAreaSuggestedReaction {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.dark { 1 } else { 0 } | if self.flipped { 2 } else { 0 })
+                .serialize(buf);
+            self.coordinates.serialize(buf);
+            self.reaction.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MediaAreaSuggestedReaction {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let dark = (flags & 1) != 0;
+            let flipped = (flags & 2) != 0;
+            let coordinates = crate::enums::MediaAreaCoordinates::deserialize(buf)?;
+            let reaction = crate::enums::Reaction::deserialize(buf)?;
+            Ok(MediaAreaSuggestedReaction {
+                dark,
+                flipped,
+                coordinates,
+                reaction,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MediaArea> for MediaAreaSuggestedReaction {
+        type Error = ();
+        fn try_from(x: crate::enums::MediaArea) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MediaArea::SuggestedReaction(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MediaAreaVenue {
+        pub coordinates: crate::enums::MediaAreaCoordinates,
+        pub geo: crate::enums::GeoPoint,
+        pub title: String,
+        pub address: String,
+        pub provider: String,
+        pub venue_id: String,
+        pub venue_type: String,
+    }
+    impl crate::Identifiable for MediaAreaVenue {
+        const CONSTRUCTOR_ID: u32 = 3196246940;
+    }
+    impl crate::Serializable for MediaAreaVenue {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.coordinates.serialize(buf);
+            self.geo.serialize(buf);
+            self.title.serialize(buf);
+            self.address.serialize(buf);
+            self.provider.serialize(buf);
+            self.venue_id.serialize(buf);
+            self.venue_type.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MediaAreaVenue {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let coordinates = crate::enums::MediaAreaCoordinates::deserialize(buf)?;
+            let geo = crate::enums::GeoPoint::deserialize(buf)?;
+            let title = String::deserialize(buf)?;
+            let address = String::deserialize(buf)?;
+            let provider = String::deserialize(buf)?;
+            let venue_id = String::deserialize(buf)?;
+            let venue_type = String::deserialize(buf)?;
+            Ok(MediaAreaVenue {
+                coordinates,
+                geo,
+                title,
+                address,
+                provider,
+                venue_id,
+                venue_type,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MediaArea> for MediaAreaVenue {
+        type Error = ();
+        fn try_from(x: crate::enums::MediaArea) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MediaArea::Venue(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct Message {
         pub out: bool,
         pub mentioned: bool,
@@ -18963,6 +20403,7 @@ pub mod types {
         pub edit_hide: bool,
         pub pinned: bool,
         pub noforwards: bool,
+        pub invert_media: bool,
         pub id: i32,
         pub from_id: Option<crate::enums::Peer>,
         pub peer_id: crate::enums::Peer,
@@ -19000,6 +20441,7 @@ pub mod types {
                 | if self.edit_hide { 2097152 } else { 0 }
                 | if self.pinned { 16777216 } else { 0 }
                 | if self.noforwards { 67108864 } else { 0 }
+                | if self.invert_media { 134217728 } else { 0 }
                 | if self.from_id.is_some() { 256 } else { 0 }
                 | if self.fwd_from.is_some() { 4 } else { 0 }
                 | if self.via_bot_id.is_some() { 2048 } else { 0 }
@@ -19092,6 +20534,7 @@ pub mod types {
             let edit_hide = (flags & 2097152) != 0;
             let pinned = (flags & 16777216) != 0;
             let noforwards = (flags & 67108864) != 0;
+            let invert_media = (flags & 134217728) != 0;
             let id = i32::deserialize(buf)?;
             let from_id = if (flags & 256) != 0 {
                 Some(crate::enums::Peer::deserialize(buf)?)
@@ -19187,6 +20630,7 @@ pub mod types {
                 edit_hide,
                 pinned,
                 noforwards,
+                invert_media,
                 id,
                 from_id,
                 peer_id,
@@ -19222,6 +20666,7 @@ pub mod types {
     #[derive(Debug, Clone, PartialEq)]
     pub struct MessageActionBotAllowed {
         pub attach_menu: bool,
+        pub from_request: bool,
         pub domain: Option<String>,
         pub app: Option<crate::enums::BotApp>,
     }
@@ -19232,6 +20677,7 @@ pub mod types {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.attach_menu { 2 } else { 0 }
+                | if self.from_request { 8 } else { 0 }
                 | if self.domain.is_some() { 1 } else { 0 }
                 | if self.app.is_some() { 4 } else { 0 })
             .serialize(buf);
@@ -19247,6 +20693,7 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let attach_menu = (flags & 2) != 0;
+            let from_request = (flags & 8) != 0;
             let domain = if (flags & 1) != 0 {
                 Some(String::deserialize(buf)?)
             } else {
@@ -19259,6 +20706,7 @@ pub mod types {
             };
             Ok(MessageActionBotAllowed {
                 attach_menu,
+                from_request,
                 domain,
                 app,
             })
@@ -19707,30 +21155,110 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageActionGiftCode {
+        pub via_giveaway: bool,
+        pub unclaimed: bool,
+        pub boost_peer: Option<crate::enums::Peer>,
+        pub months: i32,
+        pub slug: String,
+    }
+    impl crate::Identifiable for MessageActionGiftCode {
+        const CONSTRUCTOR_ID: u32 = 3536837390;
+    }
+    impl crate::Serializable for MessageActionGiftCode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.via_giveaway { 1 } else { 0 }
+                | if self.unclaimed { 4 } else { 0 }
+                | if self.boost_peer.is_some() { 2 } else { 0 })
+            .serialize(buf);
+            if let Some(ref x) = self.boost_peer {
+                x.serialize(buf);
+            }
+            self.months.serialize(buf);
+            self.slug.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessageActionGiftCode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let via_giveaway = (flags & 1) != 0;
+            let unclaimed = (flags & 4) != 0;
+            let boost_peer = if (flags & 2) != 0 {
+                Some(crate::enums::Peer::deserialize(buf)?)
+            } else {
+                None
+            };
+            let months = i32::deserialize(buf)?;
+            let slug = String::deserialize(buf)?;
+            Ok(MessageActionGiftCode {
+                via_giveaway,
+                unclaimed,
+                boost_peer,
+                months,
+                slug,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MessageAction> for MessageActionGiftCode {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageAction::GiftCode(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct MessageActionGiftPremium {
         pub currency: String,
         pub amount: i64,
         pub months: i32,
+        pub crypto_currency: Option<String>,
+        pub crypto_amount: Option<i64>,
     }
     impl crate::Identifiable for MessageActionGiftPremium {
-        const CONSTRUCTOR_ID: u32 = 2879452614;
+        const CONSTRUCTOR_ID: u32 = 3359468268;
     }
     impl crate::Serializable for MessageActionGiftPremium {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.crypto_currency.is_some() { 1 } else { 0 }
+                | if self.crypto_amount.is_some() { 1 } else { 0 })
+            .serialize(buf);
             self.currency.serialize(buf);
             self.amount.serialize(buf);
             self.months.serialize(buf);
+            if let Some(ref x) = self.crypto_currency {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.crypto_amount {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for MessageActionGiftPremium {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
             let currency = String::deserialize(buf)?;
             let amount = i64::deserialize(buf)?;
             let months = i32::deserialize(buf)?;
+            let crypto_currency = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let crypto_amount = if (flags & 1) != 0 {
+                Some(i64::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(MessageActionGiftPremium {
                 currency,
                 amount,
                 months,
+                crypto_currency,
+                crypto_amount,
             })
         }
     }
@@ -19739,6 +21267,28 @@ pub mod types {
         fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::MessageAction::GiftPremium(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageActionGiveawayLaunch {}
+    impl crate::Identifiable for MessageActionGiveawayLaunch {
+        const CONSTRUCTOR_ID: u32 = 858499565;
+    }
+    impl crate::Serializable for MessageActionGiveawayLaunch {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for MessageActionGiveawayLaunch {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(MessageActionGiveawayLaunch {})
+        }
+    }
+    impl TryFrom<crate::enums::MessageAction> for MessageActionGiveawayLaunch {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageAction::GiveawayLaunch => Ok(MessageActionGiveawayLaunch {}),
                 _ => Err(()),
             }
         }
@@ -20219,6 +21769,33 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageActionSetChatWallPaper {
+        pub wallpaper: crate::enums::WallPaper,
+    }
+    impl crate::Identifiable for MessageActionSetChatWallPaper {
+        const CONSTRUCTOR_ID: u32 = 3158616359;
+    }
+    impl crate::Serializable for MessageActionSetChatWallPaper {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.wallpaper.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessageActionSetChatWallPaper {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let wallpaper = crate::enums::WallPaper::deserialize(buf)?;
+            Ok(MessageActionSetChatWallPaper { wallpaper })
+        }
+    }
+    impl TryFrom<crate::enums::MessageAction> for MessageActionSetChatWallPaper {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageAction::SetChatWallPaper(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct MessageActionSetMessagesTtl {
         pub period: i32,
         pub auto_setting_from: Option<i64>,
@@ -20261,6 +21838,33 @@ pub mod types {
         fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::MessageAction::SetMessagesTtl(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageActionSetSameChatWallPaper {
+        pub wallpaper: crate::enums::WallPaper,
+    }
+    impl crate::Identifiable for MessageActionSetSameChatWallPaper {
+        const CONSTRUCTOR_ID: u32 = 3229121901;
+    }
+    impl crate::Serializable for MessageActionSetSameChatWallPaper {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.wallpaper.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessageActionSetSameChatWallPaper {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let wallpaper = crate::enums::WallPaper::deserialize(buf)?;
+            Ok(MessageActionSetSameChatWallPaper { wallpaper })
+        }
+    }
+    impl TryFrom<crate::enums::MessageAction> for MessageActionSetSameChatWallPaper {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageAction) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageAction::SetSameChatWallPaper(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -21465,10 +23069,11 @@ pub mod types {
         pub nopremium: bool,
         pub spoiler: bool,
         pub document: Option<crate::enums::Document>,
+        pub alt_document: Option<crate::enums::Document>,
         pub ttl_seconds: Option<i32>,
     }
     impl crate::Identifiable for MessageMediaDocument {
-        const CONSTRUCTOR_ID: u32 = 2628808919;
+        const CONSTRUCTOR_ID: u32 = 1291114285;
     }
     impl crate::Serializable for MessageMediaDocument {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -21476,9 +23081,13 @@ pub mod types {
                 | if self.nopremium { 8 } else { 0 }
                 | if self.spoiler { 16 } else { 0 }
                 | if self.document.is_some() { 1 } else { 0 }
+                | if self.alt_document.is_some() { 32 } else { 0 }
                 | if self.ttl_seconds.is_some() { 4 } else { 0 })
             .serialize(buf);
             if let Some(ref x) = self.document {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.alt_document {
                 x.serialize(buf);
             }
             if let Some(ref x) = self.ttl_seconds {
@@ -21496,6 +23105,11 @@ pub mod types {
             } else {
                 None
             };
+            let alt_document = if (flags & 32) != 0 {
+                Some(crate::enums::Document::deserialize(buf)?)
+            } else {
+                None
+            };
             let ttl_seconds = if (flags & 4) != 0 {
                 Some(i32::deserialize(buf)?)
             } else {
@@ -21505,6 +23119,7 @@ pub mod types {
                 nopremium,
                 spoiler,
                 document,
+                alt_document,
                 ttl_seconds,
             })
         }
@@ -21652,6 +23267,65 @@ pub mod types {
         fn try_from(x: crate::enums::MessageMedia) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::MessageMedia::GeoLive(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageMediaGiveaway {
+        pub only_new_subscribers: bool,
+        pub channels: Vec<i64>,
+        pub countries_iso2: Option<Vec<String>>,
+        pub quantity: i32,
+        pub months: i32,
+        pub until_date: i32,
+    }
+    impl crate::Identifiable for MessageMediaGiveaway {
+        const CONSTRUCTOR_ID: u32 = 1478887012;
+    }
+    impl crate::Serializable for MessageMediaGiveaway {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.only_new_subscribers { 1 } else { 0 }
+                | if self.countries_iso2.is_some() { 2 } else { 0 })
+            .serialize(buf);
+            self.channels.serialize(buf);
+            if let Some(ref x) = self.countries_iso2 {
+                x.serialize(buf);
+            }
+            self.quantity.serialize(buf);
+            self.months.serialize(buf);
+            self.until_date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessageMediaGiveaway {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let only_new_subscribers = (flags & 1) != 0;
+            let channels = Vec::<i64>::deserialize(buf)?;
+            let countries_iso2 = if (flags & 2) != 0 {
+                Some(Vec::<String>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let quantity = i32::deserialize(buf)?;
+            let months = i32::deserialize(buf)?;
+            let until_date = i32::deserialize(buf)?;
+            Ok(MessageMediaGiveaway {
+                only_new_subscribers,
+                channels,
+                countries_iso2,
+                quantity,
+                months,
+                until_date,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MessageMedia> for MessageMediaGiveaway {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageMedia) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageMedia::Giveaway(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -21834,6 +23508,57 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageMediaStory {
+        pub via_mention: bool,
+        pub peer: crate::enums::Peer,
+        pub id: i32,
+        pub story: Option<crate::enums::StoryItem>,
+    }
+    impl crate::Identifiable for MessageMediaStory {
+        const CONSTRUCTOR_ID: u32 = 1758159491;
+    }
+    impl crate::Serializable for MessageMediaStory {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.via_mention { 2 } else { 0 }
+                | if self.story.is_some() { 1 } else { 0 })
+            .serialize(buf);
+            self.peer.serialize(buf);
+            self.id.serialize(buf);
+            if let Some(ref x) = self.story {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for MessageMediaStory {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let via_mention = (flags & 2) != 0;
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let id = i32::deserialize(buf)?;
+            let story = if (flags & 1) != 0 {
+                Some(crate::enums::StoryItem::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(MessageMediaStory {
+                via_mention,
+                peer,
+                id,
+                story,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MessageMedia> for MessageMediaStory {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageMedia) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageMedia::Story(x) => Ok(*x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct MessageMediaUnsupported {}
     impl crate::Identifiable for MessageMediaUnsupported {
         const CONSTRUCTOR_ID: u32 = 2676290718;
@@ -21906,20 +23631,41 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct MessageMediaWebPage {
+        pub force_large_media: bool,
+        pub force_small_media: bool,
+        pub manual: bool,
+        pub safe: bool,
         pub webpage: crate::enums::WebPage,
     }
     impl crate::Identifiable for MessageMediaWebPage {
-        const CONSTRUCTOR_ID: u32 = 2737690112;
+        const CONSTRUCTOR_ID: u32 = 3723562043;
     }
     impl crate::Serializable for MessageMediaWebPage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.force_large_media { 1 } else { 0 }
+                | if self.force_small_media { 2 } else { 0 }
+                | if self.manual { 8 } else { 0 }
+                | if self.safe { 16 } else { 0 })
+            .serialize(buf);
             self.webpage.serialize(buf);
         }
     }
     impl crate::Deserializable for MessageMediaWebPage {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let force_large_media = (flags & 1) != 0;
+            let force_small_media = (flags & 2) != 0;
+            let manual = (flags & 8) != 0;
+            let safe = (flags & 16) != 0;
             let webpage = crate::enums::WebPage::deserialize(buf)?;
-            Ok(MessageMediaWebPage { webpage })
+            Ok(MessageMediaWebPage {
+                force_large_media,
+                force_small_media,
+                manual,
+                safe,
+                webpage,
+            })
         }
     }
     impl TryFrom<crate::enums::MessageMedia> for MessageMediaWebPage {
@@ -21935,6 +23681,7 @@ pub mod types {
     pub struct MessagePeerReaction {
         pub big: bool,
         pub unread: bool,
+        pub my: bool,
         pub peer_id: crate::enums::Peer,
         pub date: i32,
         pub reaction: crate::enums::Reaction,
@@ -21944,7 +23691,11 @@ pub mod types {
     }
     impl crate::Serializable for MessagePeerReaction {
         fn serialize(&self, buf: crate::serialize::Buffer) {
-            (0u32 | if self.big { 1 } else { 0 } | if self.unread { 2 } else { 0 }).serialize(buf);
+            (0u32
+                | if self.big { 1 } else { 0 }
+                | if self.unread { 2 } else { 0 }
+                | if self.my { 4 } else { 0 })
+            .serialize(buf);
             self.peer_id.serialize(buf);
             self.date.serialize(buf);
             self.reaction.serialize(buf);
@@ -21955,12 +23706,14 @@ pub mod types {
             let flags = u32::deserialize(buf)?;
             let big = (flags & 1) != 0;
             let unread = (flags & 2) != 0;
+            let my = (flags & 4) != 0;
             let peer_id = crate::enums::Peer::deserialize(buf)?;
             let date = i32::deserialize(buf)?;
             let reaction = crate::enums::Reaction::deserialize(buf)?;
             Ok(MessagePeerReaction {
                 big,
                 unread,
+                my,
                 peer_id,
                 date,
                 reaction,
@@ -21971,6 +23724,106 @@ pub mod types {
         fn from(x: crate::enums::MessagePeerReaction) -> Self {
             match x {
                 crate::enums::MessagePeerReaction::Reaction(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessagePeerVote {
+        pub peer: crate::enums::Peer,
+        pub option: Vec<u8>,
+        pub date: i32,
+    }
+    impl crate::Identifiable for MessagePeerVote {
+        const CONSTRUCTOR_ID: u32 = 3066834268;
+    }
+    impl crate::Serializable for MessagePeerVote {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.option.serialize(buf);
+            self.date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessagePeerVote {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let option = Vec::<u8>::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            Ok(MessagePeerVote { peer, option, date })
+        }
+    }
+    impl TryFrom<crate::enums::MessagePeerVote> for MessagePeerVote {
+        type Error = ();
+        fn try_from(x: crate::enums::MessagePeerVote) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessagePeerVote::Vote(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessagePeerVoteInputOption {
+        pub peer: crate::enums::Peer,
+        pub date: i32,
+    }
+    impl crate::Identifiable for MessagePeerVoteInputOption {
+        const CONSTRUCTOR_ID: u32 = 1959634180;
+    }
+    impl crate::Serializable for MessagePeerVoteInputOption {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessagePeerVoteInputOption {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            Ok(MessagePeerVoteInputOption { peer, date })
+        }
+    }
+    impl TryFrom<crate::enums::MessagePeerVote> for MessagePeerVoteInputOption {
+        type Error = ();
+        fn try_from(x: crate::enums::MessagePeerVote) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessagePeerVote::InputOption(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessagePeerVoteMultiple {
+        pub peer: crate::enums::Peer,
+        pub options: Vec<Vec<u8>>,
+        pub date: i32,
+    }
+    impl crate::Identifiable for MessagePeerVoteMultiple {
+        const CONSTRUCTOR_ID: u32 = 1177089766;
+    }
+    impl crate::Serializable for MessagePeerVoteMultiple {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.options.serialize(buf);
+            self.date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessagePeerVoteMultiple {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let options = Vec::<Vec<u8>>::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            Ok(MessagePeerVoteMultiple {
+                peer,
+                options,
+                date,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::MessagePeerVote> for MessagePeerVoteMultiple {
+        type Error = ();
+        fn try_from(x: crate::enums::MessagePeerVote) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessagePeerVote::Multiple(x) => Ok(x),
+                _ => Err(()),
             }
         }
     }
@@ -22141,30 +23994,63 @@ pub mod types {
     pub struct MessageReplyHeader {
         pub reply_to_scheduled: bool,
         pub forum_topic: bool,
-        pub reply_to_msg_id: i32,
+        pub quote: bool,
+        pub reply_to_msg_id: Option<i32>,
         pub reply_to_peer_id: Option<crate::enums::Peer>,
+        pub reply_from: Option<crate::enums::MessageFwdHeader>,
+        pub reply_media: Option<crate::enums::MessageMedia>,
         pub reply_to_top_id: Option<i32>,
+        pub quote_text: Option<String>,
+        pub quote_entities: Option<Vec<crate::enums::MessageEntity>>,
     }
     impl crate::Identifiable for MessageReplyHeader {
-        const CONSTRUCTOR_ID: u32 = 2799007587;
+        const CONSTRUCTOR_ID: u32 = 1860946621;
     }
     impl crate::Serializable for MessageReplyHeader {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
                 | if self.reply_to_scheduled { 4 } else { 0 }
                 | if self.forum_topic { 8 } else { 0 }
+                | if self.quote { 512 } else { 0 }
+                | if self.reply_to_msg_id.is_some() {
+                    16
+                } else {
+                    0
+                }
                 | if self.reply_to_peer_id.is_some() {
                     1
                 } else {
                     0
                 }
-                | if self.reply_to_top_id.is_some() { 2 } else { 0 })
+                | if self.reply_from.is_some() { 32 } else { 0 }
+                | if self.reply_media.is_some() { 256 } else { 0 }
+                | if self.reply_to_top_id.is_some() { 2 } else { 0 }
+                | if self.quote_text.is_some() { 64 } else { 0 }
+                | if self.quote_entities.is_some() {
+                    128
+                } else {
+                    0
+                })
             .serialize(buf);
-            self.reply_to_msg_id.serialize(buf);
+            if let Some(ref x) = self.reply_to_msg_id {
+                x.serialize(buf);
+            }
             if let Some(ref x) = self.reply_to_peer_id {
                 x.serialize(buf);
             }
+            if let Some(ref x) = self.reply_from {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.reply_media {
+                x.serialize(buf);
+            }
             if let Some(ref x) = self.reply_to_top_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.quote_text {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.quote_entities {
                 x.serialize(buf);
             }
         }
@@ -22174,9 +24060,24 @@ pub mod types {
             let flags = u32::deserialize(buf)?;
             let reply_to_scheduled = (flags & 4) != 0;
             let forum_topic = (flags & 8) != 0;
-            let reply_to_msg_id = i32::deserialize(buf)?;
+            let quote = (flags & 512) != 0;
+            let reply_to_msg_id = if (flags & 16) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
             let reply_to_peer_id = if (flags & 1) != 0 {
                 Some(crate::enums::Peer::deserialize(buf)?)
+            } else {
+                None
+            };
+            let reply_from = if (flags & 32) != 0 {
+                Some(crate::enums::MessageFwdHeader::deserialize(buf)?)
+            } else {
+                None
+            };
+            let reply_media = if (flags & 256) != 0 {
+                Some(crate::enums::MessageMedia::deserialize(buf)?)
             } else {
                 None
             };
@@ -22185,19 +24086,66 @@ pub mod types {
             } else {
                 None
             };
+            let quote_text = if (flags & 64) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let quote_entities = if (flags & 128) != 0 {
+                Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(MessageReplyHeader {
                 reply_to_scheduled,
                 forum_topic,
+                quote,
                 reply_to_msg_id,
                 reply_to_peer_id,
+                reply_from,
+                reply_media,
                 reply_to_top_id,
+                quote_text,
+                quote_entities,
             })
         }
     }
-    impl From<crate::enums::MessageReplyHeader> for MessageReplyHeader {
-        fn from(x: crate::enums::MessageReplyHeader) -> Self {
+    impl TryFrom<crate::enums::MessageReplyHeader> for MessageReplyHeader {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageReplyHeader) -> Result<Self, Self::Error> {
             match x {
-                crate::enums::MessageReplyHeader::Header(x) => x,
+                crate::enums::MessageReplyHeader::Header(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MessageReplyStoryHeader {
+        pub user_id: i64,
+        pub story_id: i32,
+    }
+    impl crate::Identifiable for MessageReplyStoryHeader {
+        const CONSTRUCTOR_ID: u32 = 2627256257;
+    }
+    impl crate::Serializable for MessageReplyStoryHeader {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.user_id.serialize(buf);
+            self.story_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for MessageReplyStoryHeader {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let user_id = i64::deserialize(buf)?;
+            let story_id = i32::deserialize(buf)?;
+            Ok(MessageReplyStoryHeader { user_id, story_id })
+        }
+    }
+    impl TryFrom<crate::enums::MessageReplyHeader> for MessageReplyStoryHeader {
+        type Error = ();
+        fn try_from(x: crate::enums::MessageReplyHeader) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::MessageReplyHeader::MessageReplyStoryHeader(x) => Ok(x),
+                _ => Err(()),
             }
         }
     }
@@ -22302,110 +24250,6 @@ pub mod types {
         fn try_from(x: crate::enums::Message) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::Message::Service(x) => Ok(x),
-                _ => Err(()),
-            }
-        }
-    }
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct MessageUserVote {
-        pub user_id: i64,
-        pub option: Vec<u8>,
-        pub date: i32,
-    }
-    impl crate::Identifiable for MessageUserVote {
-        const CONSTRUCTOR_ID: u32 = 886196148;
-    }
-    impl crate::Serializable for MessageUserVote {
-        fn serialize(&self, buf: crate::serialize::Buffer) {
-            self.user_id.serialize(buf);
-            self.option.serialize(buf);
-            self.date.serialize(buf);
-        }
-    }
-    impl crate::Deserializable for MessageUserVote {
-        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
-            let user_id = i64::deserialize(buf)?;
-            let option = Vec::<u8>::deserialize(buf)?;
-            let date = i32::deserialize(buf)?;
-            Ok(MessageUserVote {
-                user_id,
-                option,
-                date,
-            })
-        }
-    }
-    impl TryFrom<crate::enums::MessageUserVote> for MessageUserVote {
-        type Error = ();
-        fn try_from(x: crate::enums::MessageUserVote) -> Result<Self, Self::Error> {
-            match x {
-                crate::enums::MessageUserVote::Vote(x) => Ok(x),
-                _ => Err(()),
-            }
-        }
-    }
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct MessageUserVoteInputOption {
-        pub user_id: i64,
-        pub date: i32,
-    }
-    impl crate::Identifiable for MessageUserVoteInputOption {
-        const CONSTRUCTOR_ID: u32 = 1017491692;
-    }
-    impl crate::Serializable for MessageUserVoteInputOption {
-        fn serialize(&self, buf: crate::serialize::Buffer) {
-            self.user_id.serialize(buf);
-            self.date.serialize(buf);
-        }
-    }
-    impl crate::Deserializable for MessageUserVoteInputOption {
-        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
-            let user_id = i64::deserialize(buf)?;
-            let date = i32::deserialize(buf)?;
-            Ok(MessageUserVoteInputOption { user_id, date })
-        }
-    }
-    impl TryFrom<crate::enums::MessageUserVote> for MessageUserVoteInputOption {
-        type Error = ();
-        fn try_from(x: crate::enums::MessageUserVote) -> Result<Self, Self::Error> {
-            match x {
-                crate::enums::MessageUserVote::InputOption(x) => Ok(x),
-                _ => Err(()),
-            }
-        }
-    }
-    #[derive(Debug, Clone, PartialEq)]
-    pub struct MessageUserVoteMultiple {
-        pub user_id: i64,
-        pub options: Vec<Vec<u8>>,
-        pub date: i32,
-    }
-    impl crate::Identifiable for MessageUserVoteMultiple {
-        const CONSTRUCTOR_ID: u32 = 2321933655;
-    }
-    impl crate::Serializable for MessageUserVoteMultiple {
-        fn serialize(&self, buf: crate::serialize::Buffer) {
-            self.user_id.serialize(buf);
-            self.options.serialize(buf);
-            self.date.serialize(buf);
-        }
-    }
-    impl crate::Deserializable for MessageUserVoteMultiple {
-        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
-            let user_id = i64::deserialize(buf)?;
-            let options = Vec::<Vec<u8>>::deserialize(buf)?;
-            let date = i32::deserialize(buf)?;
-            Ok(MessageUserVoteMultiple {
-                user_id,
-                options,
-                date,
-            })
-        }
-    }
-    impl TryFrom<crate::enums::MessageUserVote> for MessageUserVoteMultiple {
-        type Error = ();
-        fn try_from(x: crate::enums::MessageUserVote) -> Result<Self, Self::Error> {
-            match x {
-                crate::enums::MessageUserVote::Multiple(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -22704,6 +24548,70 @@ pub mod types {
         fn from(x: crate::enums::MsgsStateReq) -> Self {
             match x {
                 crate::enums::MsgsStateReq::Req(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct MyBoost {
+        pub slot: i32,
+        pub peer: Option<crate::enums::Peer>,
+        pub date: i32,
+        pub expires: i32,
+        pub cooldown_until_date: Option<i32>,
+    }
+    impl crate::Identifiable for MyBoost {
+        const CONSTRUCTOR_ID: u32 = 3293069660;
+    }
+    impl crate::Serializable for MyBoost {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.peer.is_some() { 1 } else { 0 }
+                | if self.cooldown_until_date.is_some() {
+                    2
+                } else {
+                    0
+                })
+            .serialize(buf);
+            self.slot.serialize(buf);
+            if let Some(ref x) = self.peer {
+                x.serialize(buf);
+            }
+            self.date.serialize(buf);
+            self.expires.serialize(buf);
+            if let Some(ref x) = self.cooldown_until_date {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for MyBoost {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let slot = i32::deserialize(buf)?;
+            let peer = if (flags & 1) != 0 {
+                Some(crate::enums::Peer::deserialize(buf)?)
+            } else {
+                None
+            };
+            let date = i32::deserialize(buf)?;
+            let expires = i32::deserialize(buf)?;
+            let cooldown_until_date = if (flags & 2) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(MyBoost {
+                slot,
+                peer,
+                date,
+                expires,
+                cooldown_until_date,
+            })
+        }
+    }
+    impl From<crate::enums::MyBoost> for MyBoost {
+        fn from(x: crate::enums::MyBoost) -> Self {
+            match x {
+                crate::enums::MyBoost::Boost(x) => x,
             }
         }
     }
@@ -24976,9 +26884,14 @@ pub mod types {
         pub ios_sound: Option<crate::enums::NotificationSound>,
         pub android_sound: Option<crate::enums::NotificationSound>,
         pub other_sound: Option<crate::enums::NotificationSound>,
+        pub stories_muted: Option<bool>,
+        pub stories_hide_sender: Option<bool>,
+        pub stories_ios_sound: Option<crate::enums::NotificationSound>,
+        pub stories_android_sound: Option<crate::enums::NotificationSound>,
+        pub stories_other_sound: Option<crate::enums::NotificationSound>,
     }
     impl crate::Identifiable for PeerNotifySettings {
-        const CONSTRUCTOR_ID: u32 = 2822439974;
+        const CONSTRUCTOR_ID: u32 = 2573347852;
     }
     impl crate::Serializable for PeerNotifySettings {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -24988,7 +26901,28 @@ pub mod types {
                 | if self.mute_until.is_some() { 4 } else { 0 }
                 | if self.ios_sound.is_some() { 8 } else { 0 }
                 | if self.android_sound.is_some() { 16 } else { 0 }
-                | if self.other_sound.is_some() { 32 } else { 0 })
+                | if self.other_sound.is_some() { 32 } else { 0 }
+                | if self.stories_muted.is_some() { 64 } else { 0 }
+                | if self.stories_hide_sender.is_some() {
+                    128
+                } else {
+                    0
+                }
+                | if self.stories_ios_sound.is_some() {
+                    256
+                } else {
+                    0
+                }
+                | if self.stories_android_sound.is_some() {
+                    512
+                } else {
+                    0
+                }
+                | if self.stories_other_sound.is_some() {
+                    1024
+                } else {
+                    0
+                })
             .serialize(buf);
             if let Some(ref x) = self.show_previews {
                 x.serialize(buf);
@@ -25006,6 +26940,21 @@ pub mod types {
                 x.serialize(buf);
             }
             if let Some(ref x) = self.other_sound {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_muted {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_hide_sender {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_ios_sound {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_android_sound {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories_other_sound {
                 x.serialize(buf);
             }
         }
@@ -25043,6 +26992,31 @@ pub mod types {
             } else {
                 None
             };
+            let stories_muted = if (flags & 64) != 0 {
+                Some(bool::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_hide_sender = if (flags & 128) != 0 {
+                Some(bool::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_ios_sound = if (flags & 256) != 0 {
+                Some(crate::enums::NotificationSound::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_android_sound = if (flags & 512) != 0 {
+                Some(crate::enums::NotificationSound::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories_other_sound = if (flags & 1024) != 0 {
+                Some(crate::enums::NotificationSound::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(PeerNotifySettings {
                 show_previews,
                 silent,
@@ -25050,6 +27024,11 @@ pub mod types {
                 ios_sound,
                 android_sound,
                 other_sound,
+                stories_muted,
+                stories_hide_sender,
+                stories_ios_sound,
+                stories_android_sound,
+                stories_other_sound,
             })
         }
     }
@@ -25187,6 +27166,49 @@ pub mod types {
         fn from(x: crate::enums::PeerSettings) -> Self {
             match x {
                 crate::enums::PeerSettings::Settings(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct PeerStories {
+        pub peer: crate::enums::Peer,
+        pub max_read_id: Option<i32>,
+        pub stories: Vec<crate::enums::StoryItem>,
+    }
+    impl crate::Identifiable for PeerStories {
+        const CONSTRUCTOR_ID: u32 = 2587224473;
+    }
+    impl crate::Serializable for PeerStories {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.max_read_id.is_some() { 1 } else { 0 }).serialize(buf);
+            self.peer.serialize(buf);
+            if let Some(ref x) = self.max_read_id {
+                x.serialize(buf);
+            }
+            self.stories.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for PeerStories {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let max_read_id = if (flags & 1) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories = Vec::<crate::enums::StoryItem>::deserialize(buf)?;
+            Ok(PeerStories {
+                peer,
+                max_read_id,
+                stories,
+            })
+        }
+    }
+    impl From<crate::enums::PeerStories> for PeerStories {
+        fn from(x: crate::enums::PeerStories) -> Self {
+            match x {
+                crate::enums::PeerStories::Stories(x) => x,
             }
         }
     }
@@ -26256,12 +28278,12 @@ pub mod types {
         pub min: bool,
         pub results: Option<Vec<crate::enums::PollAnswerVoters>>,
         pub total_voters: Option<i32>,
-        pub recent_voters: Option<Vec<i64>>,
+        pub recent_voters: Option<Vec<crate::enums::Peer>>,
         pub solution: Option<String>,
         pub solution_entities: Option<Vec<crate::enums::MessageEntity>>,
     }
     impl crate::Identifiable for PollResults {
-        const CONSTRUCTOR_ID: u32 = 3703058083;
+        const CONSTRUCTOR_ID: u32 = 2061444128;
     }
     impl crate::Serializable for PollResults {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -26309,7 +28331,7 @@ pub mod types {
                 None
             };
             let recent_voters = if (flags & 8) != 0 {
-                Some(Vec::<i64>::deserialize(buf)?)
+                Some(Vec::<crate::enums::Peer>::deserialize(buf)?)
             } else {
                 None
             };
@@ -26447,6 +28469,70 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct PremiumGiftCodeOption {
+        pub users: i32,
+        pub months: i32,
+        pub store_product: Option<String>,
+        pub store_quantity: Option<i32>,
+        pub currency: String,
+        pub amount: i64,
+    }
+    impl crate::Identifiable for PremiumGiftCodeOption {
+        const CONSTRUCTOR_ID: u32 = 629052971;
+    }
+    impl crate::Serializable for PremiumGiftCodeOption {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.store_product.is_some() { 1 } else { 0 }
+                | if self.store_quantity.is_some() { 2 } else { 0 })
+            .serialize(buf);
+            self.users.serialize(buf);
+            self.months.serialize(buf);
+            if let Some(ref x) = self.store_product {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.store_quantity {
+                x.serialize(buf);
+            }
+            self.currency.serialize(buf);
+            self.amount.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for PremiumGiftCodeOption {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let users = i32::deserialize(buf)?;
+            let months = i32::deserialize(buf)?;
+            let store_product = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let store_quantity = if (flags & 2) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let currency = String::deserialize(buf)?;
+            let amount = i64::deserialize(buf)?;
+            Ok(PremiumGiftCodeOption {
+                users,
+                months,
+                store_product,
+                store_quantity,
+                currency,
+                amount,
+            })
+        }
+    }
+    impl From<crate::enums::PremiumGiftCodeOption> for PremiumGiftCodeOption {
+        fn from(x: crate::enums::PremiumGiftCodeOption) -> Self {
+            match x {
+                crate::enums::PremiumGiftCodeOption::Option(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct PremiumGiftOption {
         pub months: i32,
         pub currency: String,
@@ -26566,6 +28652,67 @@ pub mod types {
         fn from(x: crate::enums::PremiumSubscriptionOption) -> Self {
             match x {
                 crate::enums::PremiumSubscriptionOption::Option(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct PrepaidGiveaway {
+        pub id: i64,
+        pub months: i32,
+        pub quantity: i32,
+        pub date: i32,
+    }
+    impl crate::Identifiable for PrepaidGiveaway {
+        const CONSTRUCTOR_ID: u32 = 2991824212;
+    }
+    impl crate::Serializable for PrepaidGiveaway {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.id.serialize(buf);
+            self.months.serialize(buf);
+            self.quantity.serialize(buf);
+            self.date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for PrepaidGiveaway {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let id = i64::deserialize(buf)?;
+            let months = i32::deserialize(buf)?;
+            let quantity = i32::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            Ok(PrepaidGiveaway {
+                id,
+                months,
+                quantity,
+                date,
+            })
+        }
+    }
+    impl From<crate::enums::PrepaidGiveaway> for PrepaidGiveaway {
+        fn from(x: crate::enums::PrepaidGiveaway) -> Self {
+            match x {
+                crate::enums::PrepaidGiveaway::Giveaway(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct PrivacyKeyAbout {}
+    impl crate::Identifiable for PrivacyKeyAbout {
+        const CONSTRUCTOR_ID: u32 = 2760292193;
+    }
+    impl crate::Serializable for PrivacyKeyAbout {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for PrivacyKeyAbout {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(PrivacyKeyAbout {})
+        }
+    }
+    impl TryFrom<crate::enums::PrivacyKey> for PrivacyKeyAbout {
+        type Error = ();
+        fn try_from(x: crate::enums::PrivacyKey) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::PrivacyKey::About => Ok(PrivacyKeyAbout {}),
+                _ => Err(()),
             }
         }
     }
@@ -26812,6 +28959,30 @@ pub mod types {
         fn try_from(x: crate::enums::PrivacyRule) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::PrivacyRule::PrivacyValueAllowChatParticipants(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct PrivacyValueAllowCloseFriends {}
+    impl crate::Identifiable for PrivacyValueAllowCloseFriends {
+        const CONSTRUCTOR_ID: u32 = 4159232155;
+    }
+    impl crate::Serializable for PrivacyValueAllowCloseFriends {
+        fn serialize(&self, _buf: crate::serialize::Buffer) {}
+    }
+    impl crate::Deserializable for PrivacyValueAllowCloseFriends {
+        fn deserialize(_buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            Ok(PrivacyValueAllowCloseFriends {})
+        }
+    }
+    impl TryFrom<crate::enums::PrivacyRule> for PrivacyValueAllowCloseFriends {
+        type Error = ();
+        fn try_from(x: crate::enums::PrivacyRule) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::PrivacyRule::PrivacyValueAllowCloseFriends => {
+                    Ok(PrivacyValueAllowCloseFriends {})
+                }
                 _ => Err(()),
             }
         }
@@ -29793,13 +31964,14 @@ pub mod types {
         pub chat_invite_hash: Option<String>,
         pub channel_post: Option<i32>,
         pub start_param: Option<String>,
+        pub webpage: Option<crate::enums::SponsoredWebPage>,
         pub message: String,
         pub entities: Option<Vec<crate::enums::MessageEntity>>,
         pub sponsor_info: Option<String>,
         pub additional_info: Option<String>,
     }
     impl crate::Identifiable for SponsoredMessage {
-        const CONSTRUCTOR_ID: u32 = 4230330408;
+        const CONSTRUCTOR_ID: u32 = 3668967275;
     }
     impl crate::Serializable for SponsoredMessage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -29815,6 +31987,7 @@ pub mod types {
                 }
                 | if self.channel_post.is_some() { 4 } else { 0 }
                 | if self.start_param.is_some() { 1 } else { 0 }
+                | if self.webpage.is_some() { 512 } else { 0 }
                 | if self.entities.is_some() { 2 } else { 0 }
                 | if self.sponsor_info.is_some() { 128 } else { 0 }
                 | if self.additional_info.is_some() {
@@ -29837,6 +32010,9 @@ pub mod types {
                 x.serialize(buf);
             }
             if let Some(ref x) = self.start_param {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.webpage {
                 x.serialize(buf);
             }
             self.message.serialize(buf);
@@ -29882,6 +32058,11 @@ pub mod types {
             } else {
                 None
             };
+            let webpage = if (flags & 512) != 0 {
+                Some(crate::enums::SponsoredWebPage::deserialize(buf)?)
+            } else {
+                None
+            };
             let message = String::deserialize(buf)?;
             let entities = if (flags & 2) != 0 {
                 Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
@@ -29907,6 +32088,7 @@ pub mod types {
                 chat_invite_hash,
                 channel_post,
                 start_param,
+                webpage,
                 message,
                 entities,
                 sponsor_info,
@@ -29918,6 +32100,49 @@ pub mod types {
         fn from(x: crate::enums::SponsoredMessage) -> Self {
             match x {
                 crate::enums::SponsoredMessage::Message(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct SponsoredWebPage {
+        pub url: String,
+        pub site_name: String,
+        pub photo: Option<crate::enums::Photo>,
+    }
+    impl crate::Identifiable for SponsoredWebPage {
+        const CONSTRUCTOR_ID: u32 = 1035529315;
+    }
+    impl crate::Serializable for SponsoredWebPage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.photo.is_some() { 1 } else { 0 }).serialize(buf);
+            self.url.serialize(buf);
+            self.site_name.serialize(buf);
+            if let Some(ref x) = self.photo {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for SponsoredWebPage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let url = String::deserialize(buf)?;
+            let site_name = String::deserialize(buf)?;
+            let photo = if (flags & 1) != 0 {
+                Some(crate::enums::Photo::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(SponsoredWebPage {
+                url,
+                site_name,
+                photo,
+            })
+        }
+    }
+    impl From<crate::enums::SponsoredWebPage> for SponsoredWebPage {
+        fn from(x: crate::enums::SponsoredWebPage) -> Self {
+            match x {
+                crate::enums::SponsoredWebPage::Page(x) => x,
             }
         }
     }
@@ -30297,6 +32522,7 @@ pub mod types {
         pub animated: bool,
         pub videos: bool,
         pub emojis: bool,
+        pub text_color: bool,
         pub installed_date: Option<i32>,
         pub id: i64,
         pub access_hash: i64,
@@ -30321,6 +32547,7 @@ pub mod types {
                 | if self.animated { 32 } else { 0 }
                 | if self.videos { 64 } else { 0 }
                 | if self.emojis { 128 } else { 0 }
+                | if self.text_color { 512 } else { 0 }
                 | if self.installed_date.is_some() { 1 } else { 0 }
                 | if self.thumbs.is_some() { 16 } else { 0 }
                 | if self.thumb_dc_id.is_some() { 16 } else { 0 }
@@ -30363,6 +32590,7 @@ pub mod types {
             let animated = (flags & 32) != 0;
             let videos = (flags & 64) != 0;
             let emojis = (flags & 128) != 0;
+            let text_color = (flags & 512) != 0;
             let installed_date = if (flags & 1) != 0 {
                 Some(i32::deserialize(buf)?)
             } else {
@@ -30401,6 +32629,7 @@ pub mod types {
                 animated,
                 videos,
                 emojis,
+                text_color,
                 installed_date,
                 id,
                 access_hash,
@@ -30547,6 +32776,416 @@ pub mod types {
             match x {
                 crate::enums::StickerSetCovered::StickerSetNoCovered(x) => Ok(x),
                 _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoriesStealthMode {
+        pub active_until_date: Option<i32>,
+        pub cooldown_until_date: Option<i32>,
+    }
+    impl crate::Identifiable for StoriesStealthMode {
+        const CONSTRUCTOR_ID: u32 = 1898850301;
+    }
+    impl crate::Serializable for StoriesStealthMode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.active_until_date.is_some() {
+                    1
+                } else {
+                    0
+                }
+                | if self.cooldown_until_date.is_some() {
+                    2
+                } else {
+                    0
+                })
+            .serialize(buf);
+            if let Some(ref x) = self.active_until_date {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.cooldown_until_date {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for StoriesStealthMode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let active_until_date = if (flags & 1) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let cooldown_until_date = if (flags & 2) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(StoriesStealthMode {
+                active_until_date,
+                cooldown_until_date,
+            })
+        }
+    }
+    impl From<crate::enums::StoriesStealthMode> for StoriesStealthMode {
+        fn from(x: crate::enums::StoriesStealthMode) -> Self {
+            match x {
+                crate::enums::StoriesStealthMode::Mode(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoryItem {
+        pub pinned: bool,
+        pub public: bool,
+        pub close_friends: bool,
+        pub min: bool,
+        pub noforwards: bool,
+        pub edited: bool,
+        pub contacts: bool,
+        pub selected_contacts: bool,
+        pub out: bool,
+        pub id: i32,
+        pub date: i32,
+        pub expire_date: i32,
+        pub caption: Option<String>,
+        pub entities: Option<Vec<crate::enums::MessageEntity>>,
+        pub media: crate::enums::MessageMedia,
+        pub media_areas: Option<Vec<crate::enums::MediaArea>>,
+        pub privacy: Option<Vec<crate::enums::PrivacyRule>>,
+        pub views: Option<crate::enums::StoryViews>,
+        pub sent_reaction: Option<crate::enums::Reaction>,
+    }
+    impl crate::Identifiable for StoryItem {
+        const CONSTRUCTOR_ID: u32 = 1153718222;
+    }
+    impl crate::Serializable for StoryItem {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.pinned { 32 } else { 0 }
+                | if self.public { 128 } else { 0 }
+                | if self.close_friends { 256 } else { 0 }
+                | if self.min { 512 } else { 0 }
+                | if self.noforwards { 1024 } else { 0 }
+                | if self.edited { 2048 } else { 0 }
+                | if self.contacts { 4096 } else { 0 }
+                | if self.selected_contacts { 8192 } else { 0 }
+                | if self.out { 65536 } else { 0 }
+                | if self.caption.is_some() { 1 } else { 0 }
+                | if self.entities.is_some() { 2 } else { 0 }
+                | if self.media_areas.is_some() { 16384 } else { 0 }
+                | if self.privacy.is_some() { 4 } else { 0 }
+                | if self.views.is_some() { 8 } else { 0 }
+                | if self.sent_reaction.is_some() {
+                    32768
+                } else {
+                    0
+                })
+            .serialize(buf);
+            self.id.serialize(buf);
+            self.date.serialize(buf);
+            self.expire_date.serialize(buf);
+            if let Some(ref x) = self.caption {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.entities {
+                x.serialize(buf);
+            }
+            self.media.serialize(buf);
+            if let Some(ref x) = self.media_areas {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.privacy {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.views {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.sent_reaction {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for StoryItem {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let pinned = (flags & 32) != 0;
+            let public = (flags & 128) != 0;
+            let close_friends = (flags & 256) != 0;
+            let min = (flags & 512) != 0;
+            let noforwards = (flags & 1024) != 0;
+            let edited = (flags & 2048) != 0;
+            let contacts = (flags & 4096) != 0;
+            let selected_contacts = (flags & 8192) != 0;
+            let out = (flags & 65536) != 0;
+            let id = i32::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            let expire_date = i32::deserialize(buf)?;
+            let caption = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let entities = if (flags & 2) != 0 {
+                Some(Vec::<crate::enums::MessageEntity>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let media = crate::enums::MessageMedia::deserialize(buf)?;
+            let media_areas = if (flags & 16384) != 0 {
+                Some(Vec::<crate::enums::MediaArea>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let privacy = if (flags & 4) != 0 {
+                Some(Vec::<crate::enums::PrivacyRule>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let views = if (flags & 8) != 0 {
+                Some(crate::enums::StoryViews::deserialize(buf)?)
+            } else {
+                None
+            };
+            let sent_reaction = if (flags & 32768) != 0 {
+                Some(crate::enums::Reaction::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(StoryItem {
+                pinned,
+                public,
+                close_friends,
+                min,
+                noforwards,
+                edited,
+                contacts,
+                selected_contacts,
+                out,
+                id,
+                date,
+                expire_date,
+                caption,
+                entities,
+                media,
+                media_areas,
+                privacy,
+                views,
+                sent_reaction,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::StoryItem> for StoryItem {
+        type Error = ();
+        fn try_from(x: crate::enums::StoryItem) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::StoryItem::Item(x) => Ok(*x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoryItemDeleted {
+        pub id: i32,
+    }
+    impl crate::Identifiable for StoryItemDeleted {
+        const CONSTRUCTOR_ID: u32 = 1374088783;
+    }
+    impl crate::Serializable for StoryItemDeleted {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for StoryItemDeleted {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let id = i32::deserialize(buf)?;
+            Ok(StoryItemDeleted { id })
+        }
+    }
+    impl TryFrom<crate::enums::StoryItem> for StoryItemDeleted {
+        type Error = ();
+        fn try_from(x: crate::enums::StoryItem) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::StoryItem::Deleted(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoryItemSkipped {
+        pub close_friends: bool,
+        pub id: i32,
+        pub date: i32,
+        pub expire_date: i32,
+    }
+    impl crate::Identifiable for StoryItemSkipped {
+        const CONSTRUCTOR_ID: u32 = 4289579283;
+    }
+    impl crate::Serializable for StoryItemSkipped {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.close_friends { 256 } else { 0 }).serialize(buf);
+            self.id.serialize(buf);
+            self.date.serialize(buf);
+            self.expire_date.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for StoryItemSkipped {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let close_friends = (flags & 256) != 0;
+            let id = i32::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            let expire_date = i32::deserialize(buf)?;
+            Ok(StoryItemSkipped {
+                close_friends,
+                id,
+                date,
+                expire_date,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::StoryItem> for StoryItemSkipped {
+        type Error = ();
+        fn try_from(x: crate::enums::StoryItem) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::StoryItem::Skipped(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoryView {
+        pub blocked: bool,
+        pub blocked_my_stories_from: bool,
+        pub user_id: i64,
+        pub date: i32,
+        pub reaction: Option<crate::enums::Reaction>,
+    }
+    impl crate::Identifiable for StoryView {
+        const CONSTRUCTOR_ID: u32 = 2965236421;
+    }
+    impl crate::Serializable for StoryView {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.blocked { 1 } else { 0 }
+                | if self.blocked_my_stories_from { 2 } else { 0 }
+                | if self.reaction.is_some() { 4 } else { 0 })
+            .serialize(buf);
+            self.user_id.serialize(buf);
+            self.date.serialize(buf);
+            if let Some(ref x) = self.reaction {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for StoryView {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let blocked = (flags & 1) != 0;
+            let blocked_my_stories_from = (flags & 2) != 0;
+            let user_id = i64::deserialize(buf)?;
+            let date = i32::deserialize(buf)?;
+            let reaction = if (flags & 4) != 0 {
+                Some(crate::enums::Reaction::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(StoryView {
+                blocked,
+                blocked_my_stories_from,
+                user_id,
+                date,
+                reaction,
+            })
+        }
+    }
+    impl From<crate::enums::StoryView> for StoryView {
+        fn from(x: crate::enums::StoryView) -> Self {
+            match x {
+                crate::enums::StoryView::View(x) => x,
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct StoryViews {
+        pub has_viewers: bool,
+        pub views_count: i32,
+        pub forwards_count: Option<i32>,
+        pub reactions: Option<Vec<crate::enums::ReactionCount>>,
+        pub reactions_count: Option<i32>,
+        pub recent_viewers: Option<Vec<i64>>,
+    }
+    impl crate::Identifiable for StoryViews {
+        const CONSTRUCTOR_ID: u32 = 2371443926;
+    }
+    impl crate::Serializable for StoryViews {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.has_viewers { 2 } else { 0 }
+                | if self.forwards_count.is_some() { 4 } else { 0 }
+                | if self.reactions.is_some() { 8 } else { 0 }
+                | if self.reactions_count.is_some() {
+                    16
+                } else {
+                    0
+                }
+                | if self.recent_viewers.is_some() { 1 } else { 0 })
+            .serialize(buf);
+            self.views_count.serialize(buf);
+            if let Some(ref x) = self.forwards_count {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.reactions {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.reactions_count {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.recent_viewers {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for StoryViews {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let has_viewers = (flags & 2) != 0;
+            let views_count = i32::deserialize(buf)?;
+            let forwards_count = if (flags & 4) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let reactions = if (flags & 8) != 0 {
+                Some(Vec::<crate::enums::ReactionCount>::deserialize(buf)?)
+            } else {
+                None
+            };
+            let reactions_count = if (flags & 16) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let recent_viewers = if (flags & 1) != 0 {
+                Some(Vec::<i64>::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(StoryViews {
+                has_viewers,
+                views_count,
+                forwards_count,
+                reactions,
+                reactions_count,
+                recent_viewers,
+            })
+        }
+    }
+    impl From<crate::enums::StoryViews> for StoryViews {
+        fn from(x: crate::enums::StoryViews) -> Self {
+            match x {
+                crate::enums::StoryViews::Views(x) => x,
             }
         }
     }
@@ -32382,6 +35021,7 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct UpdateChannelParticipant {
+        pub via_chatlist: bool,
         pub channel_id: i64,
         pub date: i32,
         pub actor_id: i64,
@@ -32397,6 +35037,7 @@ pub mod types {
     impl crate::Serializable for UpdateChannelParticipant {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
+                | if self.via_chatlist { 8 } else { 0 }
                 | if self.prev_participant.is_some() {
                     1
                 } else {
@@ -32424,6 +35065,7 @@ pub mod types {
     impl crate::Deserializable for UpdateChannelParticipant {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
+            let via_chatlist = (flags & 8) != 0;
             let channel_id = i64::deserialize(buf)?;
             let date = i32::deserialize(buf)?;
             let actor_id = i64::deserialize(buf)?;
@@ -32445,6 +35087,7 @@ pub mod types {
             };
             let qts = i32::deserialize(buf)?;
             Ok(UpdateChannelParticipant {
+                via_chatlist,
                 channel_id,
                 date,
                 actor_id,
@@ -34079,17 +36722,17 @@ pub mod types {
     #[derive(Debug, Clone, PartialEq)]
     pub struct UpdateMessagePollVote {
         pub poll_id: i64,
-        pub user_id: i64,
+        pub peer: crate::enums::Peer,
         pub options: Vec<Vec<u8>>,
         pub qts: i32,
     }
     impl crate::Identifiable for UpdateMessagePollVote {
-        const CONSTRUCTOR_ID: u32 = 274961865;
+        const CONSTRUCTOR_ID: u32 = 619974263;
     }
     impl crate::Serializable for UpdateMessagePollVote {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             self.poll_id.serialize(buf);
-            self.user_id.serialize(buf);
+            self.peer.serialize(buf);
             self.options.serialize(buf);
             self.qts.serialize(buf);
         }
@@ -34097,12 +36740,12 @@ pub mod types {
     impl crate::Deserializable for UpdateMessagePollVote {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let poll_id = i64::deserialize(buf)?;
-            let user_id = i64::deserialize(buf)?;
+            let peer = crate::enums::Peer::deserialize(buf)?;
             let options = Vec::<Vec<u8>>::deserialize(buf)?;
             let qts = i32::deserialize(buf)?;
             Ok(UpdateMessagePollVote {
                 poll_id,
-                user_id,
+                peer,
                 options,
                 qts,
             })
@@ -34200,6 +36843,75 @@ pub mod types {
         fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::Update::MoveStickerSetToTop(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateNewAuthorization {
+        pub unconfirmed: bool,
+        pub hash: i64,
+        pub date: Option<i32>,
+        pub device: Option<String>,
+        pub location: Option<String>,
+    }
+    impl crate::Identifiable for UpdateNewAuthorization {
+        const CONSTRUCTOR_ID: u32 = 2303831023;
+    }
+    impl crate::Serializable for UpdateNewAuthorization {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.unconfirmed { 1 } else { 0 }
+                | if self.date.is_some() { 1 } else { 0 }
+                | if self.device.is_some() { 1 } else { 0 }
+                | if self.location.is_some() { 1 } else { 0 })
+            .serialize(buf);
+            self.hash.serialize(buf);
+            if let Some(ref x) = self.date {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.device {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.location {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for UpdateNewAuthorization {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let unconfirmed = (flags & 1) != 0;
+            let hash = i64::deserialize(buf)?;
+            let date = if (flags & 1) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let device = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            let location = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(UpdateNewAuthorization {
+                unconfirmed,
+                hash,
+                date,
+                device,
+                location,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateNewAuthorization {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::NewAuthorization(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -34397,23 +37109,33 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct UpdatePeerBlocked {
-        pub peer_id: crate::enums::Peer,
         pub blocked: bool,
+        pub blocked_my_stories_from: bool,
+        pub peer_id: crate::enums::Peer,
     }
     impl crate::Identifiable for UpdatePeerBlocked {
-        const CONSTRUCTOR_ID: u32 = 610945826;
+        const CONSTRUCTOR_ID: u32 = 3957356370;
     }
     impl crate::Serializable for UpdatePeerBlocked {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32
+                | if self.blocked { 1 } else { 0 }
+                | if self.blocked_my_stories_from { 2 } else { 0 })
+            .serialize(buf);
             self.peer_id.serialize(buf);
-            self.blocked.serialize(buf);
         }
     }
     impl crate::Deserializable for UpdatePeerBlocked {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let blocked = (flags & 1) != 0;
+            let blocked_my_stories_from = (flags & 2) != 0;
             let peer_id = crate::enums::Peer::deserialize(buf)?;
-            let blocked = bool::deserialize(buf)?;
-            Ok(UpdatePeerBlocked { peer_id, blocked })
+            Ok(UpdatePeerBlocked {
+                blocked,
+                blocked_my_stories_from,
+                peer_id,
+            })
         }
     }
     impl TryFrom<crate::enums::Update> for UpdatePeerBlocked {
@@ -35139,26 +37861,38 @@ pub mod types {
         pub messages: Vec<i32>,
         pub pts: i32,
         pub pts_count: i32,
+        pub date: Option<i32>,
     }
     impl crate::Identifiable for UpdateReadMessagesContents {
-        const CONSTRUCTOR_ID: u32 = 1757493555;
+        const CONSTRUCTOR_ID: u32 = 4163006849;
     }
     impl crate::Serializable for UpdateReadMessagesContents {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.date.is_some() { 1 } else { 0 }).serialize(buf);
             self.messages.serialize(buf);
             self.pts.serialize(buf);
             self.pts_count.serialize(buf);
+            if let Some(ref x) = self.date {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for UpdateReadMessagesContents {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
             let messages = Vec::<i32>::deserialize(buf)?;
             let pts = i32::deserialize(buf)?;
             let pts_count = i32::deserialize(buf)?;
+            let date = if (flags & 1) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(UpdateReadMessagesContents {
                 messages,
                 pts,
                 pts_count,
+                date,
             })
         }
     }
@@ -35167,6 +37901,36 @@ pub mod types {
         fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::Update::ReadMessagesContents(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateReadStories {
+        pub peer: crate::enums::Peer,
+        pub max_id: i32,
+    }
+    impl crate::Identifiable for UpdateReadStories {
+        const CONSTRUCTOR_ID: u32 = 4149121835;
+    }
+    impl crate::Serializable for UpdateReadStories {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.max_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for UpdateReadStories {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let max_id = i32::deserialize(buf)?;
+            Ok(UpdateReadStories { peer, max_id })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateReadStories {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::ReadStories(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -35282,8 +38046,46 @@ pub mod types {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateSentStoryReaction {
+        pub peer: crate::enums::Peer,
+        pub story_id: i32,
+        pub reaction: crate::enums::Reaction,
+    }
+    impl crate::Identifiable for UpdateSentStoryReaction {
+        const CONSTRUCTOR_ID: u32 = 2103604867;
+    }
+    impl crate::Serializable for UpdateSentStoryReaction {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.story_id.serialize(buf);
+            self.reaction.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for UpdateSentStoryReaction {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let story_id = i32::deserialize(buf)?;
+            let reaction = crate::enums::Reaction::deserialize(buf)?;
+            Ok(UpdateSentStoryReaction {
+                peer,
+                story_id,
+                reaction,
+            })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateSentStoryReaction {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::SentStoryReaction(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub struct UpdateServiceNotification {
         pub popup: bool,
+        pub invert_media: bool,
         pub inbox_date: Option<i32>,
         pub r#type: String,
         pub message: String,
@@ -35295,8 +38097,11 @@ pub mod types {
     }
     impl crate::Serializable for UpdateServiceNotification {
         fn serialize(&self, buf: crate::serialize::Buffer) {
-            (0u32 | if self.popup { 1 } else { 0 } | if self.inbox_date.is_some() { 2 } else { 0 })
-                .serialize(buf);
+            (0u32
+                | if self.popup { 1 } else { 0 }
+                | if self.invert_media { 4 } else { 0 }
+                | if self.inbox_date.is_some() { 2 } else { 0 })
+            .serialize(buf);
             if let Some(ref x) = self.inbox_date {
                 x.serialize(buf);
             }
@@ -35310,6 +38115,7 @@ pub mod types {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
             let popup = (flags & 1) != 0;
+            let invert_media = (flags & 4) != 0;
             let inbox_date = if (flags & 2) != 0 {
                 Some(i32::deserialize(buf)?)
             } else {
@@ -35321,6 +38127,7 @@ pub mod types {
             let entities = Vec::<crate::enums::MessageEntity>::deserialize(buf)?;
             Ok(UpdateServiceNotification {
                 popup,
+                invert_media,
                 inbox_date,
                 r#type,
                 message,
@@ -35776,6 +38583,93 @@ pub mod types {
         fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::Update::StickerSetsOrder(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateStoriesStealthMode {
+        pub stealth_mode: crate::enums::StoriesStealthMode,
+    }
+    impl crate::Identifiable for UpdateStoriesStealthMode {
+        const CONSTRUCTOR_ID: u32 = 738741697;
+    }
+    impl crate::Serializable for UpdateStoriesStealthMode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.stealth_mode.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for UpdateStoriesStealthMode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let stealth_mode = crate::enums::StoriesStealthMode::deserialize(buf)?;
+            Ok(UpdateStoriesStealthMode { stealth_mode })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateStoriesStealthMode {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::StoriesStealthMode(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateStory {
+        pub peer: crate::enums::Peer,
+        pub story: crate::enums::StoryItem,
+    }
+    impl crate::Identifiable for UpdateStory {
+        const CONSTRUCTOR_ID: u32 = 1974712216;
+    }
+    impl crate::Serializable for UpdateStory {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.peer.serialize(buf);
+            self.story.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for UpdateStory {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let story = crate::enums::StoryItem::deserialize(buf)?;
+            Ok(UpdateStory { peer, story })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateStory {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::Story(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct UpdateStoryId {
+        pub id: i32,
+        pub random_id: i64,
+    }
+    impl crate::Identifiable for UpdateStoryId {
+        const CONSTRUCTOR_ID: u32 = 468923833;
+    }
+    impl crate::Serializable for UpdateStoryId {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            self.id.serialize(buf);
+            self.random_id.serialize(buf);
+        }
+    }
+    impl crate::Deserializable for UpdateStoryId {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let id = i32::deserialize(buf)?;
+            let random_id = i64::deserialize(buf)?;
+            Ok(UpdateStoryId { id, random_id })
+        }
+    }
+    impl TryFrom<crate::enums::Update> for UpdateStoryId {
+        type Error = ();
+        fn try_from(x: crate::enums::Update) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::Update::StoryId(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -36331,6 +39225,10 @@ pub mod types {
         pub bot_attach_menu: bool,
         pub premium: bool,
         pub attach_menu_enabled: bool,
+        pub bot_can_edit: bool,
+        pub close_friend: bool,
+        pub stories_hidden: bool,
+        pub stories_unavailable: bool,
         pub id: i64,
         pub access_hash: Option<i64>,
         pub first_name: Option<String>,
@@ -36345,9 +39243,12 @@ pub mod types {
         pub lang_code: Option<String>,
         pub emoji_status: Option<crate::enums::EmojiStatus>,
         pub usernames: Option<Vec<crate::enums::Username>>,
+        pub stories_max_id: Option<i32>,
+        pub color: Option<i32>,
+        pub background_emoji_id: Option<i64>,
     }
     impl crate::Identifiable for User {
-        const CONSTRUCTOR_ID: u32 = 2409088552;
+        const CONSTRUCTOR_ID: u32 = 3948949285;
     }
     impl crate::Serializable for User {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -36403,7 +39304,20 @@ pub mod types {
                     0
                 })
             .serialize(buf);
-            (0u32 | if self.usernames.is_some() { 1 } else { 0 }).serialize(buf);
+            (0u32
+                | if self.bot_can_edit { 2 } else { 0 }
+                | if self.close_friend { 4 } else { 0 }
+                | if self.stories_hidden { 8 } else { 0 }
+                | if self.stories_unavailable { 16 } else { 0 }
+                | if self.usernames.is_some() { 1 } else { 0 }
+                | if self.stories_max_id.is_some() { 32 } else { 0 }
+                | if self.color.is_some() { 128 } else { 0 }
+                | if self.background_emoji_id.is_some() {
+                    64
+                } else {
+                    0
+                })
+            .serialize(buf);
             self.id.serialize(buf);
             if let Some(ref x) = self.access_hash {
                 x.serialize(buf);
@@ -36444,6 +39358,15 @@ pub mod types {
             if let Some(ref x) = self.usernames {
                 x.serialize(buf);
             }
+            if let Some(ref x) = self.stories_max_id {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.color {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.background_emoji_id {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for User {
@@ -36468,6 +39391,10 @@ pub mod types {
             let premium = (flags & 268435456) != 0;
             let attach_menu_enabled = (flags & 536870912) != 0;
             let flags2 = u32::deserialize(buf)?;
+            let bot_can_edit = (flags2 & 2) != 0;
+            let close_friend = (flags2 & 4) != 0;
+            let stories_hidden = (flags2 & 8) != 0;
+            let stories_unavailable = (flags2 & 16) != 0;
             let id = i64::deserialize(buf)?;
             let access_hash = if (flags & 1) != 0 {
                 Some(i64::deserialize(buf)?)
@@ -36534,6 +39461,21 @@ pub mod types {
             } else {
                 None
             };
+            let stories_max_id = if (flags2 & 32) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let color = if (flags2 & 128) != 0 {
+                Some(i32::deserialize(buf)?)
+            } else {
+                None
+            };
+            let background_emoji_id = if (flags2 & 64) != 0 {
+                Some(i64::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(User {
                 is_self,
                 contact,
@@ -36553,6 +39495,10 @@ pub mod types {
                 bot_attach_menu,
                 premium,
                 attach_menu_enabled,
+                bot_can_edit,
+                close_friend,
+                stories_hidden,
+                stories_unavailable,
                 id,
                 access_hash,
                 first_name,
@@ -36567,6 +39513,9 @@ pub mod types {
                 lang_code,
                 emoji_status,
                 usernames,
+                stories_max_id,
+                color,
+                background_emoji_id,
             })
         }
     }
@@ -36616,6 +39565,8 @@ pub mod types {
         pub video_calls_available: bool,
         pub voice_messages_forbidden: bool,
         pub translations_disabled: bool,
+        pub stories_pinned_available: bool,
+        pub blocked_my_stories_from: bool,
         pub id: i64,
         pub about: Option<String>,
         pub settings: crate::enums::PeerSettings,
@@ -36633,9 +39584,11 @@ pub mod types {
         pub bot_group_admin_rights: Option<crate::enums::ChatAdminRights>,
         pub bot_broadcast_admin_rights: Option<crate::enums::ChatAdminRights>,
         pub premium_gifts: Option<Vec<crate::enums::PremiumGiftOption>>,
+        pub wallpaper: Option<crate::enums::WallPaper>,
+        pub stories: Option<crate::enums::PeerStories>,
     }
     impl crate::Identifiable for UserFull {
-        const CONSTRUCTOR_ID: u32 = 4174588653;
+        const CONSTRUCTOR_ID: u32 = 3115396204;
     }
     impl crate::Serializable for UserFull {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -36653,6 +39606,16 @@ pub mod types {
                 }
                 | if self.translations_disabled {
                     8388608
+                } else {
+                    0
+                }
+                | if self.stories_pinned_available {
+                    67108864
+                } else {
+                    0
+                }
+                | if self.blocked_my_stories_from {
+                    134217728
                 } else {
                     0
                 }
@@ -36696,7 +39659,13 @@ pub mod types {
                     524288
                 } else {
                     0
-                })
+                }
+                | if self.wallpaper.is_some() {
+                    16777216
+                } else {
+                    0
+                }
+                | if self.stories.is_some() { 33554432 } else { 0 })
             .serialize(buf);
             self.id.serialize(buf);
             if let Some(ref x) = self.about {
@@ -36741,6 +39710,12 @@ pub mod types {
             if let Some(ref x) = self.premium_gifts {
                 x.serialize(buf);
             }
+            if let Some(ref x) = self.wallpaper {
+                x.serialize(buf);
+            }
+            if let Some(ref x) = self.stories {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for UserFull {
@@ -36754,6 +39729,8 @@ pub mod types {
             let video_calls_available = (flags & 8192) != 0;
             let voice_messages_forbidden = (flags & 1048576) != 0;
             let translations_disabled = (flags & 8388608) != 0;
+            let stories_pinned_available = (flags & 67108864) != 0;
+            let blocked_my_stories_from = (flags & 134217728) != 0;
             let id = i64::deserialize(buf)?;
             let about = if (flags & 2) != 0 {
                 Some(String::deserialize(buf)?)
@@ -36823,6 +39800,16 @@ pub mod types {
             } else {
                 None
             };
+            let wallpaper = if (flags & 16777216) != 0 {
+                Some(crate::enums::WallPaper::deserialize(buf)?)
+            } else {
+                None
+            };
+            let stories = if (flags & 33554432) != 0 {
+                Some(crate::enums::PeerStories::deserialize(buf)?)
+            } else {
+                None
+            };
             Ok(UserFull {
                 blocked,
                 phone_calls_available,
@@ -36832,6 +39819,8 @@ pub mod types {
                 video_calls_available,
                 voice_messages_forbidden,
                 translations_disabled,
+                stories_pinned_available,
+                blocked_my_stories_from,
                 id,
                 about,
                 settings,
@@ -36849,6 +39838,8 @@ pub mod types {
                 bot_group_admin_rights,
                 bot_broadcast_admin_rights,
                 premium_gifts,
+                wallpaper,
+                stories,
             })
         }
     }
@@ -37622,6 +40613,7 @@ pub mod types {
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct WebPage {
+        pub has_large_media: bool,
         pub id: i64,
         pub url: String,
         pub display_url: String,
@@ -37647,6 +40639,7 @@ pub mod types {
     impl crate::Serializable for WebPage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
             (0u32
+                | if self.has_large_media { 8192 } else { 0 }
                 | if self.r#type.is_some() { 1 } else { 0 }
                 | if self.site_name.is_some() { 2 } else { 0 }
                 | if self.title.is_some() { 4 } else { 0 }
@@ -37713,6 +40706,7 @@ pub mod types {
     impl crate::Deserializable for WebPage {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
             let flags = u32::deserialize(buf)?;
+            let has_large_media = (flags & 8192) != 0;
             let id = i64::deserialize(buf)?;
             let url = String::deserialize(buf)?;
             let display_url = String::deserialize(buf)?;
@@ -37788,6 +40782,7 @@ pub mod types {
                 None
             };
             Ok(WebPage {
+                has_large_media,
                 id,
                 url,
                 display_url,
@@ -37814,6 +40809,47 @@ pub mod types {
         fn try_from(x: crate::enums::WebPage) -> Result<Self, Self::Error> {
             match x {
                 crate::enums::WebPage::Page(x) => Ok(x),
+                _ => Err(()),
+            }
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct WebPageAttributeStory {
+        pub peer: crate::enums::Peer,
+        pub id: i32,
+        pub story: Option<crate::enums::StoryItem>,
+    }
+    impl crate::Identifiable for WebPageAttributeStory {
+        const CONSTRUCTOR_ID: u32 = 781501415;
+    }
+    impl crate::Serializable for WebPageAttributeStory {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.story.is_some() { 1 } else { 0 }).serialize(buf);
+            self.peer.serialize(buf);
+            self.id.serialize(buf);
+            if let Some(ref x) = self.story {
+                x.serialize(buf);
+            }
+        }
+    }
+    impl crate::Deserializable for WebPageAttributeStory {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
+            let peer = crate::enums::Peer::deserialize(buf)?;
+            let id = i32::deserialize(buf)?;
+            let story = if (flags & 1) != 0 {
+                Some(crate::enums::StoryItem::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(WebPageAttributeStory { peer, id, story })
+        }
+    }
+    impl TryFrom<crate::enums::WebPageAttribute> for WebPageAttributeStory {
+        type Error = ();
+        fn try_from(x: crate::enums::WebPageAttribute) -> Result<Self, Self::Error> {
+            match x {
+                crate::enums::WebPageAttribute::Story(x) => Ok(x),
                 _ => Err(()),
             }
         }
@@ -37859,29 +40895,42 @@ pub mod types {
             })
         }
     }
-    impl From<crate::enums::WebPageAttribute> for WebPageAttributeTheme {
-        fn from(x: crate::enums::WebPageAttribute) -> Self {
+    impl TryFrom<crate::enums::WebPageAttribute> for WebPageAttributeTheme {
+        type Error = ();
+        fn try_from(x: crate::enums::WebPageAttribute) -> Result<Self, Self::Error> {
             match x {
-                crate::enums::WebPageAttribute::Theme(x) => x,
+                crate::enums::WebPageAttribute::Theme(x) => Ok(x),
+                _ => Err(()),
             }
         }
     }
     #[derive(Debug, Clone, PartialEq)]
     pub struct WebPageEmpty {
         pub id: i64,
+        pub url: Option<String>,
     }
     impl crate::Identifiable for WebPageEmpty {
-        const CONSTRUCTOR_ID: u32 = 3943987176;
+        const CONSTRUCTOR_ID: u32 = 555358088;
     }
     impl crate::Serializable for WebPageEmpty {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.url.is_some() { 1 } else { 0 }).serialize(buf);
             self.id.serialize(buf);
+            if let Some(ref x) = self.url {
+                x.serialize(buf);
+            }
         }
     }
     impl crate::Deserializable for WebPageEmpty {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
             let id = i64::deserialize(buf)?;
-            Ok(WebPageEmpty { id })
+            let url = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
+            Ok(WebPageEmpty { id, url })
         }
     }
     impl TryFrom<crate::enums::WebPage> for WebPageEmpty {
@@ -37937,22 +40986,33 @@ pub mod types {
     #[derive(Debug, Clone, PartialEq)]
     pub struct WebPagePending {
         pub id: i64,
+        pub url: Option<String>,
         pub date: i32,
     }
     impl crate::Identifiable for WebPagePending {
-        const CONSTRUCTOR_ID: u32 = 3313949212;
+        const CONSTRUCTOR_ID: u32 = 2966502983;
     }
     impl crate::Serializable for WebPagePending {
         fn serialize(&self, buf: crate::serialize::Buffer) {
+            (0u32 | if self.url.is_some() { 1 } else { 0 }).serialize(buf);
             self.id.serialize(buf);
+            if let Some(ref x) = self.url {
+                x.serialize(buf);
+            }
             self.date.serialize(buf);
         }
     }
     impl crate::Deserializable for WebPagePending {
         fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            let flags = u32::deserialize(buf)?;
             let id = i64::deserialize(buf)?;
+            let url = if (flags & 1) != 0 {
+                Some(String::deserialize(buf)?)
+            } else {
+                None
+            };
             let date = i32::deserialize(buf)?;
-            Ok(WebPagePending { id, date })
+            Ok(WebPagePending { id, url, date })
         }
     }
     impl TryFrom<crate::enums::WebPage> for WebPagePending {
@@ -39619,25 +42679,34 @@ pub mod types {
             pub google_signin_allowed: bool,
             pub email_pattern: String,
             pub length: i32,
-            pub next_phone_login_date: Option<i32>,
+            pub reset_available_period: Option<i32>,
+            pub reset_pending_date: Option<i32>,
         }
         impl crate::Identifiable for SentCodeTypeEmailCode {
-            const CONSTRUCTOR_ID: u32 = 1511364673;
+            const CONSTRUCTOR_ID: u32 = 4098946459;
         }
         impl crate::Serializable for SentCodeTypeEmailCode {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 (0u32
                     | if self.apple_signin_allowed { 1 } else { 0 }
                     | if self.google_signin_allowed { 2 } else { 0 }
-                    | if self.next_phone_login_date.is_some() {
-                        4
+                    | if self.reset_available_period.is_some() {
+                        8
+                    } else {
+                        0
+                    }
+                    | if self.reset_pending_date.is_some() {
+                        16
                     } else {
                         0
                     })
                 .serialize(buf);
                 self.email_pattern.serialize(buf);
                 self.length.serialize(buf);
-                if let Some(ref x) = self.next_phone_login_date {
+                if let Some(ref x) = self.reset_available_period {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.reset_pending_date {
                     x.serialize(buf);
                 }
             }
@@ -39649,7 +42718,12 @@ pub mod types {
                 let google_signin_allowed = (flags & 2) != 0;
                 let email_pattern = String::deserialize(buf)?;
                 let length = i32::deserialize(buf)?;
-                let next_phone_login_date = if (flags & 4) != 0 {
+                let reset_available_period = if (flags & 8) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let reset_pending_date = if (flags & 16) != 0 {
                     Some(i32::deserialize(buf)?)
                 } else {
                     None
@@ -39659,7 +42733,8 @@ pub mod types {
                     google_signin_allowed,
                     email_pattern,
                     length,
-                    next_phone_login_date,
+                    reset_available_period,
+                    reset_pending_date,
                 })
             }
         }
@@ -39889,6 +42964,46 @@ pub mod types {
         }
     }
     #[allow(clippy::unreadable_literal)]
+    pub mod bots {
+        #[allow(unused_imports)]
+        use std::convert::TryFrom;
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct BotInfo {
+            pub name: String,
+            pub about: String,
+            pub description: String,
+        }
+        impl crate::Identifiable for BotInfo {
+            const CONSTRUCTOR_ID: u32 = 3903288752;
+        }
+        impl crate::Serializable for BotInfo {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.name.serialize(buf);
+                self.about.serialize(buf);
+                self.description.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for BotInfo {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let name = String::deserialize(buf)?;
+                let about = String::deserialize(buf)?;
+                let description = String::deserialize(buf)?;
+                Ok(BotInfo {
+                    name,
+                    about,
+                    description,
+                })
+            }
+        }
+        impl From<crate::enums::bots::BotInfo> for BotInfo {
+            fn from(x: crate::enums::bots::BotInfo) -> Self {
+                match x {
+                    crate::enums::bots::BotInfo::Info(x) => x,
+                }
+            }
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
     pub mod channels {
         #[allow(unused_imports)]
         use std::convert::TryFrom;
@@ -40063,6 +43178,207 @@ pub mod types {
             fn from(x: crate::enums::channels::SendAsPeers) -> Self {
                 match x {
                     crate::enums::channels::SendAsPeers::Peers(x) => x,
+                }
+            }
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
+    pub mod chatlists {
+        #[allow(unused_imports)]
+        use std::convert::TryFrom;
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ChatlistInvite {
+            pub title: String,
+            pub emoticon: Option<String>,
+            pub peers: Vec<crate::enums::Peer>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for ChatlistInvite {
+            const CONSTRUCTOR_ID: u32 = 500007837;
+        }
+        impl crate::Serializable for ChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32 | if self.emoticon.is_some() { 1 } else { 0 }).serialize(buf);
+                self.title.serialize(buf);
+                if let Some(ref x) = self.emoticon {
+                    x.serialize(buf);
+                }
+                self.peers.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for ChatlistInvite {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let title = String::deserialize(buf)?;
+                let emoticon = if (flags & 1) != 0 {
+                    Some(String::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let peers = Vec::<crate::enums::Peer>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(ChatlistInvite {
+                    title,
+                    emoticon,
+                    peers,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::chatlists::ChatlistInvite> for ChatlistInvite {
+            type Error = ();
+            fn try_from(x: crate::enums::chatlists::ChatlistInvite) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::chatlists::ChatlistInvite::Invite(x) => Ok(x),
+                    _ => Err(()),
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ChatlistInviteAlready {
+            pub filter_id: i32,
+            pub missing_peers: Vec<crate::enums::Peer>,
+            pub already_peers: Vec<crate::enums::Peer>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for ChatlistInviteAlready {
+            const CONSTRUCTOR_ID: u32 = 4203214425;
+        }
+        impl crate::Serializable for ChatlistInviteAlready {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.filter_id.serialize(buf);
+                self.missing_peers.serialize(buf);
+                self.already_peers.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for ChatlistInviteAlready {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let filter_id = i32::deserialize(buf)?;
+                let missing_peers = Vec::<crate::enums::Peer>::deserialize(buf)?;
+                let already_peers = Vec::<crate::enums::Peer>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(ChatlistInviteAlready {
+                    filter_id,
+                    missing_peers,
+                    already_peers,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::chatlists::ChatlistInvite> for ChatlistInviteAlready {
+            type Error = ();
+            fn try_from(x: crate::enums::chatlists::ChatlistInvite) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::chatlists::ChatlistInvite::Already(x) => Ok(x),
+                    _ => Err(()),
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ChatlistUpdates {
+            pub missing_peers: Vec<crate::enums::Peer>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for ChatlistUpdates {
+            const CONSTRUCTOR_ID: u32 = 2478671757;
+        }
+        impl crate::Serializable for ChatlistUpdates {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.missing_peers.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for ChatlistUpdates {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let missing_peers = Vec::<crate::enums::Peer>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(ChatlistUpdates {
+                    missing_peers,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::chatlists::ChatlistUpdates> for ChatlistUpdates {
+            fn from(x: crate::enums::chatlists::ChatlistUpdates) -> Self {
+                match x {
+                    crate::enums::chatlists::ChatlistUpdates::Updates(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ExportedChatlistInvite {
+            pub filter: crate::enums::DialogFilter,
+            pub invite: crate::enums::ExportedChatlistInvite,
+        }
+        impl crate::Identifiable for ExportedChatlistInvite {
+            const CONSTRUCTOR_ID: u32 = 283567014;
+        }
+        impl crate::Serializable for ExportedChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.filter.serialize(buf);
+                self.invite.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for ExportedChatlistInvite {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let filter = crate::enums::DialogFilter::deserialize(buf)?;
+                let invite = crate::enums::ExportedChatlistInvite::deserialize(buf)?;
+                Ok(ExportedChatlistInvite { filter, invite })
+            }
+        }
+        impl From<crate::enums::chatlists::ExportedChatlistInvite> for ExportedChatlistInvite {
+            fn from(x: crate::enums::chatlists::ExportedChatlistInvite) -> Self {
+                match x {
+                    crate::enums::chatlists::ExportedChatlistInvite::Invite(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ExportedInvites {
+            pub invites: Vec<crate::enums::ExportedChatlistInvite>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for ExportedInvites {
+            const CONSTRUCTOR_ID: u32 = 279670215;
+        }
+        impl crate::Serializable for ExportedInvites {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.invites.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for ExportedInvites {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let invites = Vec::<crate::enums::ExportedChatlistInvite>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(ExportedInvites {
+                    invites,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::chatlists::ExportedInvites> for ExportedInvites {
+            fn from(x: crate::enums::chatlists::ExportedInvites) -> Self {
+                match x {
+                    crate::enums::chatlists::ExportedInvites::Invites(x) => x,
                 }
             }
         }
@@ -41557,6 +44873,7 @@ pub mod types {
         pub struct BotApp {
             pub inactive: bool,
             pub request_write_access: bool,
+            pub has_settings: bool,
             pub app: crate::enums::BotApp,
         }
         impl crate::Identifiable for BotApp {
@@ -41566,7 +44883,8 @@ pub mod types {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 (0u32
                     | if self.inactive { 1 } else { 0 }
-                    | if self.request_write_access { 2 } else { 0 })
+                    | if self.request_write_access { 2 } else { 0 }
+                    | if self.has_settings { 4 } else { 0 })
                 .serialize(buf);
                 self.app.serialize(buf);
             }
@@ -41576,10 +44894,12 @@ pub mod types {
                 let flags = u32::deserialize(buf)?;
                 let inactive = (flags & 1) != 0;
                 let request_write_access = (flags & 2) != 0;
+                let has_settings = (flags & 4) != 0;
                 let app = crate::enums::BotApp::deserialize(buf)?;
                 Ok(BotApp {
                     inactive,
                     request_write_access,
+                    has_settings,
                     app,
                 })
             }
@@ -43780,18 +47100,20 @@ pub mod types {
         #[derive(Debug, Clone, PartialEq)]
         pub struct VotesList {
             pub count: i32,
-            pub votes: Vec<crate::enums::MessageUserVote>,
+            pub votes: Vec<crate::enums::MessagePeerVote>,
+            pub chats: Vec<crate::enums::Chat>,
             pub users: Vec<crate::enums::User>,
             pub next_offset: Option<String>,
         }
         impl crate::Identifiable for VotesList {
-            const CONSTRUCTOR_ID: u32 = 136574537;
+            const CONSTRUCTOR_ID: u32 = 1218005070;
         }
         impl crate::Serializable for VotesList {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 (0u32 | if self.next_offset.is_some() { 1 } else { 0 }).serialize(buf);
                 self.count.serialize(buf);
                 self.votes.serialize(buf);
+                self.chats.serialize(buf);
                 self.users.serialize(buf);
                 if let Some(ref x) = self.next_offset {
                     x.serialize(buf);
@@ -43802,7 +47124,8 @@ pub mod types {
             fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
                 let flags = u32::deserialize(buf)?;
                 let count = i32::deserialize(buf)?;
-                let votes = Vec::<crate::enums::MessageUserVote>::deserialize(buf)?;
+                let votes = Vec::<crate::enums::MessagePeerVote>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
                 let users = Vec::<crate::enums::User>::deserialize(buf)?;
                 let next_offset = if (flags & 1) != 0 {
                     Some(String::deserialize(buf)?)
@@ -43812,6 +47135,7 @@ pub mod types {
                 Ok(VotesList {
                     count,
                     votes,
+                    chats,
                     users,
                     next_offset,
                 })
@@ -43821,6 +47145,41 @@ pub mod types {
             fn from(x: crate::enums::messages::VotesList) -> Self {
                 match x {
                     crate::enums::messages::VotesList::List(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct WebPage {
+            pub webpage: crate::enums::WebPage,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for WebPage {
+            const CONSTRUCTOR_ID: u32 = 4250800829;
+        }
+        impl crate::Serializable for WebPage {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.webpage.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for WebPage {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let webpage = crate::enums::WebPage::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(WebPage {
+                    webpage,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::messages::WebPage> for WebPage {
+            fn from(x: crate::enums::messages::WebPage) -> Self {
+                match x {
+                    crate::enums::messages::WebPage::Page(x) => x,
                 }
             }
         }
@@ -43858,6 +47217,89 @@ pub mod types {
             }
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct CheckedGiftCode {
+            pub via_giveaway: bool,
+            pub from_id: crate::enums::Peer,
+            pub giveaway_msg_id: Option<i32>,
+            pub to_id: Option<i64>,
+            pub date: i32,
+            pub months: i32,
+            pub used_date: Option<i32>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for CheckedGiftCode {
+            const CONSTRUCTOR_ID: u32 = 3072520536;
+        }
+        impl crate::Serializable for CheckedGiftCode {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32
+                    | if self.via_giveaway { 4 } else { 0 }
+                    | if self.giveaway_msg_id.is_some() { 8 } else { 0 }
+                    | if self.to_id.is_some() { 1 } else { 0 }
+                    | if self.used_date.is_some() { 2 } else { 0 })
+                .serialize(buf);
+                self.from_id.serialize(buf);
+                if let Some(ref x) = self.giveaway_msg_id {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.to_id {
+                    x.serialize(buf);
+                }
+                self.date.serialize(buf);
+                self.months.serialize(buf);
+                if let Some(ref x) = self.used_date {
+                    x.serialize(buf);
+                }
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for CheckedGiftCode {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let via_giveaway = (flags & 4) != 0;
+                let from_id = crate::enums::Peer::deserialize(buf)?;
+                let giveaway_msg_id = if (flags & 8) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let to_id = if (flags & 1) != 0 {
+                    Some(i64::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let date = i32::deserialize(buf)?;
+                let months = i32::deserialize(buf)?;
+                let used_date = if (flags & 2) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(CheckedGiftCode {
+                    via_giveaway,
+                    from_id,
+                    giveaway_msg_id,
+                    to_id,
+                    date,
+                    months,
+                    used_date,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::payments::CheckedGiftCode> for CheckedGiftCode {
+            fn from(x: crate::enums::payments::CheckedGiftCode) -> Self {
+                match x {
+                    crate::enums::payments::CheckedGiftCode::Code(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct ExportedInvoice {
             pub url: String,
         }
@@ -43879,6 +47321,154 @@ pub mod types {
             fn from(x: crate::enums::payments::ExportedInvoice) -> Self {
                 match x {
                     crate::enums::payments::ExportedInvoice::Invoice(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GiveawayInfo {
+            pub participating: bool,
+            pub preparing_results: bool,
+            pub start_date: i32,
+            pub joined_too_early_date: Option<i32>,
+            pub admin_disallowed_chat_id: Option<i64>,
+            pub disallowed_country: Option<String>,
+        }
+        impl crate::Identifiable for GiveawayInfo {
+            const CONSTRUCTOR_ID: u32 = 1130879648;
+        }
+        impl crate::Serializable for GiveawayInfo {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32
+                    | if self.participating { 1 } else { 0 }
+                    | if self.preparing_results { 8 } else { 0 }
+                    | if self.joined_too_early_date.is_some() {
+                        2
+                    } else {
+                        0
+                    }
+                    | if self.admin_disallowed_chat_id.is_some() {
+                        4
+                    } else {
+                        0
+                    }
+                    | if self.disallowed_country.is_some() {
+                        16
+                    } else {
+                        0
+                    })
+                .serialize(buf);
+                self.start_date.serialize(buf);
+                if let Some(ref x) = self.joined_too_early_date {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.admin_disallowed_chat_id {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.disallowed_country {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::Deserializable for GiveawayInfo {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let participating = (flags & 1) != 0;
+                let preparing_results = (flags & 8) != 0;
+                let start_date = i32::deserialize(buf)?;
+                let joined_too_early_date = if (flags & 2) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let admin_disallowed_chat_id = if (flags & 4) != 0 {
+                    Some(i64::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let disallowed_country = if (flags & 16) != 0 {
+                    Some(String::deserialize(buf)?)
+                } else {
+                    None
+                };
+                Ok(GiveawayInfo {
+                    participating,
+                    preparing_results,
+                    start_date,
+                    joined_too_early_date,
+                    admin_disallowed_chat_id,
+                    disallowed_country,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::payments::GiveawayInfo> for GiveawayInfo {
+            type Error = ();
+            fn try_from(x: crate::enums::payments::GiveawayInfo) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::payments::GiveawayInfo::Info(x) => Ok(x),
+                    _ => Err(()),
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GiveawayInfoResults {
+            pub winner: bool,
+            pub refunded: bool,
+            pub start_date: i32,
+            pub gift_code_slug: Option<String>,
+            pub finish_date: i32,
+            pub winners_count: i32,
+            pub activated_count: i32,
+        }
+        impl crate::Identifiable for GiveawayInfoResults {
+            const CONSTRUCTOR_ID: u32 = 13456752;
+        }
+        impl crate::Serializable for GiveawayInfoResults {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32
+                    | if self.winner { 1 } else { 0 }
+                    | if self.refunded { 2 } else { 0 }
+                    | if self.gift_code_slug.is_some() { 1 } else { 0 })
+                .serialize(buf);
+                self.start_date.serialize(buf);
+                if let Some(ref x) = self.gift_code_slug {
+                    x.serialize(buf);
+                }
+                self.finish_date.serialize(buf);
+                self.winners_count.serialize(buf);
+                self.activated_count.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for GiveawayInfoResults {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let winner = (flags & 1) != 0;
+                let refunded = (flags & 2) != 0;
+                let start_date = i32::deserialize(buf)?;
+                let gift_code_slug = if (flags & 1) != 0 {
+                    Some(String::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let finish_date = i32::deserialize(buf)?;
+                let winners_count = i32::deserialize(buf)?;
+                let activated_count = i32::deserialize(buf)?;
+                Ok(GiveawayInfoResults {
+                    winner,
+                    refunded,
+                    start_date,
+                    gift_code_slug,
+                    finish_date,
+                    winners_count,
+                    activated_count,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::payments::GiveawayInfo> for GiveawayInfoResults {
+            type Error = ();
+            fn try_from(x: crate::enums::payments::GiveawayInfo) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::payments::GiveawayInfo::Results(x) => Ok(x),
+                    _ => Err(()),
                 }
             }
         }
@@ -44623,6 +48213,206 @@ pub mod types {
         }
     }
     #[allow(clippy::unreadable_literal)]
+    pub mod premium {
+        #[allow(unused_imports)]
+        use std::convert::TryFrom;
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct BoostsList {
+            pub count: i32,
+            pub boosts: Vec<crate::enums::Boost>,
+            pub next_offset: Option<String>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for BoostsList {
+            const CONSTRUCTOR_ID: u32 = 2264424764;
+        }
+        impl crate::Serializable for BoostsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32 | if self.next_offset.is_some() { 1 } else { 0 }).serialize(buf);
+                self.count.serialize(buf);
+                self.boosts.serialize(buf);
+                if let Some(ref x) = self.next_offset {
+                    x.serialize(buf);
+                }
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for BoostsList {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let count = i32::deserialize(buf)?;
+                let boosts = Vec::<crate::enums::Boost>::deserialize(buf)?;
+                let next_offset = if (flags & 1) != 0 {
+                    Some(String::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(BoostsList {
+                    count,
+                    boosts,
+                    next_offset,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::premium::BoostsList> for BoostsList {
+            fn from(x: crate::enums::premium::BoostsList) -> Self {
+                match x {
+                    crate::enums::premium::BoostsList::List(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct BoostsStatus {
+            pub my_boost: bool,
+            pub level: i32,
+            pub current_level_boosts: i32,
+            pub boosts: i32,
+            pub gift_boosts: Option<i32>,
+            pub next_level_boosts: Option<i32>,
+            pub premium_audience: Option<crate::enums::StatsPercentValue>,
+            pub boost_url: String,
+            pub prepaid_giveaways: Option<Vec<crate::enums::PrepaidGiveaway>>,
+            pub my_boost_slots: Option<Vec<i32>>,
+        }
+        impl crate::Identifiable for BoostsStatus {
+            const CONSTRUCTOR_ID: u32 = 1230586490;
+        }
+        impl crate::Serializable for BoostsStatus {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32
+                    | if self.my_boost { 4 } else { 0 }
+                    | if self.gift_boosts.is_some() { 16 } else { 0 }
+                    | if self.next_level_boosts.is_some() {
+                        1
+                    } else {
+                        0
+                    }
+                    | if self.premium_audience.is_some() {
+                        2
+                    } else {
+                        0
+                    }
+                    | if self.prepaid_giveaways.is_some() {
+                        8
+                    } else {
+                        0
+                    }
+                    | if self.my_boost_slots.is_some() { 4 } else { 0 })
+                .serialize(buf);
+                self.level.serialize(buf);
+                self.current_level_boosts.serialize(buf);
+                self.boosts.serialize(buf);
+                if let Some(ref x) = self.gift_boosts {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.next_level_boosts {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.premium_audience {
+                    x.serialize(buf);
+                }
+                self.boost_url.serialize(buf);
+                if let Some(ref x) = self.prepaid_giveaways {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.my_boost_slots {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::Deserializable for BoostsStatus {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let my_boost = (flags & 4) != 0;
+                let level = i32::deserialize(buf)?;
+                let current_level_boosts = i32::deserialize(buf)?;
+                let boosts = i32::deserialize(buf)?;
+                let gift_boosts = if (flags & 16) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let next_level_boosts = if (flags & 1) != 0 {
+                    Some(i32::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let premium_audience = if (flags & 2) != 0 {
+                    Some(crate::enums::StatsPercentValue::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let boost_url = String::deserialize(buf)?;
+                let prepaid_giveaways = if (flags & 8) != 0 {
+                    Some(Vec::<crate::enums::PrepaidGiveaway>::deserialize(buf)?)
+                } else {
+                    None
+                };
+                let my_boost_slots = if (flags & 4) != 0 {
+                    Some(Vec::<i32>::deserialize(buf)?)
+                } else {
+                    None
+                };
+                Ok(BoostsStatus {
+                    my_boost,
+                    level,
+                    current_level_boosts,
+                    boosts,
+                    gift_boosts,
+                    next_level_boosts,
+                    premium_audience,
+                    boost_url,
+                    prepaid_giveaways,
+                    my_boost_slots,
+                })
+            }
+        }
+        impl From<crate::enums::premium::BoostsStatus> for BoostsStatus {
+            fn from(x: crate::enums::premium::BoostsStatus) -> Self {
+                match x {
+                    crate::enums::premium::BoostsStatus::Status(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct MyBoosts {
+            pub my_boosts: Vec<crate::enums::MyBoost>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for MyBoosts {
+            const CONSTRUCTOR_ID: u32 = 2598512866;
+        }
+        impl crate::Serializable for MyBoosts {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.my_boosts.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for MyBoosts {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let my_boosts = Vec::<crate::enums::MyBoost>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(MyBoosts {
+                    my_boosts,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::premium::MyBoosts> for MyBoosts {
+            fn from(x: crate::enums::premium::MyBoosts) -> Self {
+                match x {
+                    crate::enums::premium::MyBoosts::Boosts(x) => x,
+                }
+            }
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
     pub mod stats {
         #[allow(unused_imports)]
         use std::convert::TryFrom;
@@ -45078,6 +48868,253 @@ pub mod types {
                 match x {
                     crate::enums::storage::FileType::FileWebp => Ok(FileWebp {}),
                     _ => Err(()),
+                }
+            }
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
+    pub mod stories {
+        #[allow(unused_imports)]
+        use std::convert::TryFrom;
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct AllStories {
+            pub has_more: bool,
+            pub count: i32,
+            pub state: String,
+            pub peer_stories: Vec<crate::enums::PeerStories>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+            pub stealth_mode: crate::enums::StoriesStealthMode,
+        }
+        impl crate::Identifiable for AllStories {
+            const CONSTRUCTOR_ID: u32 = 1862033025;
+        }
+        impl crate::Serializable for AllStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32 | if self.has_more { 1 } else { 0 }).serialize(buf);
+                self.count.serialize(buf);
+                self.state.serialize(buf);
+                self.peer_stories.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+                self.stealth_mode.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for AllStories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let has_more = (flags & 1) != 0;
+                let count = i32::deserialize(buf)?;
+                let state = String::deserialize(buf)?;
+                let peer_stories = Vec::<crate::enums::PeerStories>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                let stealth_mode = crate::enums::StoriesStealthMode::deserialize(buf)?;
+                Ok(AllStories {
+                    has_more,
+                    count,
+                    state,
+                    peer_stories,
+                    chats,
+                    users,
+                    stealth_mode,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::stories::AllStories> for AllStories {
+            type Error = ();
+            fn try_from(x: crate::enums::stories::AllStories) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::stories::AllStories::Stories(x) => Ok(x),
+                    _ => Err(()),
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct AllStoriesNotModified {
+            pub state: String,
+            pub stealth_mode: crate::enums::StoriesStealthMode,
+        }
+        impl crate::Identifiable for AllStoriesNotModified {
+            const CONSTRUCTOR_ID: u32 = 291044926;
+        }
+        impl crate::Serializable for AllStoriesNotModified {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32).serialize(buf);
+                self.state.serialize(buf);
+                self.stealth_mode.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for AllStoriesNotModified {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let _flags = u32::deserialize(buf)?;
+                let state = String::deserialize(buf)?;
+                let stealth_mode = crate::enums::StoriesStealthMode::deserialize(buf)?;
+                Ok(AllStoriesNotModified {
+                    state,
+                    stealth_mode,
+                })
+            }
+        }
+        impl TryFrom<crate::enums::stories::AllStories> for AllStoriesNotModified {
+            type Error = ();
+            fn try_from(x: crate::enums::stories::AllStories) -> Result<Self, Self::Error> {
+                match x {
+                    crate::enums::stories::AllStories::NotModified(x) => Ok(x),
+                    _ => Err(()),
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct PeerStories {
+            pub stories: crate::enums::PeerStories,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for PeerStories {
+            const CONSTRUCTOR_ID: u32 = 3404105576;
+        }
+        impl crate::Serializable for PeerStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.stories.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for PeerStories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let stories = crate::enums::PeerStories::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(PeerStories {
+                    stories,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::stories::PeerStories> for PeerStories {
+            fn from(x: crate::enums::stories::PeerStories) -> Self {
+                match x {
+                    crate::enums::stories::PeerStories::Stories(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct Stories {
+            pub count: i32,
+            pub stories: Vec<crate::enums::StoryItem>,
+            pub chats: Vec<crate::enums::Chat>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for Stories {
+            const CONSTRUCTOR_ID: u32 = 1574486984;
+        }
+        impl crate::Serializable for Stories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.count.serialize(buf);
+                self.stories.serialize(buf);
+                self.chats.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for Stories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let count = i32::deserialize(buf)?;
+                let stories = Vec::<crate::enums::StoryItem>::deserialize(buf)?;
+                let chats = Vec::<crate::enums::Chat>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(Stories {
+                    count,
+                    stories,
+                    chats,
+                    users,
+                })
+            }
+        }
+        impl From<crate::enums::stories::Stories> for Stories {
+            fn from(x: crate::enums::stories::Stories) -> Self {
+                match x {
+                    crate::enums::stories::Stories::Stories(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct StoryViews {
+            pub views: Vec<crate::enums::StoryViews>,
+            pub users: Vec<crate::enums::User>,
+        }
+        impl crate::Identifiable for StoryViews {
+            const CONSTRUCTOR_ID: u32 = 3734957341;
+        }
+        impl crate::Serializable for StoryViews {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                self.views.serialize(buf);
+                self.users.serialize(buf);
+            }
+        }
+        impl crate::Deserializable for StoryViews {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let views = Vec::<crate::enums::StoryViews>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                Ok(StoryViews { views, users })
+            }
+        }
+        impl From<crate::enums::stories::StoryViews> for StoryViews {
+            fn from(x: crate::enums::stories::StoryViews) -> Self {
+                match x {
+                    crate::enums::stories::StoryViews::Views(x) => x,
+                }
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct StoryViewsList {
+            pub count: i32,
+            pub reactions_count: i32,
+            pub views: Vec<crate::enums::StoryView>,
+            pub users: Vec<crate::enums::User>,
+            pub next_offset: Option<String>,
+        }
+        impl crate::Identifiable for StoryViewsList {
+            const CONSTRUCTOR_ID: u32 = 1189722604;
+        }
+        impl crate::Serializable for StoryViewsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                (0u32 | if self.next_offset.is_some() { 1 } else { 0 }).serialize(buf);
+                self.count.serialize(buf);
+                self.reactions_count.serialize(buf);
+                self.views.serialize(buf);
+                self.users.serialize(buf);
+                if let Some(ref x) = self.next_offset {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::Deserializable for StoryViewsList {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                let flags = u32::deserialize(buf)?;
+                let count = i32::deserialize(buf)?;
+                let reactions_count = i32::deserialize(buf)?;
+                let views = Vec::<crate::enums::StoryView>::deserialize(buf)?;
+                let users = Vec::<crate::enums::User>::deserialize(buf)?;
+                let next_offset = if (flags & 1) != 0 {
+                    Some(String::deserialize(buf)?)
+                } else {
+                    None
+                };
+                Ok(StoryViewsList {
+                    count,
+                    reactions_count,
+                    views,
+                    users,
+                    next_offset,
+                })
+            }
+        }
+        impl From<crate::enums::stories::StoryViewsList> for StoryViewsList {
+            fn from(x: crate::enums::stories::StoryViewsList) -> Self {
+                match x {
+                    crate::enums::stories::StoryViewsList::List(x) => x,
                 }
             }
         }
@@ -46080,6 +50117,7 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct ChangeAuthorizationSettings {
+            pub confirmed: bool,
             pub hash: i64,
             pub encrypted_requests_disabled: Option<bool>,
             pub call_requests_disabled: Option<bool>,
@@ -46092,6 +50130,7 @@ pub mod functions {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
+                    | if self.confirmed { 8 } else { 0 }
                     | if self.encrypted_requests_disabled.is_some() {
                         1
                     } else {
@@ -46455,6 +50494,23 @@ pub mod functions {
             type Return = crate::enums::account::ContentSettings;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct GetDefaultBackgroundEmojis {
+            pub hash: i64,
+        }
+        impl crate::Identifiable for GetDefaultBackgroundEmojis {
+            const CONSTRUCTOR_ID: u32 = 2785720782;
+        }
+        impl crate::Serializable for GetDefaultBackgroundEmojis {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.hash.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetDefaultBackgroundEmojis {
+            type Return = crate::enums::EmojiList;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct GetDefaultEmojiStatuses {
             pub hash: i64,
         }
@@ -46539,6 +50595,7 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetNotifyExceptions {
             pub compare_sound: bool,
+            pub compare_stories: bool,
             pub peer: Option<crate::enums::InputNotifyPeer>,
         }
         impl crate::Identifiable for GetNotifyExceptions {
@@ -46550,6 +50607,7 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.compare_sound { 2 } else { 0 }
+                    | if self.compare_stories { 4 } else { 0 }
                     | if self.peer.is_some() { 1 } else { 0 })
                 .serialize(buf);
                 if let Some(ref x) = self.peer {
@@ -46866,6 +50924,23 @@ pub mod functions {
             }
         }
         impl crate::RemoteCall for InstallWallPaper {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct InvalidateSignInCodes {
+            pub codes: Vec<String>,
+        }
+        impl crate::Identifiable for InvalidateSignInCodes {
+            const CONSTRUCTOR_ID: u32 = 3398101178;
+        }
+        impl crate::Serializable for InvalidateSignInCodes {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.codes.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for InvalidateSignInCodes {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
@@ -47410,6 +51485,34 @@ pub mod functions {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct UpdateColor {
+            pub color: i32,
+            pub background_emoji_id: Option<i64>,
+        }
+        impl crate::Identifiable for UpdateColor {
+            const CONSTRUCTOR_ID: u32 = 2684472387;
+        }
+        impl crate::Serializable for UpdateColor {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.background_emoji_id.is_some() {
+                        1
+                    } else {
+                        0
+                    })
+                .serialize(buf);
+                self.color.serialize(buf);
+                if let Some(ref x) = self.background_emoji_id {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for UpdateColor {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct UpdateDeviceLocked {
             pub period: i32,
         }
@@ -47637,17 +51740,19 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct UploadWallPaper {
+            pub for_chat: bool,
             pub file: crate::enums::InputFile,
             pub mime_type: String,
             pub settings: crate::enums::WallPaperSettings,
         }
         impl crate::Identifiable for UploadWallPaper {
-            const CONSTRUCTOR_ID: u32 = 3716494945;
+            const CONSTRUCTOR_ID: u32 = 3818557187;
         }
         impl crate::Serializable for UploadWallPaper {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.for_chat { 1 } else { 0 }).serialize(buf);
                 self.file.serialize(buf);
                 self.mime_type.serialize(buf);
                 self.settings.serialize(buf);
@@ -48046,6 +52151,25 @@ pub mod functions {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct ResetLoginEmail {
+            pub phone_number: String,
+            pub phone_code_hash: String,
+        }
+        impl crate::Identifiable for ResetLoginEmail {
+            const CONSTRUCTOR_ID: u32 = 2123760019;
+        }
+        impl crate::Serializable for ResetLoginEmail {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.phone_number.serialize(buf);
+                self.phone_code_hash.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ResetLoginEmail {
+            type Return = crate::enums::auth::SentCode;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct SendCode {
             pub phone_number: String,
             pub api_id: i32,
@@ -48130,6 +52254,23 @@ pub mod functions {
     #[allow(clippy::unreadable_literal)]
     pub mod bots {
         #[derive(Debug, Clone, PartialEq)]
+        pub struct AllowSendMessage {
+            pub bot: crate::enums::InputUser,
+        }
+        impl crate::Identifiable for AllowSendMessage {
+            const CONSTRUCTOR_ID: u32 = 4046644207;
+        }
+        impl crate::Serializable for AllowSendMessage {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.bot.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for AllowSendMessage {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct AnswerWebhookJsonquery {
             pub query_id: i64,
             pub data: crate::enums::DataJson,
@@ -48146,6 +52287,23 @@ pub mod functions {
             }
         }
         impl crate::RemoteCall for AnswerWebhookJsonquery {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct CanSendMessage {
+            pub bot: crate::enums::InputUser,
+        }
+        impl crate::Identifiable for CanSendMessage {
+            const CONSTRUCTOR_ID: u32 = 324662502;
+        }
+        impl crate::Serializable for CanSendMessage {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.bot.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for CanSendMessage {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
@@ -48169,20 +52327,25 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetBotInfo {
+            pub bot: Option<crate::enums::InputUser>,
             pub lang_code: String,
         }
         impl crate::Identifiable for GetBotInfo {
-            const CONSTRUCTOR_ID: u32 = 1978405606;
+            const CONSTRUCTOR_ID: u32 = 3705214205;
         }
         impl crate::Serializable for GetBotInfo {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.bot.is_some() { 1 } else { 0 }).serialize(buf);
+                if let Some(ref x) = self.bot {
+                    x.serialize(buf);
+                }
                 self.lang_code.serialize(buf);
             }
         }
         impl crate::RemoteCall for GetBotInfo {
-            type Return = Vec<String>;
+            type Return = crate::enums::bots::BotInfo;
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetBotMenuButton {
@@ -48200,6 +52363,46 @@ pub mod functions {
         }
         impl crate::RemoteCall for GetBotMenuButton {
             type Return = crate::enums::BotMenuButton;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct InvokeWebViewCustomMethod {
+            pub bot: crate::enums::InputUser,
+            pub custom_method: String,
+            pub params: crate::enums::DataJson,
+        }
+        impl crate::Identifiable for InvokeWebViewCustomMethod {
+            const CONSTRUCTOR_ID: u32 = 142591463;
+        }
+        impl crate::Serializable for InvokeWebViewCustomMethod {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.bot.serialize(buf);
+                self.custom_method.serialize(buf);
+                self.params.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for InvokeWebViewCustomMethod {
+            type Return = crate::enums::DataJson;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ReorderUsernames {
+            pub bot: crate::enums::InputUser,
+            pub order: Vec<String>,
+        }
+        impl crate::Identifiable for ReorderUsernames {
+            const CONSTRUCTOR_ID: u32 = 2533994946;
+        }
+        impl crate::Serializable for ReorderUsernames {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.bot.serialize(buf);
+                self.order.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ReorderUsernames {
+            type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct ResetBotCommands {
@@ -48296,22 +52499,32 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct SetBotInfo {
+            pub bot: Option<crate::enums::InputUser>,
             pub lang_code: String,
+            pub name: Option<String>,
             pub about: Option<String>,
             pub description: Option<String>,
         }
         impl crate::Identifiable for SetBotInfo {
-            const CONSTRUCTOR_ID: u32 = 2741362554;
+            const CONSTRUCTOR_ID: u32 = 282013987;
         }
         impl crate::Serializable for SetBotInfo {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
+                    | if self.bot.is_some() { 4 } else { 0 }
+                    | if self.name.is_some() { 8 } else { 0 }
                     | if self.about.is_some() { 1 } else { 0 }
                     | if self.description.is_some() { 2 } else { 0 })
                 .serialize(buf);
+                if let Some(ref x) = self.bot {
+                    x.serialize(buf);
+                }
                 self.lang_code.serialize(buf);
+                if let Some(ref x) = self.name {
+                    x.serialize(buf);
+                }
                 if let Some(ref x) = self.about {
                     x.serialize(buf);
                 }
@@ -48342,6 +52555,27 @@ pub mod functions {
         impl crate::RemoteCall for SetBotMenuButton {
             type Return = bool;
         }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ToggleUsername {
+            pub bot: crate::enums::InputUser,
+            pub username: String,
+            pub active: bool,
+        }
+        impl crate::Identifiable for ToggleUsername {
+            const CONSTRUCTOR_ID: u32 = 87861619;
+        }
+        impl crate::Serializable for ToggleUsername {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.bot.serialize(buf);
+                self.username.serialize(buf);
+                self.active.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ToggleUsername {
+            type Return = bool;
+        }
     }
     #[allow(clippy::unreadable_literal)]
     pub mod channels {
@@ -48362,6 +52596,25 @@ pub mod functions {
             }
         }
         impl crate::RemoteCall for CheckUsername {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ClickSponsoredMessage {
+            pub channel: crate::enums::InputChannel,
+            pub random_id: Vec<u8>,
+        }
+        impl crate::Identifiable for ClickSponsoredMessage {
+            const CONSTRUCTOR_ID: u32 = 414170259;
+        }
+        impl crate::Serializable for ClickSponsoredMessage {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.channel.serialize(buf);
+                self.random_id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ClickSponsoredMessage {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
@@ -49429,6 +53682,36 @@ pub mod functions {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct UpdateColor {
+            pub channel: crate::enums::InputChannel,
+            pub color: i32,
+            pub background_emoji_id: Option<i64>,
+        }
+        impl crate::Identifiable for UpdateColor {
+            const CONSTRUCTOR_ID: u32 = 1645879327;
+        }
+        impl crate::Serializable for UpdateColor {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.background_emoji_id.is_some() {
+                        1
+                    } else {
+                        0
+                    })
+                .serialize(buf);
+                self.channel.serialize(buf);
+                self.color.serialize(buf);
+                if let Some(ref x) = self.background_emoji_id {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for UpdateColor {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct UpdatePinnedForumTopic {
             pub channel: crate::enums::InputChannel,
             pub topic_id: i32,
@@ -49489,6 +53772,222 @@ pub mod functions {
         }
     }
     #[allow(clippy::unreadable_literal)]
+    pub mod chatlists {
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct CheckChatlistInvite {
+            pub slug: String,
+        }
+        impl crate::Identifiable for CheckChatlistInvite {
+            const CONSTRUCTOR_ID: u32 = 1103171583;
+        }
+        impl crate::Serializable for CheckChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.slug.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for CheckChatlistInvite {
+            type Return = crate::enums::chatlists::ChatlistInvite;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct DeleteExportedInvite {
+            pub chatlist: crate::enums::InputChatlist,
+            pub slug: String,
+        }
+        impl crate::Identifiable for DeleteExportedInvite {
+            const CONSTRUCTOR_ID: u32 = 1906072670;
+        }
+        impl crate::Serializable for DeleteExportedInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+                self.slug.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for DeleteExportedInvite {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct EditExportedInvite {
+            pub chatlist: crate::enums::InputChatlist,
+            pub slug: String,
+            pub title: Option<String>,
+            pub peers: Option<Vec<crate::enums::InputPeer>>,
+        }
+        impl crate::Identifiable for EditExportedInvite {
+            const CONSTRUCTOR_ID: u32 = 1698543165;
+        }
+        impl crate::Serializable for EditExportedInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.title.is_some() { 2 } else { 0 }
+                    | if self.peers.is_some() { 4 } else { 0 })
+                .serialize(buf);
+                self.chatlist.serialize(buf);
+                self.slug.serialize(buf);
+                if let Some(ref x) = self.title {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.peers {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for EditExportedInvite {
+            type Return = crate::enums::ExportedChatlistInvite;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ExportChatlistInvite {
+            pub chatlist: crate::enums::InputChatlist,
+            pub title: String,
+            pub peers: Vec<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for ExportChatlistInvite {
+            const CONSTRUCTOR_ID: u32 = 2222081934;
+        }
+        impl crate::Serializable for ExportChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+                self.title.serialize(buf);
+                self.peers.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ExportChatlistInvite {
+            type Return = crate::enums::chatlists::ExportedChatlistInvite;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetChatlistUpdates {
+            pub chatlist: crate::enums::InputChatlist,
+        }
+        impl crate::Identifiable for GetChatlistUpdates {
+            const CONSTRUCTOR_ID: u32 = 2302776609;
+        }
+        impl crate::Serializable for GetChatlistUpdates {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetChatlistUpdates {
+            type Return = crate::enums::chatlists::ChatlistUpdates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetExportedInvites {
+            pub chatlist: crate::enums::InputChatlist,
+        }
+        impl crate::Identifiable for GetExportedInvites {
+            const CONSTRUCTOR_ID: u32 = 3456359043;
+        }
+        impl crate::Serializable for GetExportedInvites {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetExportedInvites {
+            type Return = crate::enums::chatlists::ExportedInvites;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetLeaveChatlistSuggestions {
+            pub chatlist: crate::enums::InputChatlist,
+        }
+        impl crate::Identifiable for GetLeaveChatlistSuggestions {
+            const CONSTRUCTOR_ID: u32 = 4257011476;
+        }
+        impl crate::Serializable for GetLeaveChatlistSuggestions {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetLeaveChatlistSuggestions {
+            type Return = Vec<crate::enums::Peer>;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct HideChatlistUpdates {
+            pub chatlist: crate::enums::InputChatlist,
+        }
+        impl crate::Identifiable for HideChatlistUpdates {
+            const CONSTRUCTOR_ID: u32 = 1726252795;
+        }
+        impl crate::Serializable for HideChatlistUpdates {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for HideChatlistUpdates {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct JoinChatlistInvite {
+            pub slug: String,
+            pub peers: Vec<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for JoinChatlistInvite {
+            const CONSTRUCTOR_ID: u32 = 2796675994;
+        }
+        impl crate::Serializable for JoinChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.slug.serialize(buf);
+                self.peers.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for JoinChatlistInvite {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct JoinChatlistUpdates {
+            pub chatlist: crate::enums::InputChatlist,
+            pub peers: Vec<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for JoinChatlistUpdates {
+            const CONSTRUCTOR_ID: u32 = 3767138549;
+        }
+        impl crate::Serializable for JoinChatlistUpdates {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+                self.peers.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for JoinChatlistUpdates {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct LeaveChatlist {
+            pub chatlist: crate::enums::InputChatlist,
+            pub peers: Vec<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for LeaveChatlist {
+            const CONSTRUCTOR_ID: u32 = 1962598714;
+        }
+        impl crate::Serializable for LeaveChatlist {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.chatlist.serialize(buf);
+                self.peers.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for LeaveChatlist {
+            type Return = crate::enums::Updates;
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
     pub mod contacts {
         #[derive(Debug, Clone, PartialEq)]
         pub struct AcceptContact {
@@ -49540,15 +54039,17 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct Block {
+            pub my_stories_from: bool,
             pub id: crate::enums::InputPeer,
         }
         impl crate::Identifiable for Block {
-            const CONSTRUCTOR_ID: u32 = 1758204945;
+            const CONSTRUCTOR_ID: u32 = 774801204;
         }
         impl crate::Serializable for Block {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.my_stories_from { 1 } else { 0 }).serialize(buf);
                 self.id.serialize(buf);
             }
         }
@@ -49615,6 +54116,23 @@ pub mod functions {
             type Return = crate::enums::Updates;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct EditCloseFriends {
+            pub id: Vec<i64>,
+        }
+        impl crate::Identifiable for EditCloseFriends {
+            const CONSTRUCTOR_ID: u32 = 3127313904;
+        }
+        impl crate::Serializable for EditCloseFriends {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for EditCloseFriends {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct ExportContactToken {}
         impl crate::Identifiable for ExportContactToken {
             const CONSTRUCTOR_ID: u32 = 4167385127;
@@ -49630,16 +54148,18 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetBlocked {
+            pub my_stories_from: bool,
             pub offset: i32,
             pub limit: i32,
         }
         impl crate::Identifiable for GetBlocked {
-            const CONSTRUCTOR_ID: u32 = 4118557967;
+            const CONSTRUCTOR_ID: u32 = 2592509824;
         }
         impl crate::Serializable for GetBlocked {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.my_stories_from { 1 } else { 0 }).serialize(buf);
                 self.offset.serialize(buf);
                 self.limit.serialize(buf);
             }
@@ -49895,6 +54415,27 @@ pub mod functions {
             type Return = crate::enums::contacts::Found;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct SetBlocked {
+            pub my_stories_from: bool,
+            pub id: Vec<crate::enums::InputPeer>,
+            pub limit: i32,
+        }
+        impl crate::Identifiable for SetBlocked {
+            const CONSTRUCTOR_ID: u32 = 2496027766;
+        }
+        impl crate::Serializable for SetBlocked {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.my_stories_from { 1 } else { 0 }).serialize(buf);
+                self.id.serialize(buf);
+                self.limit.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for SetBlocked {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct ToggleTopPeers {
             pub enabled: bool,
         }
@@ -49913,15 +54454,17 @@ pub mod functions {
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct Unblock {
+            pub my_stories_from: bool,
             pub id: crate::enums::InputPeer,
         }
         impl crate::Identifiable for Unblock {
-            const CONSTRUCTOR_ID: u32 = 3198573904;
+            const CONSTRUCTOR_ID: u32 = 3041973032;
         }
         impl crate::Serializable for Unblock {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.my_stories_from { 1 } else { 0 }).serialize(buf);
                 self.id.serialize(buf);
             }
         }
@@ -49931,23 +54474,6 @@ pub mod functions {
     }
     #[allow(clippy::unreadable_literal)]
     pub mod folders {
-        #[derive(Debug, Clone, PartialEq)]
-        pub struct DeleteFolder {
-            pub folder_id: i32,
-        }
-        impl crate::Identifiable for DeleteFolder {
-            const CONSTRUCTOR_ID: u32 = 472471681;
-        }
-        impl crate::Serializable for DeleteFolder {
-            fn serialize(&self, buf: crate::serialize::Buffer) {
-                use crate::Identifiable;
-                Self::CONSTRUCTOR_ID.serialize(buf);
-                self.folder_id.serialize(buf);
-            }
-        }
-        impl crate::RemoteCall for DeleteFolder {
-            type Return = crate::enums::Updates;
-        }
         #[derive(Debug, Clone, PartialEq)]
         pub struct EditPeerFolders {
             pub folder_peers: Vec<crate::enums::InputFolderPeer>,
@@ -50974,6 +55500,7 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct EditInlineBotMessage {
             pub no_webpage: bool,
+            pub invert_media: bool,
             pub id: crate::enums::InputBotInlineMessageId,
             pub message: Option<String>,
             pub media: Option<crate::enums::InputMedia>,
@@ -50989,6 +55516,7 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.no_webpage { 2 } else { 0 }
+                    | if self.invert_media { 65536 } else { 0 }
                     | if self.message.is_some() { 2048 } else { 0 }
                     | if self.media.is_some() { 16384 } else { 0 }
                     | if self.reply_markup.is_some() { 4 } else { 0 }
@@ -51015,6 +55543,7 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct EditMessage {
             pub no_webpage: bool,
+            pub invert_media: bool,
             pub peer: crate::enums::InputPeer,
             pub id: i32,
             pub message: Option<String>,
@@ -51032,6 +55561,7 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.no_webpage { 2 } else { 0 }
+                    | if self.invert_media { 65536 } else { 0 }
                     | if self.message.is_some() { 2048 } else { 0 }
                     | if self.media.is_some() { 16384 } else { 0 }
                     | if self.reply_markup.is_some() { 4 } else { 0 }
@@ -51193,23 +55723,6 @@ pub mod functions {
         }
         impl crate::RemoteCall for GetAdminsWithInvites {
             type Return = crate::enums::messages::ChatAdminsWithInvites;
-        }
-        #[derive(Debug, Clone, PartialEq)]
-        pub struct GetAllChats {
-            pub except_ids: Vec<i64>,
-        }
-        impl crate::Identifiable for GetAllChats {
-            const CONSTRUCTOR_ID: u32 = 2271179966;
-        }
-        impl crate::Serializable for GetAllChats {
-            fn serialize(&self, buf: crate::serialize::Buffer) {
-                use crate::Identifiable;
-                Self::CONSTRUCTOR_ID.serialize(buf);
-                self.except_ids.serialize(buf);
-            }
-        }
-        impl crate::RemoteCall for GetAllChats {
-            type Return = crate::enums::messages::Chats;
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetAllDrafts {}
@@ -52648,7 +57161,7 @@ pub mod functions {
             pub hash: i32,
         }
         impl crate::Identifiable for GetWebPage {
-            const CONSTRUCTOR_ID: u32 = 852135825;
+            const CONSTRUCTOR_ID: u32 = 2375455395;
         }
         impl crate::Serializable for GetWebPage {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -52659,7 +57172,7 @@ pub mod functions {
             }
         }
         impl crate::RemoteCall for GetWebPage {
-            type Return = crate::enums::WebPage;
+            type Return = crate::enums::messages::WebPage;
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetWebPagePreview {
@@ -52846,12 +57359,11 @@ pub mod functions {
             pub peer: crate::enums::InputPeer,
             pub bot: crate::enums::InputUser,
             pub query_id: i64,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for ProlongWebView {
-            const CONSTRUCTOR_ID: u32 = 2146648841;
+            const CONSTRUCTOR_ID: u32 = 2966952579;
         }
         impl crate::Serializable for ProlongWebView {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -52859,17 +57371,13 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.silent { 32 } else { 0 }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
                 self.bot.serialize(buf);
                 self.query_id.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 if let Some(ref x) = self.send_as {
@@ -53253,13 +57761,15 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct RequestSimpleWebView {
             pub from_switch_webview: bool,
+            pub from_side_menu: bool,
             pub bot: crate::enums::InputUser,
-            pub url: String,
+            pub url: Option<String>,
+            pub start_param: Option<String>,
             pub theme_params: Option<crate::enums::DataJson>,
             pub platform: String,
         }
         impl crate::Identifiable for RequestSimpleWebView {
-            const CONSTRUCTOR_ID: u32 = 698084494;
+            const CONSTRUCTOR_ID: u32 = 440815626;
         }
         impl crate::Serializable for RequestSimpleWebView {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53267,10 +57777,18 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.from_switch_webview { 2 } else { 0 }
+                    | if self.from_side_menu { 4 } else { 0 }
+                    | if self.url.is_some() { 8 } else { 0 }
+                    | if self.start_param.is_some() { 16 } else { 0 }
                     | if self.theme_params.is_some() { 1 } else { 0 })
                 .serialize(buf);
                 self.bot.serialize(buf);
-                self.url.serialize(buf);
+                if let Some(ref x) = self.url {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.start_param {
+                    x.serialize(buf);
+                }
                 if let Some(ref x) = self.theme_params {
                     x.serialize(buf);
                 }
@@ -53327,12 +57845,11 @@ pub mod functions {
             pub start_param: Option<String>,
             pub theme_params: Option<crate::enums::DataJson>,
             pub platform: String,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for RequestWebView {
-            const CONSTRUCTOR_ID: u32 = 395003915;
+            const CONSTRUCTOR_ID: u32 = 647873217;
         }
         impl crate::Serializable for RequestWebView {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53344,8 +57861,7 @@ pub mod functions {
                     | if self.url.is_some() { 2 } else { 0 }
                     | if self.start_param.is_some() { 8 } else { 0 }
                     | if self.theme_params.is_some() { 4 } else { 0 }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
@@ -53360,10 +57876,7 @@ pub mod functions {
                     x.serialize(buf);
                 }
                 self.platform.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 if let Some(ref x) = self.send_as {
@@ -53396,14 +57909,15 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct SaveDraft {
             pub no_webpage: bool,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub invert_media: bool,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub peer: crate::enums::InputPeer,
             pub message: String,
             pub entities: Option<Vec<crate::enums::MessageEntity>>,
+            pub media: Option<crate::enums::InputMedia>,
         }
         impl crate::Identifiable for SaveDraft {
-            const CONSTRUCTOR_ID: u32 = 3023248959;
+            const CONSTRUCTOR_ID: u32 = 2146678790;
         }
         impl crate::Serializable for SaveDraft {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53411,19 +57925,20 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.no_webpage { 2 } else { 0 }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 4 } else { 0 }
-                    | if self.entities.is_some() { 8 } else { 0 })
+                    | if self.invert_media { 64 } else { 0 }
+                    | if self.reply_to.is_some() { 16 } else { 0 }
+                    | if self.entities.is_some() { 8 } else { 0 }
+                    | if self.media.is_some() { 32 } else { 0 })
                 .serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 self.peer.serialize(buf);
                 self.message.serialize(buf);
                 if let Some(ref x) = self.entities {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.media {
                     x.serialize(buf);
                 }
             }
@@ -53716,8 +58231,7 @@ pub mod functions {
             pub clear_draft: bool,
             pub hide_via: bool,
             pub peer: crate::enums::InputPeer,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub random_id: i64,
             pub query_id: i64,
             pub id: String,
@@ -53725,7 +58239,7 @@ pub mod functions {
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for SendInlineBotResult {
-            const CONSTRUCTOR_ID: u32 = 3556498635;
+            const CONSTRUCTOR_ID: u32 = 4156319930;
         }
         impl crate::Serializable for SendInlineBotResult {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53736,8 +58250,7 @@ pub mod functions {
                     | if self.background { 64 } else { 0 }
                     | if self.clear_draft { 128 } else { 0 }
                     | if self.hide_via { 2048 } else { 0 }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.schedule_date.is_some() {
                         1024
                     } else {
@@ -53746,10 +58259,7 @@ pub mod functions {
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 self.random_id.serialize(buf);
@@ -53773,9 +58283,9 @@ pub mod functions {
             pub clear_draft: bool,
             pub noforwards: bool,
             pub update_stickersets_order: bool,
+            pub invert_media: bool,
             pub peer: crate::enums::InputPeer,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub media: crate::enums::InputMedia,
             pub message: String,
             pub random_id: i64,
@@ -53785,7 +58295,7 @@ pub mod functions {
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for SendMedia {
-            const CONSTRUCTOR_ID: u32 = 1967638886;
+            const CONSTRUCTOR_ID: u32 = 1926021693;
         }
         impl crate::Serializable for SendMedia {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53801,8 +58311,8 @@ pub mod functions {
                     } else {
                         0
                     }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.invert_media { 65536 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.reply_markup.is_some() { 4 } else { 0 }
                     | if self.entities.is_some() { 8 } else { 0 }
                     | if self.schedule_date.is_some() {
@@ -53813,10 +58323,7 @@ pub mod functions {
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 self.media.serialize(buf);
@@ -53847,9 +58354,9 @@ pub mod functions {
             pub clear_draft: bool,
             pub noforwards: bool,
             pub update_stickersets_order: bool,
+            pub invert_media: bool,
             pub peer: crate::enums::InputPeer,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub message: String,
             pub random_id: i64,
             pub reply_markup: Option<crate::enums::ReplyMarkup>,
@@ -53858,7 +58365,7 @@ pub mod functions {
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for SendMessage {
-            const CONSTRUCTOR_ID: u32 = 482476935;
+            const CONSTRUCTOR_ID: u32 = 671943023;
         }
         impl crate::Serializable for SendMessage {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53875,8 +58382,8 @@ pub mod functions {
                     } else {
                         0
                     }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.invert_media { 65536 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.reply_markup.is_some() { 4 } else { 0 }
                     | if self.entities.is_some() { 8 } else { 0 }
                     | if self.schedule_date.is_some() {
@@ -53887,10 +58394,7 @@ pub mod functions {
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 self.message.serialize(buf);
@@ -53919,15 +58423,15 @@ pub mod functions {
             pub clear_draft: bool,
             pub noforwards: bool,
             pub update_stickersets_order: bool,
+            pub invert_media: bool,
             pub peer: crate::enums::InputPeer,
-            pub reply_to_msg_id: Option<i32>,
-            pub top_msg_id: Option<i32>,
+            pub reply_to: Option<crate::enums::InputReplyTo>,
             pub multi_media: Vec<crate::enums::InputSingleMedia>,
             pub schedule_date: Option<i32>,
             pub send_as: Option<crate::enums::InputPeer>,
         }
         impl crate::Identifiable for SendMultiMedia {
-            const CONSTRUCTOR_ID: u32 = 3069254172;
+            const CONSTRUCTOR_ID: u32 = 1164872071;
         }
         impl crate::Serializable for SendMultiMedia {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -53943,8 +58447,8 @@ pub mod functions {
                     } else {
                         0
                     }
-                    | if self.reply_to_msg_id.is_some() { 1 } else { 0 }
-                    | if self.top_msg_id.is_some() { 512 } else { 0 }
+                    | if self.invert_media { 65536 } else { 0 }
+                    | if self.reply_to.is_some() { 1 } else { 0 }
                     | if self.schedule_date.is_some() {
                         1024
                     } else {
@@ -53953,10 +58457,7 @@ pub mod functions {
                     | if self.send_as.is_some() { 8192 } else { 0 })
                 .serialize(buf);
                 self.peer.serialize(buf);
-                if let Some(ref x) = self.reply_to_msg_id {
-                    x.serialize(buf);
-                }
-                if let Some(ref x) = self.top_msg_id {
+                if let Some(ref x) = self.reply_to {
                     x.serialize(buf);
                 }
                 self.multi_media.serialize(buf);
@@ -54023,18 +58524,18 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct SendScreenshotNotification {
             pub peer: crate::enums::InputPeer,
-            pub reply_to_msg_id: i32,
+            pub reply_to: crate::enums::InputReplyTo,
             pub random_id: i64,
         }
         impl crate::Identifiable for SendScreenshotNotification {
-            const CONSTRUCTOR_ID: u32 = 3380473888;
+            const CONSTRUCTOR_ID: u32 = 2705348631;
         }
         impl crate::Serializable for SendScreenshotNotification {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 self.peer.serialize(buf);
-                self.reply_to_msg_id.serialize(buf);
+                self.reply_to.serialize(buf);
                 self.random_id.serialize(buf);
             }
         }
@@ -54232,6 +58733,40 @@ pub mod functions {
             }
         }
         impl crate::RemoteCall for SetChatTheme {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct SetChatWallPaper {
+            pub peer: crate::enums::InputPeer,
+            pub wallpaper: Option<crate::enums::InputWallPaper>,
+            pub settings: Option<crate::enums::WallPaperSettings>,
+            pub id: Option<i32>,
+        }
+        impl crate::Identifiable for SetChatWallPaper {
+            const CONSTRUCTOR_ID: u32 = 2415577825;
+        }
+        impl crate::Serializable for SetChatWallPaper {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.wallpaper.is_some() { 1 } else { 0 }
+                    | if self.settings.is_some() { 4 } else { 0 }
+                    | if self.id.is_some() { 2 } else { 0 })
+                .serialize(buf);
+                self.peer.serialize(buf);
+                if let Some(ref x) = self.wallpaper {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.settings {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.id {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for SetChatWallPaper {
             type Return = crate::enums::Updates;
         }
         #[derive(Debug, Clone, PartialEq)]
@@ -54792,6 +59327,23 @@ pub mod functions {
     #[allow(clippy::unreadable_literal)]
     pub mod payments {
         #[derive(Debug, Clone, PartialEq)]
+        pub struct ApplyGiftCode {
+            pub slug: String,
+        }
+        impl crate::Identifiable for ApplyGiftCode {
+            const CONSTRUCTOR_ID: u32 = 4142032980;
+        }
+        impl crate::Serializable for ApplyGiftCode {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.slug.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ApplyGiftCode {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct AssignAppStoreTransaction {
             pub receipt: Vec<u8>,
             pub purpose: crate::enums::InputStorePaymentPurpose,
@@ -54847,6 +59399,23 @@ pub mod functions {
             type Return = bool;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct CheckGiftCode {
+            pub slug: String,
+        }
+        impl crate::Identifiable for CheckGiftCode {
+            const CONSTRUCTOR_ID: u32 = 2387719361;
+        }
+        impl crate::Serializable for CheckGiftCode {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.slug.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for CheckGiftCode {
+            type Return = crate::enums::payments::CheckedGiftCode;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct ClearSavedInfo {
             pub credentials: bool,
             pub info: bool,
@@ -54900,6 +59469,25 @@ pub mod functions {
             type Return = crate::enums::payments::BankCardData;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct GetGiveawayInfo {
+            pub peer: crate::enums::InputPeer,
+            pub msg_id: i32,
+        }
+        impl crate::Identifiable for GetGiveawayInfo {
+            const CONSTRUCTOR_ID: u32 = 4095972389;
+        }
+        impl crate::Serializable for GetGiveawayInfo {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.msg_id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetGiveawayInfo {
+            type Return = crate::enums::payments::GiveawayInfo;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct GetPaymentForm {
             pub invoice: crate::enums::InputInvoice,
             pub theme_params: Option<crate::enums::DataJson>,
@@ -54941,6 +59529,26 @@ pub mod functions {
             type Return = crate::enums::payments::PaymentReceipt;
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub struct GetPremiumGiftCodeOptions {
+            pub boost_peer: Option<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for GetPremiumGiftCodeOptions {
+            const CONSTRUCTOR_ID: u32 = 660060756;
+        }
+        impl crate::Serializable for GetPremiumGiftCodeOptions {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.boost_peer.is_some() { 1 } else { 0 }).serialize(buf);
+                if let Some(ref x) = self.boost_peer {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for GetPremiumGiftCodeOptions {
+            type Return = Vec<crate::enums::PremiumGiftCodeOption>;
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub struct GetSavedInfo {}
         impl crate::Identifiable for GetSavedInfo {
             const CONSTRUCTOR_ID: u32 = 578650699;
@@ -54953,6 +59561,27 @@ pub mod functions {
         }
         impl crate::RemoteCall for GetSavedInfo {
             type Return = crate::enums::payments::SavedInfo;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct LaunchPrepaidGiveaway {
+            pub peer: crate::enums::InputPeer,
+            pub giveaway_id: i64,
+            pub purpose: crate::enums::InputStorePaymentPurpose,
+        }
+        impl crate::Identifiable for LaunchPrepaidGiveaway {
+            const CONSTRUCTOR_ID: u32 = 1609928480;
+        }
+        impl crate::Serializable for LaunchPrepaidGiveaway {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.giveaway_id.serialize(buf);
+                self.purpose.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for LaunchPrepaidGiveaway {
+            type Return = crate::enums::Updates;
         }
         #[derive(Debug, Clone, PartialEq)]
         pub struct SendPaymentForm {
@@ -55754,16 +60383,21 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct UpdateProfilePhoto {
             pub fallback: bool,
+            pub bot: Option<crate::enums::InputUser>,
             pub id: crate::enums::InputPhoto,
         }
         impl crate::Identifiable for UpdateProfilePhoto {
-            const CONSTRUCTOR_ID: u32 = 473782614;
+            const CONSTRUCTOR_ID: u32 = 166207545;
         }
         impl crate::Serializable for UpdateProfilePhoto {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
-                (0u32 | if self.fallback { 1 } else { 0 }).serialize(buf);
+                (0u32 | if self.fallback { 1 } else { 0 } | if self.bot.is_some() { 2 } else { 0 })
+                    .serialize(buf);
+                if let Some(ref x) = self.bot {
+                    x.serialize(buf);
+                }
                 self.id.serialize(buf);
             }
         }
@@ -55820,13 +60454,14 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct UploadProfilePhoto {
             pub fallback: bool,
+            pub bot: Option<crate::enums::InputUser>,
             pub file: Option<crate::enums::InputFile>,
             pub video: Option<crate::enums::InputFile>,
             pub video_start_ts: Option<f64>,
             pub video_emoji_markup: Option<crate::enums::VideoSize>,
         }
         impl crate::Identifiable for UploadProfilePhoto {
-            const CONSTRUCTOR_ID: u32 = 154966609;
+            const CONSTRUCTOR_ID: u32 = 59286453;
         }
         impl crate::Serializable for UploadProfilePhoto {
             fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -55834,6 +60469,7 @@ pub mod functions {
                 Self::CONSTRUCTOR_ID.serialize(buf);
                 (0u32
                     | if self.fallback { 8 } else { 0 }
+                    | if self.bot.is_some() { 32 } else { 0 }
                     | if self.file.is_some() { 1 } else { 0 }
                     | if self.video.is_some() { 2 } else { 0 }
                     | if self.video_start_ts.is_some() { 4 } else { 0 }
@@ -55843,6 +60479,9 @@ pub mod functions {
                         0
                     })
                 .serialize(buf);
+                if let Some(ref x) = self.bot {
+                    x.serialize(buf);
+                }
                 if let Some(ref x) = self.file {
                     x.serialize(buf);
                 }
@@ -55859,6 +60498,85 @@ pub mod functions {
         }
         impl crate::RemoteCall for UploadProfilePhoto {
             type Return = crate::enums::photos::Photo;
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
+    pub mod premium {
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ApplyBoost {
+            pub slots: Option<Vec<i32>>,
+            pub peer: crate::enums::InputPeer,
+        }
+        impl crate::Identifiable for ApplyBoost {
+            const CONSTRUCTOR_ID: u32 = 1803396934;
+        }
+        impl crate::Serializable for ApplyBoost {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.slots.is_some() { 1 } else { 0 }).serialize(buf);
+                if let Some(ref x) = self.slots {
+                    x.serialize(buf);
+                }
+                self.peer.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ApplyBoost {
+            type Return = crate::enums::premium::MyBoosts;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetBoostsList {
+            pub gifts: bool,
+            pub peer: crate::enums::InputPeer,
+            pub offset: String,
+            pub limit: i32,
+        }
+        impl crate::Identifiable for GetBoostsList {
+            const CONSTRUCTOR_ID: u32 = 1626764896;
+        }
+        impl crate::Serializable for GetBoostsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.gifts { 1 } else { 0 }).serialize(buf);
+                self.peer.serialize(buf);
+                self.offset.serialize(buf);
+                self.limit.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetBoostsList {
+            type Return = crate::enums::premium::BoostsList;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetBoostsStatus {
+            pub peer: crate::enums::InputPeer,
+        }
+        impl crate::Identifiable for GetBoostsStatus {
+            const CONSTRUCTOR_ID: u32 = 70197089;
+        }
+        impl crate::Serializable for GetBoostsStatus {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetBoostsStatus {
+            type Return = crate::enums::premium::BoostsStatus;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetMyBoosts {}
+        impl crate::Identifiable for GetMyBoosts {
+            const CONSTRUCTOR_ID: u32 = 199719754;
+        }
+        impl crate::Serializable for GetMyBoosts {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetMyBoosts {
+            type Return = crate::enums::premium::MyBoosts;
         }
     }
     #[allow(clippy::unreadable_literal)]
@@ -56213,6 +60931,521 @@ pub mod functions {
         }
     }
     #[allow(clippy::unreadable_literal)]
+    pub mod stories {
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ActivateStealthMode {
+            pub past: bool,
+            pub future: bool,
+        }
+        impl crate::Identifiable for ActivateStealthMode {
+            const CONSTRUCTOR_ID: u32 = 1471926630;
+        }
+        impl crate::Serializable for ActivateStealthMode {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.past { 1 } else { 0 } | if self.future { 2 } else { 0 })
+                    .serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ActivateStealthMode {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct CanSendStory {
+            pub peer: crate::enums::InputPeer,
+        }
+        impl crate::Identifiable for CanSendStory {
+            const CONSTRUCTOR_ID: u32 = 3353337821;
+        }
+        impl crate::Serializable for CanSendStory {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for CanSendStory {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct DeleteStories {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+        }
+        impl crate::Identifiable for DeleteStories {
+            const CONSTRUCTOR_ID: u32 = 2925124447;
+        }
+        impl crate::Serializable for DeleteStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for DeleteStories {
+            type Return = Vec<i32>;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct EditStory {
+            pub peer: crate::enums::InputPeer,
+            pub id: i32,
+            pub media: Option<crate::enums::InputMedia>,
+            pub media_areas: Option<Vec<crate::enums::MediaArea>>,
+            pub caption: Option<String>,
+            pub entities: Option<Vec<crate::enums::MessageEntity>>,
+            pub privacy_rules: Option<Vec<crate::enums::InputPrivacyRule>>,
+        }
+        impl crate::Identifiable for EditStory {
+            const CONSTRUCTOR_ID: u32 = 3045308998;
+        }
+        impl crate::Serializable for EditStory {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.media.is_some() { 1 } else { 0 }
+                    | if self.media_areas.is_some() { 8 } else { 0 }
+                    | if self.caption.is_some() { 2 } else { 0 }
+                    | if self.entities.is_some() { 2 } else { 0 }
+                    | if self.privacy_rules.is_some() { 4 } else { 0 })
+                .serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+                if let Some(ref x) = self.media {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.media_areas {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.caption {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.entities {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.privacy_rules {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for EditStory {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ExportStoryLink {
+            pub peer: crate::enums::InputPeer,
+            pub id: i32,
+        }
+        impl crate::Identifiable for ExportStoryLink {
+            const CONSTRUCTOR_ID: u32 = 2072899360;
+        }
+        impl crate::Serializable for ExportStoryLink {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ExportStoryLink {
+            type Return = crate::enums::ExportedStoryLink;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetAllReadPeerStories {}
+        impl crate::Identifiable for GetAllReadPeerStories {
+            const CONSTRUCTOR_ID: u32 = 2606426105;
+        }
+        impl crate::Serializable for GetAllReadPeerStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetAllReadPeerStories {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetAllStories {
+            pub next: bool,
+            pub hidden: bool,
+            pub state: Option<String>,
+        }
+        impl crate::Identifiable for GetAllStories {
+            const CONSTRUCTOR_ID: u32 = 4004566565;
+        }
+        impl crate::Serializable for GetAllStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.next { 2 } else { 0 }
+                    | if self.hidden { 4 } else { 0 }
+                    | if self.state.is_some() { 1 } else { 0 })
+                .serialize(buf);
+                if let Some(ref x) = self.state {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for GetAllStories {
+            type Return = crate::enums::stories::AllStories;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetChatsToSend {}
+        impl crate::Identifiable for GetChatsToSend {
+            const CONSTRUCTOR_ID: u32 = 2775223136;
+        }
+        impl crate::Serializable for GetChatsToSend {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetChatsToSend {
+            type Return = crate::enums::messages::Chats;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetPeerMaxIds {
+            pub id: Vec<crate::enums::InputPeer>,
+        }
+        impl crate::Identifiable for GetPeerMaxIds {
+            const CONSTRUCTOR_ID: u32 = 1398375363;
+        }
+        impl crate::Serializable for GetPeerMaxIds {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetPeerMaxIds {
+            type Return = Vec<i32>;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetPeerStories {
+            pub peer: crate::enums::InputPeer,
+        }
+        impl crate::Identifiable for GetPeerStories {
+            const CONSTRUCTOR_ID: u32 = 743103056;
+        }
+        impl crate::Serializable for GetPeerStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetPeerStories {
+            type Return = crate::enums::stories::PeerStories;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetPinnedStories {
+            pub peer: crate::enums::InputPeer,
+            pub offset_id: i32,
+            pub limit: i32,
+        }
+        impl crate::Identifiable for GetPinnedStories {
+            const CONSTRUCTOR_ID: u32 = 1478600156;
+        }
+        impl crate::Serializable for GetPinnedStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.offset_id.serialize(buf);
+                self.limit.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetPinnedStories {
+            type Return = crate::enums::stories::Stories;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetStoriesArchive {
+            pub peer: crate::enums::InputPeer,
+            pub offset_id: i32,
+            pub limit: i32,
+        }
+        impl crate::Identifiable for GetStoriesArchive {
+            const CONSTRUCTOR_ID: u32 = 3023380502;
+        }
+        impl crate::Serializable for GetStoriesArchive {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.offset_id.serialize(buf);
+                self.limit.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetStoriesArchive {
+            type Return = crate::enums::stories::Stories;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetStoriesById {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+        }
+        impl crate::Identifiable for GetStoriesById {
+            const CONSTRUCTOR_ID: u32 = 1467271796;
+        }
+        impl crate::Serializable for GetStoriesById {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetStoriesById {
+            type Return = crate::enums::stories::Stories;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetStoriesViews {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+        }
+        impl crate::Identifiable for GetStoriesViews {
+            const CONSTRUCTOR_ID: u32 = 685862088;
+        }
+        impl crate::Serializable for GetStoriesViews {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetStoriesViews {
+            type Return = crate::enums::stories::StoryViews;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct GetStoryViewsList {
+            pub just_contacts: bool,
+            pub reactions_first: bool,
+            pub peer: crate::enums::InputPeer,
+            pub q: Option<String>,
+            pub id: i32,
+            pub offset: String,
+            pub limit: i32,
+        }
+        impl crate::Identifiable for GetStoryViewsList {
+            const CONSTRUCTOR_ID: u32 = 2127707223;
+        }
+        impl crate::Serializable for GetStoryViewsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.just_contacts { 1 } else { 0 }
+                    | if self.reactions_first { 4 } else { 0 }
+                    | if self.q.is_some() { 2 } else { 0 })
+                .serialize(buf);
+                self.peer.serialize(buf);
+                if let Some(ref x) = self.q {
+                    x.serialize(buf);
+                }
+                self.id.serialize(buf);
+                self.offset.serialize(buf);
+                self.limit.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for GetStoryViewsList {
+            type Return = crate::enums::stories::StoryViewsList;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct IncrementStoryViews {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+        }
+        impl crate::Identifiable for IncrementStoryViews {
+            const CONSTRUCTOR_ID: u32 = 2986511099;
+        }
+        impl crate::Serializable for IncrementStoryViews {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for IncrementStoryViews {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ReadStories {
+            pub peer: crate::enums::InputPeer,
+            pub max_id: i32,
+        }
+        impl crate::Identifiable for ReadStories {
+            const CONSTRUCTOR_ID: u32 = 2773932744;
+        }
+        impl crate::Serializable for ReadStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.max_id.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ReadStories {
+            type Return = Vec<i32>;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct Report {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+            pub reason: crate::enums::ReportReason,
+            pub message: String,
+        }
+        impl crate::Identifiable for Report {
+            const CONSTRUCTOR_ID: u32 = 421788300;
+        }
+        impl crate::Serializable for Report {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+                self.reason.serialize(buf);
+                self.message.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for Report {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct SendReaction {
+            pub add_to_recent: bool,
+            pub peer: crate::enums::InputPeer,
+            pub story_id: i32,
+            pub reaction: crate::enums::Reaction,
+        }
+        impl crate::Identifiable for SendReaction {
+            const CONSTRUCTOR_ID: u32 = 2144810674;
+        }
+        impl crate::Serializable for SendReaction {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32 | if self.add_to_recent { 1 } else { 0 }).serialize(buf);
+                self.peer.serialize(buf);
+                self.story_id.serialize(buf);
+                self.reaction.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for SendReaction {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct SendStory {
+            pub pinned: bool,
+            pub noforwards: bool,
+            pub peer: crate::enums::InputPeer,
+            pub media: crate::enums::InputMedia,
+            pub media_areas: Option<Vec<crate::enums::MediaArea>>,
+            pub caption: Option<String>,
+            pub entities: Option<Vec<crate::enums::MessageEntity>>,
+            pub privacy_rules: Vec<crate::enums::InputPrivacyRule>,
+            pub random_id: i64,
+            pub period: Option<i32>,
+        }
+        impl crate::Identifiable for SendStory {
+            const CONSTRUCTOR_ID: u32 = 3166123588;
+        }
+        impl crate::Serializable for SendStory {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                (0u32
+                    | if self.pinned { 4 } else { 0 }
+                    | if self.noforwards { 16 } else { 0 }
+                    | if self.media_areas.is_some() { 32 } else { 0 }
+                    | if self.caption.is_some() { 1 } else { 0 }
+                    | if self.entities.is_some() { 2 } else { 0 }
+                    | if self.period.is_some() { 8 } else { 0 })
+                .serialize(buf);
+                self.peer.serialize(buf);
+                self.media.serialize(buf);
+                if let Some(ref x) = self.media_areas {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.caption {
+                    x.serialize(buf);
+                }
+                if let Some(ref x) = self.entities {
+                    x.serialize(buf);
+                }
+                self.privacy_rules.serialize(buf);
+                self.random_id.serialize(buf);
+                if let Some(ref x) = self.period {
+                    x.serialize(buf);
+                }
+            }
+        }
+        impl crate::RemoteCall for SendStory {
+            type Return = crate::enums::Updates;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct ToggleAllStoriesHidden {
+            pub hidden: bool,
+        }
+        impl crate::Identifiable for ToggleAllStoriesHidden {
+            const CONSTRUCTOR_ID: u32 = 2082822084;
+        }
+        impl crate::Serializable for ToggleAllStoriesHidden {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.hidden.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for ToggleAllStoriesHidden {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct TogglePeerStoriesHidden {
+            pub peer: crate::enums::InputPeer,
+            pub hidden: bool,
+        }
+        impl crate::Identifiable for TogglePeerStoriesHidden {
+            const CONSTRUCTOR_ID: u32 = 3171161540;
+        }
+        impl crate::Serializable for TogglePeerStoriesHidden {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.hidden.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for TogglePeerStoriesHidden {
+            type Return = bool;
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub struct TogglePinned {
+            pub peer: crate::enums::InputPeer,
+            pub id: Vec<i32>,
+            pub pinned: bool,
+        }
+        impl crate::Identifiable for TogglePinned {
+            const CONSTRUCTOR_ID: u32 = 2591400431;
+        }
+        impl crate::Serializable for TogglePinned {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                Self::CONSTRUCTOR_ID.serialize(buf);
+                self.peer.serialize(buf);
+                self.id.serialize(buf);
+                self.pinned.serialize(buf);
+            }
+        }
+        impl crate::RemoteCall for TogglePinned {
+            type Return = Vec<i32>;
+        }
+    }
+    #[allow(clippy::unreadable_literal)]
     pub mod updates {
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetChannelDifference {
@@ -56242,24 +61475,36 @@ pub mod functions {
         #[derive(Debug, Clone, PartialEq)]
         pub struct GetDifference {
             pub pts: i32,
+            pub pts_limit: Option<i32>,
             pub pts_total_limit: Option<i32>,
             pub date: i32,
             pub qts: i32,
+            pub qts_limit: Option<i32>,
         }
         impl crate::Identifiable for GetDifference {
-            const CONSTRUCTOR_ID: u32 = 630429265;
+            const CONSTRUCTOR_ID: u32 = 432207715;
         }
         impl crate::Serializable for GetDifference {
             fn serialize(&self, buf: crate::serialize::Buffer) {
                 use crate::Identifiable;
                 Self::CONSTRUCTOR_ID.serialize(buf);
-                (0u32 | if self.pts_total_limit.is_some() { 1 } else { 0 }).serialize(buf);
+                (0u32
+                    | if self.pts_limit.is_some() { 2 } else { 0 }
+                    | if self.pts_total_limit.is_some() { 1 } else { 0 }
+                    | if self.qts_limit.is_some() { 4 } else { 0 })
+                .serialize(buf);
                 self.pts.serialize(buf);
+                if let Some(ref x) = self.pts_limit {
+                    x.serialize(buf);
+                }
                 if let Some(ref x) = self.pts_total_limit {
                     x.serialize(buf);
                 }
                 self.date.serialize(buf);
                 self.qts.serialize(buf);
+                if let Some(ref x) = self.qts_limit {
+                    x.serialize(buf);
+                }
             }
         }
         impl crate::RemoteCall for GetDifference {
@@ -57017,16 +62262,16 @@ pub mod enums {
         BadServerSalt(crate::types::BadServerSalt),
     }
     impl BadMsgNotification {
-        pub fn bad_msg_id(&self) -> i64 {
-            match self {
-                Self::Notification(i) => i.bad_msg_id,
-                Self::BadServerSalt(i) => i.bad_msg_id,
-            }
-        }
         pub fn error_code(&self) -> i32 {
             match self {
                 Self::Notification(i) => i.error_code,
                 Self::BadServerSalt(i) => i.error_code,
+            }
+        }
+        pub fn bad_msg_id(&self) -> i64 {
+            match self {
+                Self::Notification(i) => i.bad_msg_id,
+                Self::BadServerSalt(i) => i.bad_msg_id,
             }
         }
         pub fn bad_msg_seqno(&self) -> i32 {
@@ -57207,6 +62452,38 @@ pub mod enums {
     impl From<crate::types::BindAuthKeyInner> for BindAuthKeyInner {
         fn from(x: crate::types::BindAuthKeyInner) -> Self {
             BindAuthKeyInner::Inner(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum Boost {
+        Boost(crate::types::Boost),
+    }
+    impl crate::Serializable for Boost {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Boost(x) => {
+                    crate::types::Boost::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for Boost {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::Boost::CONSTRUCTOR_ID => {
+                    Self::Boost(crate::types::Boost::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::Boost> for Boost {
+        fn from(x: crate::types::Boost) -> Self {
+            Boost::Boost(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -57421,6 +62698,7 @@ pub mod enums {
         MediaVenue(crate::types::BotInlineMessageMediaVenue),
         MediaContact(crate::types::BotInlineMessageMediaContact),
         MediaInvoice(crate::types::BotInlineMessageMediaInvoice),
+        MediaWebPage(crate::types::BotInlineMessageMediaWebPage),
     }
     impl crate::Serializable for BotInlineMessage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -57450,6 +62728,10 @@ pub mod enums {
                     crate::types::BotInlineMessageMediaInvoice::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::MediaWebPage(x) => {
+                    crate::types::BotInlineMessageMediaWebPage::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -57475,6 +62757,9 @@ pub mod enums {
                 ),
                 crate::types::BotInlineMessageMediaInvoice::CONSTRUCTOR_ID => Self::MediaInvoice(
                     crate::types::BotInlineMessageMediaInvoice::deserialize(buf)?,
+                ),
+                crate::types::BotInlineMessageMediaWebPage::CONSTRUCTOR_ID => Self::MediaWebPage(
+                    crate::types::BotInlineMessageMediaWebPage::deserialize(buf)?,
                 ),
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -57510,12 +62795,23 @@ pub mod enums {
             BotInlineMessage::MediaInvoice(x)
         }
     }
+    impl From<crate::types::BotInlineMessageMediaWebPage> for BotInlineMessage {
+        fn from(x: crate::types::BotInlineMessageMediaWebPage) -> Self {
+            BotInlineMessage::MediaWebPage(x)
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum BotInlineResult {
         Result(crate::types::BotInlineResult),
         BotInlineMediaResult(crate::types::BotInlineMediaResult),
     }
     impl BotInlineResult {
+        pub fn send_message(&self) -> crate::enums::BotInlineMessage {
+            match self {
+                Self::Result(i) => i.send_message.clone(),
+                Self::BotInlineMediaResult(i) => i.send_message.clone(),
+            }
+        }
         pub fn id(&self) -> String {
             match self {
                 Self::Result(i) => i.id.clone(),
@@ -57526,12 +62822,6 @@ pub mod enums {
             match self {
                 Self::Result(i) => i.r#type.clone(),
                 Self::BotInlineMediaResult(i) => i.r#type.clone(),
-            }
-        }
-        pub fn send_message(&self) -> crate::enums::BotInlineMessage {
-            match self {
-                Self::Result(i) => i.send_message.clone(),
-                Self::BotInlineMediaResult(i) => i.send_message.clone(),
             }
         }
     }
@@ -57768,6 +63058,8 @@ pub mod enums {
         DeleteTopic(crate::types::ChannelAdminLogEventActionDeleteTopic),
         PinTopic(crate::types::ChannelAdminLogEventActionPinTopic),
         ToggleAntiSpam(crate::types::ChannelAdminLogEventActionToggleAntiSpam),
+        ChangeColor(crate::types::ChannelAdminLogEventActionChangeColor),
+        ChangeBackgroundEmoji(crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji),
     }
     impl crate::Serializable for ChannelAdminLogEventAction {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -57982,6 +63274,16 @@ pub mod enums {
                         .serialize(buf);
                     x.serialize(buf)
                 }
+                Self::ChangeColor(x) => {
+                    crate::types::ChannelAdminLogEventActionChangeColor::CONSTRUCTOR_ID
+                        .serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::ChangeBackgroundEmoji(x) => {
+                    crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji::CONSTRUCTOR_ID
+                        .serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -58033,6 +63335,8 @@ pub mod enums {
                 crate::types::ChannelAdminLogEventActionDeleteTopic::CONSTRUCTOR_ID => Self::DeleteTopic(crate::types::ChannelAdminLogEventActionDeleteTopic::deserialize(buf)?),
                 crate::types::ChannelAdminLogEventActionPinTopic::CONSTRUCTOR_ID => Self::PinTopic(crate::types::ChannelAdminLogEventActionPinTopic::deserialize(buf)?),
                 crate::types::ChannelAdminLogEventActionToggleAntiSpam::CONSTRUCTOR_ID => Self::ToggleAntiSpam(crate::types::ChannelAdminLogEventActionToggleAntiSpam::deserialize(buf)?),
+                crate::types::ChannelAdminLogEventActionChangeColor::CONSTRUCTOR_ID => Self::ChangeColor(crate::types::ChannelAdminLogEventActionChangeColor::deserialize(buf)?),
+                crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji::CONSTRUCTOR_ID => Self::ChangeBackgroundEmoji(crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji::deserialize(buf)?),
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -58278,6 +63582,18 @@ pub mod enums {
     impl From<crate::types::ChannelAdminLogEventActionToggleAntiSpam> for ChannelAdminLogEventAction {
         fn from(x: crate::types::ChannelAdminLogEventActionToggleAntiSpam) -> Self {
             ChannelAdminLogEventAction::ToggleAntiSpam(x)
+        }
+    }
+    impl From<crate::types::ChannelAdminLogEventActionChangeColor> for ChannelAdminLogEventAction {
+        fn from(x: crate::types::ChannelAdminLogEventActionChangeColor) -> Self {
+            ChannelAdminLogEventAction::ChangeColor(x)
+        }
+    }
+    impl From<crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji>
+        for ChannelAdminLogEventAction
+    {
+        fn from(x: crate::types::ChannelAdminLogEventActionChangeBackgroundEmoji) -> Self {
+            ChannelAdminLogEventAction::ChangeBackgroundEmoji(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -58820,10 +64136,10 @@ pub mod enums {
         ChannelFull(crate::types::ChannelFull),
     }
     impl ChatFull {
-        pub fn id(&self) -> i64 {
+        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
             match self {
-                Self::Full(i) => i.id,
-                Self::ChannelFull(i) => i.id,
+                Self::Full(i) => i.notify_settings.clone(),
+                Self::ChannelFull(i) => i.notify_settings.clone(),
             }
         }
         pub fn about(&self) -> String {
@@ -58832,10 +64148,10 @@ pub mod enums {
                 Self::ChannelFull(i) => i.about.clone(),
             }
         }
-        pub fn notify_settings(&self) -> crate::enums::PeerNotifySettings {
+        pub fn id(&self) -> i64 {
             match self {
-                Self::Full(i) => i.notify_settings.clone(),
-                Self::ChannelFull(i) => i.notify_settings.clone(),
+                Self::Full(i) => i.id,
+                Self::ChannelFull(i) => i.id,
             }
         }
     }
@@ -59582,16 +64898,16 @@ pub mod enums {
         Folder(crate::types::DialogFolder),
     }
     impl Dialog {
-        pub fn pinned(&self) -> bool {
-            match self {
-                Self::Dialog(i) => i.pinned,
-                Self::Folder(i) => i.pinned,
-            }
-        }
         pub fn peer(&self) -> crate::enums::Peer {
             match self {
                 Self::Dialog(i) => i.peer.clone(),
                 Self::Folder(i) => i.peer.clone(),
+            }
+        }
+        pub fn pinned(&self) -> bool {
+            match self {
+                Self::Dialog(i) => i.pinned,
+                Self::Folder(i) => i.pinned,
             }
         }
         pub fn top_message(&self) -> i32 {
@@ -59645,6 +64961,7 @@ pub mod enums {
     pub enum DialogFilter {
         Filter(crate::types::DialogFilter),
         Default,
+        Chatlist(crate::types::DialogFilterChatlist),
     }
     impl crate::Serializable for DialogFilter {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -59656,6 +64973,10 @@ pub mod enums {
                 }
                 Self::Default => {
                     crate::types::DialogFilterDefault::CONSTRUCTOR_ID.serialize(buf);
+                }
+                Self::Chatlist(x) => {
+                    crate::types::DialogFilterChatlist::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
                 }
             }
         }
@@ -59669,6 +64990,9 @@ pub mod enums {
                     Self::Filter(crate::types::DialogFilter::deserialize(buf)?)
                 }
                 crate::types::DialogFilterDefault::CONSTRUCTOR_ID => Self::Default,
+                crate::types::DialogFilterChatlist::CONSTRUCTOR_ID => {
+                    Self::Chatlist(crate::types::DialogFilterChatlist::deserialize(buf)?)
+                }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -59681,6 +65005,11 @@ pub mod enums {
     impl From<crate::types::DialogFilterDefault> for DialogFilter {
         fn from(_x: crate::types::DialogFilterDefault) -> Self {
             DialogFilter::Default
+        }
+    }
+    impl From<crate::types::DialogFilterChatlist> for DialogFilter {
+        fn from(x: crate::types::DialogFilterChatlist) -> Self {
+            DialogFilter::Chatlist(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -60512,6 +65841,12 @@ pub mod enums {
         Service(crate::types::EncryptedMessageService),
     }
     impl EncryptedMessage {
+        pub fn date(&self) -> i32 {
+            match self {
+                Self::Message(i) => i.date,
+                Self::Service(i) => i.date,
+            }
+        }
         pub fn chat_id(&self) -> i32 {
             match self {
                 Self::Message(i) => i.chat_id,
@@ -60522,12 +65857,6 @@ pub mod enums {
             match self {
                 Self::Message(i) => i.random_id,
                 Self::Service(i) => i.random_id,
-            }
-        }
-        pub fn date(&self) -> i32 {
-            match self {
-                Self::Message(i) => i.date,
-                Self::Service(i) => i.date,
             }
         }
         pub fn bytes(&self) -> Vec<u8> {
@@ -60654,6 +65983,38 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum ExportedChatlistInvite {
+        Invite(crate::types::ExportedChatlistInvite),
+    }
+    impl crate::Serializable for ExportedChatlistInvite {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Invite(x) => {
+                    crate::types::ExportedChatlistInvite::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for ExportedChatlistInvite {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::ExportedChatlistInvite::CONSTRUCTOR_ID => {
+                    Self::Invite(crate::types::ExportedChatlistInvite::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::ExportedChatlistInvite> for ExportedChatlistInvite {
+        fn from(x: crate::types::ExportedChatlistInvite) -> Self {
+            ExportedChatlistInvite::Invite(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum ExportedContactToken {
         Token(crate::types::ExportedContactToken),
     }
@@ -60715,6 +66076,38 @@ pub mod enums {
     impl From<crate::types::ExportedMessageLink> for ExportedMessageLink {
         fn from(x: crate::types::ExportedMessageLink) -> Self {
             ExportedMessageLink::Link(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum ExportedStoryLink {
+        Link(crate::types::ExportedStoryLink),
+    }
+    impl crate::Serializable for ExportedStoryLink {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Link(x) => {
+                    crate::types::ExportedStoryLink::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for ExportedStoryLink {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::ExportedStoryLink::CONSTRUCTOR_ID => {
+                    Self::Link(crate::types::ExportedStoryLink::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::ExportedStoryLink> for ExportedStoryLink {
+        fn from(x: crate::types::ExportedStoryLink) -> Self {
+            ExportedStoryLink::Link(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -61393,6 +66786,7 @@ pub mod enums {
         Chat,
         Megagroup,
         Broadcast,
+        BotPm,
     }
     impl crate::Serializable for InlineQueryPeerType {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -61413,6 +66807,9 @@ pub mod enums {
                 Self::Broadcast => {
                     crate::types::InlineQueryPeerTypeBroadcast::CONSTRUCTOR_ID.serialize(buf);
                 }
+                Self::BotPm => {
+                    crate::types::InlineQueryPeerTypeBotPm::CONSTRUCTOR_ID.serialize(buf);
+                }
             }
         }
     }
@@ -61426,6 +66823,7 @@ pub mod enums {
                 crate::types::InlineQueryPeerTypeChat::CONSTRUCTOR_ID => Self::Chat,
                 crate::types::InlineQueryPeerTypeMegagroup::CONSTRUCTOR_ID => Self::Megagroup,
                 crate::types::InlineQueryPeerTypeBroadcast::CONSTRUCTOR_ID => Self::Broadcast,
+                crate::types::InlineQueryPeerTypeBotPm::CONSTRUCTOR_ID => Self::BotPm,
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -61453,6 +66851,11 @@ pub mod enums {
     impl From<crate::types::InlineQueryPeerTypeBroadcast> for InlineQueryPeerType {
         fn from(_x: crate::types::InlineQueryPeerTypeBroadcast) -> Self {
             InlineQueryPeerType::Broadcast
+        }
+    }
+    impl From<crate::types::InlineQueryPeerTypeBotPm> for InlineQueryPeerType {
+        fn from(_x: crate::types::InlineQueryPeerTypeBotPm) -> Self {
+            InlineQueryPeerType::BotPm
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -61541,6 +66944,7 @@ pub mod enums {
         MediaContact(crate::types::InputBotInlineMessageMediaContact),
         Game(crate::types::InputBotInlineMessageGame),
         MediaInvoice(crate::types::InputBotInlineMessageMediaInvoice),
+        MediaWebPage(crate::types::InputBotInlineMessageMediaWebPage),
     }
     impl crate::Serializable for InputBotInlineMessage {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -61574,6 +66978,10 @@ pub mod enums {
                     crate::types::InputBotInlineMessageMediaInvoice::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::MediaWebPage(x) => {
+                    crate::types::InputBotInlineMessageMediaWebPage::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -61605,6 +67013,11 @@ pub mod enums {
                 crate::types::InputBotInlineMessageMediaInvoice::CONSTRUCTOR_ID => {
                     Self::MediaInvoice(
                         crate::types::InputBotInlineMessageMediaInvoice::deserialize(buf)?,
+                    )
+                }
+                crate::types::InputBotInlineMessageMediaWebPage::CONSTRUCTOR_ID => {
+                    Self::MediaWebPage(
+                        crate::types::InputBotInlineMessageMediaWebPage::deserialize(buf)?,
                     )
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
@@ -61646,22 +67059,27 @@ pub mod enums {
             InputBotInlineMessage::MediaInvoice(x)
         }
     }
+    impl From<crate::types::InputBotInlineMessageMediaWebPage> for InputBotInlineMessage {
+        fn from(x: crate::types::InputBotInlineMessageMediaWebPage) -> Self {
+            InputBotInlineMessage::MediaWebPage(x)
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum InputBotInlineMessageId {
         Id(crate::types::InputBotInlineMessageId),
         Id64(crate::types::InputBotInlineMessageId64),
     }
     impl InputBotInlineMessageId {
-        pub fn access_hash(&self) -> i64 {
-            match self {
-                Self::Id(i) => i.access_hash,
-                Self::Id64(i) => i.access_hash,
-            }
-        }
         pub fn dc_id(&self) -> i32 {
             match self {
                 Self::Id(i) => i.dc_id,
                 Self::Id64(i) => i.dc_id,
+            }
+        }
+        pub fn access_hash(&self) -> i64 {
+            match self {
+                Self::Id(i) => i.access_hash,
+                Self::Id64(i) => i.access_hash,
             }
         }
     }
@@ -61904,6 +67322,38 @@ pub mod enums {
     impl From<crate::types::InputChatPhoto> for InputChatPhoto {
         fn from(x: crate::types::InputChatPhoto) -> Self {
             InputChatPhoto::Photo(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum InputChatlist {
+        DialogFilter(crate::types::InputChatlistDialogFilter),
+    }
+    impl crate::Serializable for InputChatlist {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::DialogFilter(x) => {
+                    crate::types::InputChatlistDialogFilter::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for InputChatlist {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::InputChatlistDialogFilter::CONSTRUCTOR_ID => {
+                    Self::DialogFilter(crate::types::InputChatlistDialogFilter::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::InputChatlistDialogFilter> for InputChatlist {
+        fn from(x: crate::types::InputChatlistDialogFilter) -> Self {
+            InputChatlist::DialogFilter(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -62207,16 +67657,16 @@ pub mod enums {
         Big(crate::types::InputFileBig),
     }
     impl InputFile {
-        pub fn name(&self) -> String {
-            match self {
-                Self::File(i) => i.name.clone(),
-                Self::Big(i) => i.name.clone(),
-            }
-        }
         pub fn parts(&self) -> i32 {
             match self {
                 Self::File(i) => i.parts,
                 Self::Big(i) => i.parts,
+            }
+        }
+        pub fn name(&self) -> String {
+            match self {
+                Self::File(i) => i.name.clone(),
+                Self::Big(i) => i.name.clone(),
             }
         }
         pub fn id(&self) -> i64 {
@@ -62581,6 +68031,7 @@ pub mod enums {
     pub enum InputInvoice {
         Message(crate::types::InputInvoiceMessage),
         Slug(crate::types::InputInvoiceSlug),
+        PremiumGiftCode(crate::types::InputInvoicePremiumGiftCode),
     }
     impl crate::Serializable for InputInvoice {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -62592,6 +68043,10 @@ pub mod enums {
                 }
                 Self::Slug(x) => {
                     crate::types::InputInvoiceSlug::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::PremiumGiftCode(x) => {
+                    crate::types::InputInvoicePremiumGiftCode::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
             }
@@ -62608,6 +68063,9 @@ pub mod enums {
                 crate::types::InputInvoiceSlug::CONSTRUCTOR_ID => {
                     Self::Slug(crate::types::InputInvoiceSlug::deserialize(buf)?)
                 }
+                crate::types::InputInvoicePremiumGiftCode::CONSTRUCTOR_ID => Self::PremiumGiftCode(
+                    crate::types::InputInvoicePremiumGiftCode::deserialize(buf)?,
+                ),
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -62620,6 +68078,11 @@ pub mod enums {
     impl From<crate::types::InputInvoiceSlug> for InputInvoice {
         fn from(x: crate::types::InputInvoiceSlug) -> Self {
             InputInvoice::Slug(x)
+        }
+    }
+    impl From<crate::types::InputInvoicePremiumGiftCode> for InputInvoice {
+        fn from(x: crate::types::InputInvoicePremiumGiftCode) -> Self {
+            InputInvoice::PremiumGiftCode(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -62639,6 +68102,8 @@ pub mod enums {
         GeoLive(crate::types::InputMediaGeoLive),
         Poll(crate::types::InputMediaPoll),
         Dice(crate::types::InputMediaDice),
+        Story(crate::types::InputMediaStory),
+        WebPage(crate::types::InputMediaWebPage),
     }
     impl crate::Serializable for InputMedia {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -62703,6 +68168,14 @@ pub mod enums {
                     crate::types::InputMediaDice::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::Story(x) => {
+                    crate::types::InputMediaStory::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::WebPage(x) => {
+                    crate::types::InputMediaWebPage::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -62753,6 +68226,12 @@ pub mod enums {
                 }
                 crate::types::InputMediaDice::CONSTRUCTOR_ID => {
                     Self::Dice(crate::types::InputMediaDice::deserialize(buf)?)
+                }
+                crate::types::InputMediaStory::CONSTRUCTOR_ID => {
+                    Self::Story(crate::types::InputMediaStory::deserialize(buf)?)
+                }
+                crate::types::InputMediaWebPage::CONSTRUCTOR_ID => {
+                    Self::WebPage(crate::types::InputMediaWebPage::deserialize(buf)?)
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -62831,6 +68310,16 @@ pub mod enums {
     impl From<crate::types::InputMediaDice> for InputMedia {
         fn from(x: crate::types::InputMediaDice) -> Self {
             InputMedia::Dice(x)
+        }
+    }
+    impl From<crate::types::InputMediaStory> for InputMedia {
+        fn from(x: crate::types::InputMediaStory) -> Self {
+            InputMedia::Story(x)
+        }
+    }
+    impl From<crate::types::InputMediaWebPage> for InputMedia {
+        fn from(x: crate::types::InputMediaWebPage) -> Self {
+            InputMedia::WebPage(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -63270,6 +68759,7 @@ pub mod enums {
         PhoneNumber,
         AddedByPhone,
         VoiceMessages,
+        About,
     }
     impl crate::Serializable for InputPrivacyKey {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -63302,6 +68792,9 @@ pub mod enums {
                 Self::VoiceMessages => {
                     crate::types::InputPrivacyKeyVoiceMessages::CONSTRUCTOR_ID.serialize(buf);
                 }
+                Self::About => {
+                    crate::types::InputPrivacyKeyAbout::CONSTRUCTOR_ID.serialize(buf);
+                }
             }
         }
     }
@@ -63321,6 +68814,7 @@ pub mod enums {
                 crate::types::InputPrivacyKeyPhoneNumber::CONSTRUCTOR_ID => Self::PhoneNumber,
                 crate::types::InputPrivacyKeyAddedByPhone::CONSTRUCTOR_ID => Self::AddedByPhone,
                 crate::types::InputPrivacyKeyVoiceMessages::CONSTRUCTOR_ID => Self::VoiceMessages,
+                crate::types::InputPrivacyKeyAbout::CONSTRUCTOR_ID => Self::About,
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -63370,6 +68864,11 @@ pub mod enums {
             InputPrivacyKey::VoiceMessages
         }
     }
+    impl From<crate::types::InputPrivacyKeyAbout> for InputPrivacyKey {
+        fn from(_x: crate::types::InputPrivacyKeyAbout) -> Self {
+            InputPrivacyKey::About
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum InputPrivacyRule {
         InputPrivacyValueAllowContacts,
@@ -63384,6 +68883,7 @@ pub mod enums {
         InputPrivacyValueDisallowChatParticipants(
             crate::types::InputPrivacyValueDisallowChatParticipants,
         ),
+        InputPrivacyValueAllowCloseFriends,
     }
     impl crate::Serializable for InputPrivacyRule {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -63418,6 +68918,9 @@ pub mod enums {
                     crate::types::InputPrivacyValueDisallowChatParticipants::CONSTRUCTOR_ID
                         .serialize(buf);
                     x.serialize(buf)
+                }
+                Self::InputPrivacyValueAllowCloseFriends => {
+                    crate::types::InputPrivacyValueAllowCloseFriends::CONSTRUCTOR_ID.serialize(buf);
                 }
             }
         }
@@ -63458,6 +68961,9 @@ pub mod enums {
                     Self::InputPrivacyValueDisallowChatParticipants(
                         crate::types::InputPrivacyValueDisallowChatParticipants::deserialize(buf)?,
                     )
+                }
+                crate::types::InputPrivacyValueAllowCloseFriends::CONSTRUCTOR_ID => {
+                    Self::InputPrivacyValueAllowCloseFriends
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -63501,6 +69007,56 @@ pub mod enums {
     impl From<crate::types::InputPrivacyValueDisallowChatParticipants> for InputPrivacyRule {
         fn from(x: crate::types::InputPrivacyValueDisallowChatParticipants) -> Self {
             InputPrivacyRule::InputPrivacyValueDisallowChatParticipants(x)
+        }
+    }
+    impl From<crate::types::InputPrivacyValueAllowCloseFriends> for InputPrivacyRule {
+        fn from(_x: crate::types::InputPrivacyValueAllowCloseFriends) -> Self {
+            InputPrivacyRule::InputPrivacyValueAllowCloseFriends
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum InputReplyTo {
+        Message(crate::types::InputReplyToMessage),
+        Story(crate::types::InputReplyToStory),
+    }
+    impl crate::Serializable for InputReplyTo {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Message(x) => {
+                    crate::types::InputReplyToMessage::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Story(x) => {
+                    crate::types::InputReplyToStory::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for InputReplyTo {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::InputReplyToMessage::CONSTRUCTOR_ID => {
+                    Self::Message(crate::types::InputReplyToMessage::deserialize(buf)?)
+                }
+                crate::types::InputReplyToStory::CONSTRUCTOR_ID => {
+                    Self::Story(crate::types::InputReplyToStory::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::InputReplyToMessage> for InputReplyTo {
+        fn from(x: crate::types::InputReplyToMessage) -> Self {
+            InputReplyTo::Message(x)
+        }
+    }
+    impl From<crate::types::InputReplyToStory> for InputReplyTo {
+        fn from(x: crate::types::InputReplyToStory) -> Self {
+            InputReplyTo::Story(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -63841,6 +69397,8 @@ pub mod enums {
     pub enum InputStorePaymentPurpose {
         InputStorePaymentPremiumSubscription(crate::types::InputStorePaymentPremiumSubscription),
         InputStorePaymentGiftPremium(crate::types::InputStorePaymentGiftPremium),
+        InputStorePaymentPremiumGiftCode(crate::types::InputStorePaymentPremiumGiftCode),
+        InputStorePaymentPremiumGiveaway(crate::types::InputStorePaymentPremiumGiveaway),
     }
     impl crate::Serializable for InputStorePaymentPurpose {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -63853,6 +69411,14 @@ pub mod enums {
                 }
                 Self::InputStorePaymentGiftPremium(x) => {
                     crate::types::InputStorePaymentGiftPremium::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::InputStorePaymentPremiumGiftCode(x) => {
+                    crate::types::InputStorePaymentPremiumGiftCode::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::InputStorePaymentPremiumGiveaway(x) => {
+                    crate::types::InputStorePaymentPremiumGiveaway::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
             }
@@ -63873,6 +69439,16 @@ pub mod enums {
                         crate::types::InputStorePaymentGiftPremium::deserialize(buf)?,
                     )
                 }
+                crate::types::InputStorePaymentPremiumGiftCode::CONSTRUCTOR_ID => {
+                    Self::InputStorePaymentPremiumGiftCode(
+                        crate::types::InputStorePaymentPremiumGiftCode::deserialize(buf)?,
+                    )
+                }
+                crate::types::InputStorePaymentPremiumGiveaway::CONSTRUCTOR_ID => {
+                    Self::InputStorePaymentPremiumGiveaway(
+                        crate::types::InputStorePaymentPremiumGiveaway::deserialize(buf)?,
+                    )
+                }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -63885,6 +69461,16 @@ pub mod enums {
     impl From<crate::types::InputStorePaymentGiftPremium> for InputStorePaymentPurpose {
         fn from(x: crate::types::InputStorePaymentGiftPremium) -> Self {
             InputStorePaymentPurpose::InputStorePaymentGiftPremium(x)
+        }
+    }
+    impl From<crate::types::InputStorePaymentPremiumGiftCode> for InputStorePaymentPurpose {
+        fn from(x: crate::types::InputStorePaymentPremiumGiftCode) -> Self {
+            InputStorePaymentPurpose::InputStorePaymentPremiumGiftCode(x)
+        }
+    }
+    impl From<crate::types::InputStorePaymentPremiumGiveaway> for InputStorePaymentPurpose {
+        fn from(x: crate::types::InputStorePaymentPremiumGiveaway) -> Self {
+            InputStorePaymentPurpose::InputStorePaymentPremiumGiveaway(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -64220,16 +69806,16 @@ pub mod enums {
         Secret(crate::types::IpPortSecret),
     }
     impl IpPort {
-        pub fn port(&self) -> i32 {
-            match self {
-                Self::Port(i) => i.port,
-                Self::Secret(i) => i.port,
-            }
-        }
         pub fn ipv4(&self) -> i32 {
             match self {
                 Self::Port(i) => i.ipv4,
                 Self::Secret(i) => i.ipv4,
+            }
+        }
+        pub fn port(&self) -> i32 {
+            match self {
+                Self::Port(i) => i.port,
+                Self::Secret(i) => i.port,
             }
         }
     }
@@ -64882,6 +70468,121 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum MediaArea {
+        Venue(crate::types::MediaAreaVenue),
+        InputMediaAreaVenue(crate::types::InputMediaAreaVenue),
+        GeoPoint(crate::types::MediaAreaGeoPoint),
+        SuggestedReaction(crate::types::MediaAreaSuggestedReaction),
+    }
+    impl MediaArea {
+        pub fn coordinates(&self) -> crate::enums::MediaAreaCoordinates {
+            match self {
+                Self::Venue(i) => i.coordinates.clone(),
+                Self::InputMediaAreaVenue(i) => i.coordinates.clone(),
+                Self::GeoPoint(i) => i.coordinates.clone(),
+                Self::SuggestedReaction(i) => i.coordinates.clone(),
+            }
+        }
+    }
+    impl crate::Serializable for MediaArea {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Venue(x) => {
+                    crate::types::MediaAreaVenue::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::InputMediaAreaVenue(x) => {
+                    crate::types::InputMediaAreaVenue::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::GeoPoint(x) => {
+                    crate::types::MediaAreaGeoPoint::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::SuggestedReaction(x) => {
+                    crate::types::MediaAreaSuggestedReaction::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for MediaArea {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::MediaAreaVenue::CONSTRUCTOR_ID => {
+                    Self::Venue(crate::types::MediaAreaVenue::deserialize(buf)?)
+                }
+                crate::types::InputMediaAreaVenue::CONSTRUCTOR_ID => {
+                    Self::InputMediaAreaVenue(crate::types::InputMediaAreaVenue::deserialize(buf)?)
+                }
+                crate::types::MediaAreaGeoPoint::CONSTRUCTOR_ID => {
+                    Self::GeoPoint(crate::types::MediaAreaGeoPoint::deserialize(buf)?)
+                }
+                crate::types::MediaAreaSuggestedReaction::CONSTRUCTOR_ID => {
+                    Self::SuggestedReaction(crate::types::MediaAreaSuggestedReaction::deserialize(
+                        buf,
+                    )?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::MediaAreaVenue> for MediaArea {
+        fn from(x: crate::types::MediaAreaVenue) -> Self {
+            MediaArea::Venue(x)
+        }
+    }
+    impl From<crate::types::InputMediaAreaVenue> for MediaArea {
+        fn from(x: crate::types::InputMediaAreaVenue) -> Self {
+            MediaArea::InputMediaAreaVenue(x)
+        }
+    }
+    impl From<crate::types::MediaAreaGeoPoint> for MediaArea {
+        fn from(x: crate::types::MediaAreaGeoPoint) -> Self {
+            MediaArea::GeoPoint(x)
+        }
+    }
+    impl From<crate::types::MediaAreaSuggestedReaction> for MediaArea {
+        fn from(x: crate::types::MediaAreaSuggestedReaction) -> Self {
+            MediaArea::SuggestedReaction(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum MediaAreaCoordinates {
+        Coordinates(crate::types::MediaAreaCoordinates),
+    }
+    impl crate::Serializable for MediaAreaCoordinates {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Coordinates(x) => {
+                    crate::types::MediaAreaCoordinates::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for MediaAreaCoordinates {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::MediaAreaCoordinates::CONSTRUCTOR_ID => {
+                    Self::Coordinates(crate::types::MediaAreaCoordinates::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::MediaAreaCoordinates> for MediaAreaCoordinates {
+        fn from(x: crate::types::MediaAreaCoordinates) -> Self {
+            MediaAreaCoordinates::Coordinates(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum Message {
         Empty(crate::types::MessageEmpty),
         Message(crate::types::Message),
@@ -64987,6 +70688,10 @@ pub mod enums {
         TopicEdit(crate::types::MessageActionTopicEdit),
         SuggestProfilePhoto(crate::types::MessageActionSuggestProfilePhoto),
         RequestedPeer(crate::types::MessageActionRequestedPeer),
+        SetChatWallPaper(crate::types::MessageActionSetChatWallPaper),
+        SetSameChatWallPaper(crate::types::MessageActionSetSameChatWallPaper),
+        GiftCode(crate::types::MessageActionGiftCode),
+        GiveawayLaunch,
     }
     impl crate::Serializable for MessageAction {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -65133,6 +70838,21 @@ pub mod enums {
                     crate::types::MessageActionRequestedPeer::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::SetChatWallPaper(x) => {
+                    crate::types::MessageActionSetChatWallPaper::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::SetSameChatWallPaper(x) => {
+                    crate::types::MessageActionSetSameChatWallPaper::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::GiftCode(x) => {
+                    crate::types::MessageActionGiftCode::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::GiveawayLaunch => {
+                    crate::types::MessageActionGiveawayLaunch::CONSTRUCTOR_ID.serialize(buf);
+                }
             }
         }
     }
@@ -65260,6 +70980,20 @@ pub mod enums {
                 crate::types::MessageActionRequestedPeer::CONSTRUCTOR_ID => {
                     Self::RequestedPeer(crate::types::MessageActionRequestedPeer::deserialize(buf)?)
                 }
+                crate::types::MessageActionSetChatWallPaper::CONSTRUCTOR_ID => {
+                    Self::SetChatWallPaper(
+                        crate::types::MessageActionSetChatWallPaper::deserialize(buf)?,
+                    )
+                }
+                crate::types::MessageActionSetSameChatWallPaper::CONSTRUCTOR_ID => {
+                    Self::SetSameChatWallPaper(
+                        crate::types::MessageActionSetSameChatWallPaper::deserialize(buf)?,
+                    )
+                }
+                crate::types::MessageActionGiftCode::CONSTRUCTOR_ID => {
+                    Self::GiftCode(crate::types::MessageActionGiftCode::deserialize(buf)?)
+                }
+                crate::types::MessageActionGiveawayLaunch::CONSTRUCTOR_ID => Self::GiveawayLaunch,
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -65449,6 +71183,26 @@ pub mod enums {
             MessageAction::RequestedPeer(x)
         }
     }
+    impl From<crate::types::MessageActionSetChatWallPaper> for MessageAction {
+        fn from(x: crate::types::MessageActionSetChatWallPaper) -> Self {
+            MessageAction::SetChatWallPaper(x)
+        }
+    }
+    impl From<crate::types::MessageActionSetSameChatWallPaper> for MessageAction {
+        fn from(x: crate::types::MessageActionSetSameChatWallPaper) -> Self {
+            MessageAction::SetSameChatWallPaper(x)
+        }
+    }
+    impl From<crate::types::MessageActionGiftCode> for MessageAction {
+        fn from(x: crate::types::MessageActionGiftCode) -> Self {
+            MessageAction::GiftCode(x)
+        }
+    }
+    impl From<crate::types::MessageActionGiveawayLaunch> for MessageAction {
+        fn from(_x: crate::types::MessageActionGiveawayLaunch) -> Self {
+            MessageAction::GiveawayLaunch
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum MessageEntity {
         Unknown(crate::types::MessageEntityUnknown),
@@ -65468,10 +71222,10 @@ pub mod enums {
         Cashtag(crate::types::MessageEntityCashtag),
         Underline(crate::types::MessageEntityUnderline),
         Strike(crate::types::MessageEntityStrike),
-        Blockquote(crate::types::MessageEntityBlockquote),
         BankCard(crate::types::MessageEntityBankCard),
         Spoiler(crate::types::MessageEntitySpoiler),
         CustomEmoji(crate::types::MessageEntityCustomEmoji),
+        Blockquote(crate::types::MessageEntityBlockquote),
     }
     impl MessageEntity {
         pub fn offset(&self) -> i32 {
@@ -65493,10 +71247,10 @@ pub mod enums {
                 Self::Cashtag(i) => i.offset,
                 Self::Underline(i) => i.offset,
                 Self::Strike(i) => i.offset,
-                Self::Blockquote(i) => i.offset,
                 Self::BankCard(i) => i.offset,
                 Self::Spoiler(i) => i.offset,
                 Self::CustomEmoji(i) => i.offset,
+                Self::Blockquote(i) => i.offset,
             }
         }
         pub fn length(&self) -> i32 {
@@ -65518,10 +71272,10 @@ pub mod enums {
                 Self::Cashtag(i) => i.length,
                 Self::Underline(i) => i.length,
                 Self::Strike(i) => i.length,
-                Self::Blockquote(i) => i.length,
                 Self::BankCard(i) => i.length,
                 Self::Spoiler(i) => i.length,
                 Self::CustomEmoji(i) => i.length,
+                Self::Blockquote(i) => i.length,
             }
         }
     }
@@ -65597,10 +71351,6 @@ pub mod enums {
                     crate::types::MessageEntityStrike::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
-                Self::Blockquote(x) => {
-                    crate::types::MessageEntityBlockquote::CONSTRUCTOR_ID.serialize(buf);
-                    x.serialize(buf)
-                }
                 Self::BankCard(x) => {
                     crate::types::MessageEntityBankCard::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
@@ -65611,6 +71361,10 @@ pub mod enums {
                 }
                 Self::CustomEmoji(x) => {
                     crate::types::MessageEntityCustomEmoji::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Blockquote(x) => {
+                    crate::types::MessageEntityBlockquote::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
             }
@@ -65674,9 +71428,6 @@ pub mod enums {
                 crate::types::MessageEntityStrike::CONSTRUCTOR_ID => {
                     Self::Strike(crate::types::MessageEntityStrike::deserialize(buf)?)
                 }
-                crate::types::MessageEntityBlockquote::CONSTRUCTOR_ID => {
-                    Self::Blockquote(crate::types::MessageEntityBlockquote::deserialize(buf)?)
-                }
                 crate::types::MessageEntityBankCard::CONSTRUCTOR_ID => {
                     Self::BankCard(crate::types::MessageEntityBankCard::deserialize(buf)?)
                 }
@@ -65685,6 +71436,9 @@ pub mod enums {
                 }
                 crate::types::MessageEntityCustomEmoji::CONSTRUCTOR_ID => {
                     Self::CustomEmoji(crate::types::MessageEntityCustomEmoji::deserialize(buf)?)
+                }
+                crate::types::MessageEntityBlockquote::CONSTRUCTOR_ID => {
+                    Self::Blockquote(crate::types::MessageEntityBlockquote::deserialize(buf)?)
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -65775,11 +71529,6 @@ pub mod enums {
             MessageEntity::Strike(x)
         }
     }
-    impl From<crate::types::MessageEntityBlockquote> for MessageEntity {
-        fn from(x: crate::types::MessageEntityBlockquote) -> Self {
-            MessageEntity::Blockquote(x)
-        }
-    }
     impl From<crate::types::MessageEntityBankCard> for MessageEntity {
         fn from(x: crate::types::MessageEntityBankCard) -> Self {
             MessageEntity::BankCard(x)
@@ -65793,6 +71542,11 @@ pub mod enums {
     impl From<crate::types::MessageEntityCustomEmoji> for MessageEntity {
         fn from(x: crate::types::MessageEntityCustomEmoji) -> Self {
             MessageEntity::CustomEmoji(x)
+        }
+    }
+    impl From<crate::types::MessageEntityBlockquote> for MessageEntity {
+        fn from(x: crate::types::MessageEntityBlockquote) -> Self {
+            MessageEntity::Blockquote(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -65919,6 +71673,8 @@ pub mod enums {
         GeoLive(crate::types::MessageMediaGeoLive),
         Poll(crate::types::MessageMediaPoll),
         Dice(crate::types::MessageMediaDice),
+        Story(Box<crate::types::MessageMediaStory>),
+        Giveaway(crate::types::MessageMediaGiveaway),
     }
     impl crate::Serializable for MessageMedia {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -65974,6 +71730,14 @@ pub mod enums {
                     crate::types::MessageMediaDice::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::Story(x) => {
+                    crate::types::MessageMediaStory::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Giveaway(x) => {
+                    crate::types::MessageMediaGiveaway::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -66016,6 +71780,12 @@ pub mod enums {
                 }
                 crate::types::MessageMediaDice::CONSTRUCTOR_ID => {
                     Self::Dice(crate::types::MessageMediaDice::deserialize(buf)?)
+                }
+                crate::types::MessageMediaStory::CONSTRUCTOR_ID => {
+                    Self::Story(Box::new(crate::types::MessageMediaStory::deserialize(buf)?))
+                }
+                crate::types::MessageMediaGiveaway::CONSTRUCTOR_ID => {
+                    Self::Giveaway(crate::types::MessageMediaGiveaway::deserialize(buf)?)
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -66086,6 +71856,16 @@ pub mod enums {
             MessageMedia::Dice(x)
         }
     }
+    impl From<crate::types::MessageMediaStory> for MessageMedia {
+        fn from(x: crate::types::MessageMediaStory) -> Self {
+            MessageMedia::Story(Box::new(x))
+        }
+    }
+    impl From<crate::types::MessageMediaGiveaway> for MessageMedia {
+        fn from(x: crate::types::MessageMediaGiveaway) -> Self {
+            MessageMedia::Giveaway(x)
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum MessagePeerReaction {
         Reaction(crate::types::MessagePeerReaction),
@@ -66116,6 +71896,80 @@ pub mod enums {
     impl From<crate::types::MessagePeerReaction> for MessagePeerReaction {
         fn from(x: crate::types::MessagePeerReaction) -> Self {
             MessagePeerReaction::Reaction(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum MessagePeerVote {
+        Vote(crate::types::MessagePeerVote),
+        InputOption(crate::types::MessagePeerVoteInputOption),
+        Multiple(crate::types::MessagePeerVoteMultiple),
+    }
+    impl MessagePeerVote {
+        pub fn date(&self) -> i32 {
+            match self {
+                Self::Vote(i) => i.date,
+                Self::InputOption(i) => i.date,
+                Self::Multiple(i) => i.date,
+            }
+        }
+        pub fn peer(&self) -> crate::enums::Peer {
+            match self {
+                Self::Vote(i) => i.peer.clone(),
+                Self::InputOption(i) => i.peer.clone(),
+                Self::Multiple(i) => i.peer.clone(),
+            }
+        }
+    }
+    impl crate::Serializable for MessagePeerVote {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Vote(x) => {
+                    crate::types::MessagePeerVote::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::InputOption(x) => {
+                    crate::types::MessagePeerVoteInputOption::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Multiple(x) => {
+                    crate::types::MessagePeerVoteMultiple::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for MessagePeerVote {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::MessagePeerVote::CONSTRUCTOR_ID => {
+                    Self::Vote(crate::types::MessagePeerVote::deserialize(buf)?)
+                }
+                crate::types::MessagePeerVoteInputOption::CONSTRUCTOR_ID => {
+                    Self::InputOption(crate::types::MessagePeerVoteInputOption::deserialize(buf)?)
+                }
+                crate::types::MessagePeerVoteMultiple::CONSTRUCTOR_ID => {
+                    Self::Multiple(crate::types::MessagePeerVoteMultiple::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::MessagePeerVote> for MessagePeerVote {
+        fn from(x: crate::types::MessagePeerVote) -> Self {
+            MessagePeerVote::Vote(x)
+        }
+    }
+    impl From<crate::types::MessagePeerVoteInputOption> for MessagePeerVote {
+        fn from(x: crate::types::MessagePeerVoteInputOption) -> Self {
+            MessagePeerVote::InputOption(x)
+        }
+    }
+    impl From<crate::types::MessagePeerVoteMultiple> for MessagePeerVote {
+        fn from(x: crate::types::MessagePeerVoteMultiple) -> Self {
+            MessagePeerVote::Multiple(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -66217,6 +72071,7 @@ pub mod enums {
     #[derive(Debug, Clone, PartialEq)]
     pub enum MessageReplyHeader {
         Header(crate::types::MessageReplyHeader),
+        MessageReplyStoryHeader(crate::types::MessageReplyStoryHeader),
     }
     impl crate::Serializable for MessageReplyHeader {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -66224,6 +72079,10 @@ pub mod enums {
             match self {
                 Self::Header(x) => {
                     crate::types::MessageReplyHeader::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::MessageReplyStoryHeader(x) => {
+                    crate::types::MessageReplyStoryHeader::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
             }
@@ -66237,6 +72096,11 @@ pub mod enums {
                 crate::types::MessageReplyHeader::CONSTRUCTOR_ID => {
                     Self::Header(crate::types::MessageReplyHeader::deserialize(buf)?)
                 }
+                crate::types::MessageReplyStoryHeader::CONSTRUCTOR_ID => {
+                    Self::MessageReplyStoryHeader(
+                        crate::types::MessageReplyStoryHeader::deserialize(buf)?,
+                    )
+                }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -66246,78 +72110,9 @@ pub mod enums {
             MessageReplyHeader::Header(x)
         }
     }
-    #[derive(Debug, Clone, PartialEq)]
-    pub enum MessageUserVote {
-        Vote(crate::types::MessageUserVote),
-        InputOption(crate::types::MessageUserVoteInputOption),
-        Multiple(crate::types::MessageUserVoteMultiple),
-    }
-    impl MessageUserVote {
-        pub fn date(&self) -> i32 {
-            match self {
-                Self::Vote(i) => i.date,
-                Self::InputOption(i) => i.date,
-                Self::Multiple(i) => i.date,
-            }
-        }
-        pub fn user_id(&self) -> i64 {
-            match self {
-                Self::Vote(i) => i.user_id,
-                Self::InputOption(i) => i.user_id,
-                Self::Multiple(i) => i.user_id,
-            }
-        }
-    }
-    impl crate::Serializable for MessageUserVote {
-        fn serialize(&self, buf: crate::serialize::Buffer) {
-            use crate::Identifiable;
-            match self {
-                Self::Vote(x) => {
-                    crate::types::MessageUserVote::CONSTRUCTOR_ID.serialize(buf);
-                    x.serialize(buf)
-                }
-                Self::InputOption(x) => {
-                    crate::types::MessageUserVoteInputOption::CONSTRUCTOR_ID.serialize(buf);
-                    x.serialize(buf)
-                }
-                Self::Multiple(x) => {
-                    crate::types::MessageUserVoteMultiple::CONSTRUCTOR_ID.serialize(buf);
-                    x.serialize(buf)
-                }
-            }
-        }
-    }
-    impl crate::Deserializable for MessageUserVote {
-        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
-            use crate::Identifiable;
-            let id = u32::deserialize(buf)?;
-            Ok(match id {
-                crate::types::MessageUserVote::CONSTRUCTOR_ID => {
-                    Self::Vote(crate::types::MessageUserVote::deserialize(buf)?)
-                }
-                crate::types::MessageUserVoteInputOption::CONSTRUCTOR_ID => {
-                    Self::InputOption(crate::types::MessageUserVoteInputOption::deserialize(buf)?)
-                }
-                crate::types::MessageUserVoteMultiple::CONSTRUCTOR_ID => {
-                    Self::Multiple(crate::types::MessageUserVoteMultiple::deserialize(buf)?)
-                }
-                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
-            })
-        }
-    }
-    impl From<crate::types::MessageUserVote> for MessageUserVote {
-        fn from(x: crate::types::MessageUserVote) -> Self {
-            MessageUserVote::Vote(x)
-        }
-    }
-    impl From<crate::types::MessageUserVoteInputOption> for MessageUserVote {
-        fn from(x: crate::types::MessageUserVoteInputOption) -> Self {
-            MessageUserVote::InputOption(x)
-        }
-    }
-    impl From<crate::types::MessageUserVoteMultiple> for MessageUserVote {
-        fn from(x: crate::types::MessageUserVoteMultiple) -> Self {
-            MessageUserVote::Multiple(x)
+    impl From<crate::types::MessageReplyStoryHeader> for MessageReplyHeader {
+        fn from(x: crate::types::MessageReplyStoryHeader) -> Self {
+            MessageReplyHeader::MessageReplyStoryHeader(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -66584,10 +72379,10 @@ pub mod enums {
         MsgNewDetailedInfo(crate::types::MsgNewDetailedInfo),
     }
     impl MsgDetailedInfo {
-        pub fn bytes(&self) -> i32 {
+        pub fn answer_msg_id(&self) -> i64 {
             match self {
-                Self::Info(i) => i.bytes,
-                Self::MsgNewDetailedInfo(i) => i.bytes,
+                Self::Info(i) => i.answer_msg_id,
+                Self::MsgNewDetailedInfo(i) => i.answer_msg_id,
             }
         }
         pub fn status(&self) -> i32 {
@@ -66596,10 +72391,10 @@ pub mod enums {
                 Self::MsgNewDetailedInfo(i) => i.status,
             }
         }
-        pub fn answer_msg_id(&self) -> i64 {
+        pub fn bytes(&self) -> i32 {
             match self {
-                Self::Info(i) => i.answer_msg_id,
-                Self::MsgNewDetailedInfo(i) => i.answer_msg_id,
+                Self::Info(i) => i.bytes,
+                Self::MsgNewDetailedInfo(i) => i.bytes,
             }
         }
     }
@@ -66822,6 +72617,38 @@ pub mod enums {
     impl From<crate::types::MsgsStateReq> for MsgsStateReq {
         fn from(x: crate::types::MsgsStateReq) -> Self {
             MsgsStateReq::Req(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum MyBoost {
+        Boost(crate::types::MyBoost),
+    }
+    impl crate::Serializable for MyBoost {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Boost(x) => {
+                    crate::types::MyBoost::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for MyBoost {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::MyBoost::CONSTRUCTOR_ID => {
+                    Self::Boost(crate::types::MyBoost::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::MyBoost> for MyBoost {
+        fn from(x: crate::types::MyBoost) -> Self {
+            MyBoost::Boost(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -67073,20 +72900,20 @@ pub mod enums {
                 Self::TempDc(i) => i.q.clone(),
             }
         }
-        pub fn p(&self) -> Vec<u8> {
-            match self {
-                Self::Data(i) => i.p.clone(),
-                Self::Dc(i) => i.p.clone(),
-                Self::Temp(i) => i.p.clone(),
-                Self::TempDc(i) => i.p.clone(),
-            }
-        }
         pub fn pq(&self) -> Vec<u8> {
             match self {
                 Self::Data(i) => i.pq.clone(),
                 Self::Dc(i) => i.pq.clone(),
                 Self::Temp(i) => i.pq.clone(),
                 Self::TempDc(i) => i.pq.clone(),
+            }
+        }
+        pub fn nonce(&self) -> [u8; 16] {
+            match self {
+                Self::Data(i) => i.nonce,
+                Self::Dc(i) => i.nonce,
+                Self::Temp(i) => i.nonce,
+                Self::TempDc(i) => i.nonce,
             }
         }
         pub fn server_nonce(&self) -> [u8; 16] {
@@ -67097,20 +72924,20 @@ pub mod enums {
                 Self::TempDc(i) => i.server_nonce,
             }
         }
+        pub fn p(&self) -> Vec<u8> {
+            match self {
+                Self::Data(i) => i.p.clone(),
+                Self::Dc(i) => i.p.clone(),
+                Self::Temp(i) => i.p.clone(),
+                Self::TempDc(i) => i.p.clone(),
+            }
+        }
         pub fn new_nonce(&self) -> [u8; 32] {
             match self {
                 Self::Data(i) => i.new_nonce,
                 Self::Dc(i) => i.new_nonce,
                 Self::Temp(i) => i.new_nonce,
                 Self::TempDc(i) => i.new_nonce,
-            }
-        }
-        pub fn nonce(&self) -> [u8; 16] {
-            match self {
-                Self::Data(i) => i.nonce,
-                Self::Dc(i) => i.nonce,
-                Self::Temp(i) => i.nonce,
-                Self::TempDc(i) => i.nonce,
             }
         }
     }
@@ -68208,6 +74035,38 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum PeerStories {
+        Stories(crate::types::PeerStories),
+    }
+    impl crate::Serializable for PeerStories {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Stories(x) => {
+                    crate::types::PeerStories::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for PeerStories {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::PeerStories::CONSTRUCTOR_ID => {
+                    Self::Stories(crate::types::PeerStories::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::PeerStories> for PeerStories {
+        fn from(x: crate::types::PeerStories) -> Self {
+            PeerStories::Stories(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PhoneCall {
         Empty(crate::types::PhoneCallEmpty),
         Waiting(crate::types::PhoneCallWaiting),
@@ -68413,6 +74272,12 @@ pub mod enums {
         Webrtc(crate::types::PhoneConnectionWebrtc),
     }
     impl PhoneConnection {
+        pub fn port(&self) -> i32 {
+            match self {
+                Self::Connection(i) => i.port,
+                Self::Webrtc(i) => i.port,
+            }
+        }
         pub fn id(&self) -> i64 {
             match self {
                 Self::Connection(i) => i.id,
@@ -68423,12 +74288,6 @@ pub mod enums {
             match self {
                 Self::Connection(i) => i.ipv6.clone(),
                 Self::Webrtc(i) => i.ipv6.clone(),
-            }
-        }
-        pub fn port(&self) -> i32 {
-            match self {
-                Self::Connection(i) => i.port,
-                Self::Webrtc(i) => i.port,
             }
         }
         pub fn ip(&self) -> String {
@@ -68865,6 +74724,38 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum PremiumGiftCodeOption {
+        Option(crate::types::PremiumGiftCodeOption),
+    }
+    impl crate::Serializable for PremiumGiftCodeOption {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Option(x) => {
+                    crate::types::PremiumGiftCodeOption::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for PremiumGiftCodeOption {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::PremiumGiftCodeOption::CONSTRUCTOR_ID => {
+                    Self::Option(crate::types::PremiumGiftCodeOption::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::PremiumGiftCodeOption> for PremiumGiftCodeOption {
+        fn from(x: crate::types::PremiumGiftCodeOption) -> Self {
+            PremiumGiftCodeOption::Option(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PremiumGiftOption {
         Option(crate::types::PremiumGiftOption),
     }
@@ -68929,6 +74820,38 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum PrepaidGiveaway {
+        Giveaway(crate::types::PrepaidGiveaway),
+    }
+    impl crate::Serializable for PrepaidGiveaway {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Giveaway(x) => {
+                    crate::types::PrepaidGiveaway::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for PrepaidGiveaway {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::PrepaidGiveaway::CONSTRUCTOR_ID => {
+                    Self::Giveaway(crate::types::PrepaidGiveaway::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::PrepaidGiveaway> for PrepaidGiveaway {
+        fn from(x: crate::types::PrepaidGiveaway) -> Self {
+            PrepaidGiveaway::Giveaway(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum PrivacyKey {
         StatusTimestamp,
         ChatInvite,
@@ -68939,6 +74862,7 @@ pub mod enums {
         PhoneNumber,
         AddedByPhone,
         VoiceMessages,
+        About,
     }
     impl crate::Serializable for PrivacyKey {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -68971,6 +74895,9 @@ pub mod enums {
                 Self::VoiceMessages => {
                     crate::types::PrivacyKeyVoiceMessages::CONSTRUCTOR_ID.serialize(buf);
                 }
+                Self::About => {
+                    crate::types::PrivacyKeyAbout::CONSTRUCTOR_ID.serialize(buf);
+                }
             }
         }
     }
@@ -68988,6 +74915,7 @@ pub mod enums {
                 crate::types::PrivacyKeyPhoneNumber::CONSTRUCTOR_ID => Self::PhoneNumber,
                 crate::types::PrivacyKeyAddedByPhone::CONSTRUCTOR_ID => Self::AddedByPhone,
                 crate::types::PrivacyKeyVoiceMessages::CONSTRUCTOR_ID => Self::VoiceMessages,
+                crate::types::PrivacyKeyAbout::CONSTRUCTOR_ID => Self::About,
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -69037,6 +74965,11 @@ pub mod enums {
             PrivacyKey::VoiceMessages
         }
     }
+    impl From<crate::types::PrivacyKeyAbout> for PrivacyKey {
+        fn from(_x: crate::types::PrivacyKeyAbout) -> Self {
+            PrivacyKey::About
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum PrivacyRule {
         PrivacyValueAllowContacts,
@@ -69047,6 +74980,7 @@ pub mod enums {
         PrivacyValueDisallowUsers(crate::types::PrivacyValueDisallowUsers),
         PrivacyValueAllowChatParticipants(crate::types::PrivacyValueAllowChatParticipants),
         PrivacyValueDisallowChatParticipants(crate::types::PrivacyValueDisallowChatParticipants),
+        PrivacyValueAllowCloseFriends,
     }
     impl crate::Serializable for PrivacyRule {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -69080,6 +75014,9 @@ pub mod enums {
                     crate::types::PrivacyValueDisallowChatParticipants::CONSTRUCTOR_ID
                         .serialize(buf);
                     x.serialize(buf)
+                }
+                Self::PrivacyValueAllowCloseFriends => {
+                    crate::types::PrivacyValueAllowCloseFriends::CONSTRUCTOR_ID.serialize(buf);
                 }
             }
         }
@@ -69118,6 +75055,9 @@ pub mod enums {
                     Self::PrivacyValueDisallowChatParticipants(
                         crate::types::PrivacyValueDisallowChatParticipants::deserialize(buf)?,
                     )
+                }
+                crate::types::PrivacyValueAllowCloseFriends::CONSTRUCTOR_ID => {
+                    Self::PrivacyValueAllowCloseFriends
                 }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
@@ -69161,6 +75101,11 @@ pub mod enums {
     impl From<crate::types::PrivacyValueDisallowChatParticipants> for PrivacyRule {
         fn from(x: crate::types::PrivacyValueDisallowChatParticipants) -> Self {
             PrivacyRule::PrivacyValueDisallowChatParticipants(x)
+        }
+    }
+    impl From<crate::types::PrivacyValueAllowCloseFriends> for PrivacyRule {
+        fn from(_x: crate::types::PrivacyValueAllowCloseFriends) -> Self {
+            PrivacyRule::PrivacyValueAllowCloseFriends
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -70478,19 +76423,6 @@ pub mod enums {
         TranslationFiles(crate::types::SecureValueErrorTranslationFiles),
     }
     impl SecureValueError {
-        pub fn text(&self) -> String {
-            match self {
-                Self::Data(i) => i.text.clone(),
-                Self::FrontSide(i) => i.text.clone(),
-                Self::ReverseSide(i) => i.text.clone(),
-                Self::Selfie(i) => i.text.clone(),
-                Self::File(i) => i.text.clone(),
-                Self::Files(i) => i.text.clone(),
-                Self::Error(i) => i.text.clone(),
-                Self::TranslationFile(i) => i.text.clone(),
-                Self::TranslationFiles(i) => i.text.clone(),
-            }
-        }
         pub fn r#type(&self) -> crate::enums::SecureValueType {
             match self {
                 Self::Data(i) => i.r#type.clone(),
@@ -70502,6 +76434,19 @@ pub mod enums {
                 Self::Error(i) => i.r#type.clone(),
                 Self::TranslationFile(i) => i.r#type.clone(),
                 Self::TranslationFiles(i) => i.r#type.clone(),
+            }
+        }
+        pub fn text(&self) -> String {
+            match self {
+                Self::Data(i) => i.text.clone(),
+                Self::FrontSide(i) => i.text.clone(),
+                Self::ReverseSide(i) => i.text.clone(),
+                Self::Selfie(i) => i.text.clone(),
+                Self::File(i) => i.text.clone(),
+                Self::Files(i) => i.text.clone(),
+                Self::Error(i) => i.text.clone(),
+                Self::TranslationFile(i) => i.text.clone(),
+                Self::TranslationFiles(i) => i.text.clone(),
             }
         }
     }
@@ -71123,16 +77068,16 @@ pub mod enums {
         Ok(crate::types::ServerDhParamsOk),
     }
     impl ServerDhParams {
-        pub fn server_nonce(&self) -> [u8; 16] {
-            match self {
-                Self::Fail(i) => i.server_nonce,
-                Self::Ok(i) => i.server_nonce,
-            }
-        }
         pub fn nonce(&self) -> [u8; 16] {
             match self {
                 Self::Fail(i) => i.nonce,
                 Self::Ok(i) => i.nonce,
+            }
+        }
+        pub fn server_nonce(&self) -> [u8; 16] {
+            match self {
+                Self::Fail(i) => i.server_nonce,
+                Self::Ok(i) => i.server_nonce,
             }
         }
     }
@@ -71215,18 +77160,18 @@ pub mod enums {
         DhGenFail(crate::types::DhGenFail),
     }
     impl SetClientDhParamsAnswer {
-        pub fn nonce(&self) -> [u8; 16] {
-            match self {
-                Self::DhGenOk(i) => i.nonce,
-                Self::DhGenRetry(i) => i.nonce,
-                Self::DhGenFail(i) => i.nonce,
-            }
-        }
         pub fn server_nonce(&self) -> [u8; 16] {
             match self {
                 Self::DhGenOk(i) => i.server_nonce,
                 Self::DhGenRetry(i) => i.server_nonce,
                 Self::DhGenFail(i) => i.server_nonce,
+            }
+        }
+        pub fn nonce(&self) -> [u8; 16] {
+            match self {
+                Self::DhGenOk(i) => i.nonce,
+                Self::DhGenRetry(i) => i.nonce,
+                Self::DhGenFail(i) => i.nonce,
             }
         }
     }
@@ -71376,6 +77321,38 @@ pub mod enums {
     impl From<crate::types::SponsoredMessage> for SponsoredMessage {
         fn from(x: crate::types::SponsoredMessage) -> Self {
             SponsoredMessage::Message(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum SponsoredWebPage {
+        Page(crate::types::SponsoredWebPage),
+    }
+    impl crate::Serializable for SponsoredWebPage {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Page(x) => {
+                    crate::types::SponsoredWebPage::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for SponsoredWebPage {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::SponsoredWebPage::CONSTRUCTOR_ID => {
+                    Self::Page(crate::types::SponsoredWebPage::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::SponsoredWebPage> for SponsoredWebPage {
+        fn from(x: crate::types::SponsoredWebPage) -> Self {
+            SponsoredWebPage::Page(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -71840,6 +77817,169 @@ pub mod enums {
         }
     }
     #[derive(Debug, Clone, PartialEq)]
+    pub enum StoriesStealthMode {
+        Mode(crate::types::StoriesStealthMode),
+    }
+    impl crate::Serializable for StoriesStealthMode {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Mode(x) => {
+                    crate::types::StoriesStealthMode::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for StoriesStealthMode {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::StoriesStealthMode::CONSTRUCTOR_ID => {
+                    Self::Mode(crate::types::StoriesStealthMode::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::StoriesStealthMode> for StoriesStealthMode {
+        fn from(x: crate::types::StoriesStealthMode) -> Self {
+            StoriesStealthMode::Mode(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum StoryItem {
+        Deleted(crate::types::StoryItemDeleted),
+        Skipped(crate::types::StoryItemSkipped),
+        Item(Box<crate::types::StoryItem>),
+    }
+    impl StoryItem {
+        pub fn id(&self) -> i32 {
+            match self {
+                Self::Deleted(i) => i.id,
+                Self::Skipped(i) => i.id,
+                Self::Item(i) => i.id,
+            }
+        }
+    }
+    impl crate::Serializable for StoryItem {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Deleted(x) => {
+                    crate::types::StoryItemDeleted::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Skipped(x) => {
+                    crate::types::StoryItemSkipped::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Item(x) => {
+                    crate::types::StoryItem::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for StoryItem {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::StoryItemDeleted::CONSTRUCTOR_ID => {
+                    Self::Deleted(crate::types::StoryItemDeleted::deserialize(buf)?)
+                }
+                crate::types::StoryItemSkipped::CONSTRUCTOR_ID => {
+                    Self::Skipped(crate::types::StoryItemSkipped::deserialize(buf)?)
+                }
+                crate::types::StoryItem::CONSTRUCTOR_ID => {
+                    Self::Item(Box::new(crate::types::StoryItem::deserialize(buf)?))
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::StoryItemDeleted> for StoryItem {
+        fn from(x: crate::types::StoryItemDeleted) -> Self {
+            StoryItem::Deleted(x)
+        }
+    }
+    impl From<crate::types::StoryItemSkipped> for StoryItem {
+        fn from(x: crate::types::StoryItemSkipped) -> Self {
+            StoryItem::Skipped(x)
+        }
+    }
+    impl From<crate::types::StoryItem> for StoryItem {
+        fn from(x: crate::types::StoryItem) -> Self {
+            StoryItem::Item(Box::new(x))
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum StoryView {
+        View(crate::types::StoryView),
+    }
+    impl crate::Serializable for StoryView {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::View(x) => {
+                    crate::types::StoryView::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for StoryView {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::StoryView::CONSTRUCTOR_ID => {
+                    Self::View(crate::types::StoryView::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::StoryView> for StoryView {
+        fn from(x: crate::types::StoryView) -> Self {
+            StoryView::View(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
+    pub enum StoryViews {
+        Views(crate::types::StoryViews),
+    }
+    impl crate::Serializable for StoryViews {
+        fn serialize(&self, buf: crate::serialize::Buffer) {
+            use crate::Identifiable;
+            match self {
+                Self::Views(x) => {
+                    crate::types::StoryViews::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+            }
+        }
+    }
+    impl crate::Deserializable for StoryViews {
+        fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+            use crate::Identifiable;
+            let id = u32::deserialize(buf)?;
+            Ok(match id {
+                crate::types::StoryViews::CONSTRUCTOR_ID => {
+                    Self::Views(crate::types::StoryViews::deserialize(buf)?)
+                }
+                _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+            })
+        }
+    }
+    impl From<crate::types::StoryViews> for StoryViews {
+        fn from(x: crate::types::StoryViews) -> Self {
+            StoryViews::Views(x)
+        }
+    }
+    #[derive(Debug, Clone, PartialEq)]
     pub enum TextWithEntities {
         Entities(crate::types::TextWithEntities),
     }
@@ -72273,6 +78413,7 @@ pub mod enums {
         ChatParticipants(crate::types::UpdateChatParticipants),
         UserStatus(crate::types::UpdateUserStatus),
         UserName(crate::types::UpdateUserName),
+        NewAuthorization(crate::types::UpdateNewAuthorization),
         NewEncryptedMessage(crate::types::UpdateNewEncryptedMessage),
         EncryptedChatTyping(crate::types::UpdateEncryptedChatTyping),
         Encryption(crate::types::UpdateEncryption),
@@ -72376,6 +78517,11 @@ pub mod enums {
         User(crate::types::UpdateUser),
         AutoSaveSettings,
         GroupInvitePrivacyForbidden(crate::types::UpdateGroupInvitePrivacyForbidden),
+        Story(crate::types::UpdateStory),
+        ReadStories(crate::types::UpdateReadStories),
+        StoryId(crate::types::UpdateStoryId),
+        StoriesStealthMode(crate::types::UpdateStoriesStealthMode),
+        SentStoryReaction(crate::types::UpdateSentStoryReaction),
     }
     impl crate::Serializable for Update {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -72411,6 +78557,10 @@ pub mod enums {
                 }
                 Self::UserName(x) => {
                     crate::types::UpdateUserName::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::NewAuthorization(x) => {
+                    crate::types::UpdateNewAuthorization::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
                 Self::NewEncryptedMessage(x) => {
@@ -72810,6 +78960,26 @@ pub mod enums {
                     crate::types::UpdateGroupInvitePrivacyForbidden::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
+                Self::Story(x) => {
+                    crate::types::UpdateStory::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::ReadStories(x) => {
+                    crate::types::UpdateReadStories::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::StoryId(x) => {
+                    crate::types::UpdateStoryId::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::StoriesStealthMode(x) => {
+                    crate::types::UpdateStoriesStealthMode::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::SentStoryReaction(x) => {
+                    crate::types::UpdateSentStoryReaction::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
             }
         }
     }
@@ -72841,6 +79011,9 @@ pub mod enums {
                 }
                 crate::types::UpdateUserName::CONSTRUCTOR_ID => {
                     Self::UserName(crate::types::UpdateUserName::deserialize(buf)?)
+                }
+                crate::types::UpdateNewAuthorization::CONSTRUCTOR_ID => {
+                    Self::NewAuthorization(crate::types::UpdateNewAuthorization::deserialize(buf)?)
                 }
                 crate::types::UpdateNewEncryptedMessage::CONSTRUCTOR_ID => {
                     Self::NewEncryptedMessage(crate::types::UpdateNewEncryptedMessage::deserialize(
@@ -73187,6 +79360,21 @@ pub mod enums {
                         crate::types::UpdateGroupInvitePrivacyForbidden::deserialize(buf)?,
                     )
                 }
+                crate::types::UpdateStory::CONSTRUCTOR_ID => {
+                    Self::Story(crate::types::UpdateStory::deserialize(buf)?)
+                }
+                crate::types::UpdateReadStories::CONSTRUCTOR_ID => {
+                    Self::ReadStories(crate::types::UpdateReadStories::deserialize(buf)?)
+                }
+                crate::types::UpdateStoryId::CONSTRUCTOR_ID => {
+                    Self::StoryId(crate::types::UpdateStoryId::deserialize(buf)?)
+                }
+                crate::types::UpdateStoriesStealthMode::CONSTRUCTOR_ID => Self::StoriesStealthMode(
+                    crate::types::UpdateStoriesStealthMode::deserialize(buf)?,
+                ),
+                crate::types::UpdateSentStoryReaction::CONSTRUCTOR_ID => Self::SentStoryReaction(
+                    crate::types::UpdateSentStoryReaction::deserialize(buf)?,
+                ),
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -73229,6 +79417,11 @@ pub mod enums {
     impl From<crate::types::UpdateUserName> for Update {
         fn from(x: crate::types::UpdateUserName) -> Self {
             Update::UserName(x)
+        }
+    }
+    impl From<crate::types::UpdateNewAuthorization> for Update {
+        fn from(x: crate::types::UpdateNewAuthorization) -> Self {
+            Update::NewAuthorization(x)
         }
     }
     impl From<crate::types::UpdateNewEncryptedMessage> for Update {
@@ -73746,6 +79939,31 @@ pub mod enums {
             Update::GroupInvitePrivacyForbidden(x)
         }
     }
+    impl From<crate::types::UpdateStory> for Update {
+        fn from(x: crate::types::UpdateStory) -> Self {
+            Update::Story(x)
+        }
+    }
+    impl From<crate::types::UpdateReadStories> for Update {
+        fn from(x: crate::types::UpdateReadStories) -> Self {
+            Update::ReadStories(x)
+        }
+    }
+    impl From<crate::types::UpdateStoryId> for Update {
+        fn from(x: crate::types::UpdateStoryId) -> Self {
+            Update::StoryId(x)
+        }
+    }
+    impl From<crate::types::UpdateStoriesStealthMode> for Update {
+        fn from(x: crate::types::UpdateStoriesStealthMode) -> Self {
+            Update::StoriesStealthMode(x)
+        }
+    }
+    impl From<crate::types::UpdateSentStoryReaction> for Update {
+        fn from(x: crate::types::UpdateSentStoryReaction) -> Self {
+            Update::SentStoryReaction(x)
+        }
+    }
     #[derive(Debug, Clone, PartialEq)]
     pub enum Updates {
         TooLong,
@@ -74226,16 +80444,16 @@ pub mod enums {
                 Self::NoFile(i) => i.default,
             }
         }
-        pub fn dark(&self) -> bool {
-            match self {
-                Self::Paper(i) => i.dark,
-                Self::NoFile(i) => i.dark,
-            }
-        }
         pub fn id(&self) -> i64 {
             match self {
                 Self::Paper(i) => i.id,
                 Self::NoFile(i) => i.id,
+            }
+        }
+        pub fn dark(&self) -> bool {
+            match self {
+                Self::Paper(i) => i.dark,
+                Self::NoFile(i) => i.dark,
             }
         }
     }
@@ -74349,12 +80567,6 @@ pub mod enums {
         NoProxy(crate::types::WebDocumentNoProxy),
     }
     impl WebDocument {
-        pub fn attributes(&self) -> Vec<crate::enums::DocumentAttribute> {
-            match self {
-                Self::Document(i) => i.attributes.clone(),
-                Self::NoProxy(i) => i.attributes.clone(),
-            }
-        }
         pub fn size(&self) -> i32 {
             match self {
                 Self::Document(i) => i.size,
@@ -74365,6 +80577,12 @@ pub mod enums {
             match self {
                 Self::Document(i) => i.mime_type.clone(),
                 Self::NoProxy(i) => i.mime_type.clone(),
+            }
+        }
+        pub fn attributes(&self) -> Vec<crate::enums::DocumentAttribute> {
+            match self {
+                Self::Document(i) => i.attributes.clone(),
+                Self::NoProxy(i) => i.attributes.clone(),
             }
         }
         pub fn url(&self) -> String {
@@ -74488,6 +80706,7 @@ pub mod enums {
     #[derive(Debug, Clone, PartialEq)]
     pub enum WebPageAttribute {
         Theme(crate::types::WebPageAttributeTheme),
+        Story(crate::types::WebPageAttributeStory),
     }
     impl crate::Serializable for WebPageAttribute {
         fn serialize(&self, buf: crate::serialize::Buffer) {
@@ -74495,6 +80714,10 @@ pub mod enums {
             match self {
                 Self::Theme(x) => {
                     crate::types::WebPageAttributeTheme::CONSTRUCTOR_ID.serialize(buf);
+                    x.serialize(buf)
+                }
+                Self::Story(x) => {
+                    crate::types::WebPageAttributeStory::CONSTRUCTOR_ID.serialize(buf);
                     x.serialize(buf)
                 }
             }
@@ -74508,6 +80731,9 @@ pub mod enums {
                 crate::types::WebPageAttributeTheme::CONSTRUCTOR_ID => {
                     Self::Theme(crate::types::WebPageAttributeTheme::deserialize(buf)?)
                 }
+                crate::types::WebPageAttributeStory::CONSTRUCTOR_ID => {
+                    Self::Story(crate::types::WebPageAttributeStory::deserialize(buf)?)
+                }
                 _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
             })
         }
@@ -74515,6 +80741,11 @@ pub mod enums {
     impl From<crate::types::WebPageAttributeTheme> for WebPageAttribute {
         fn from(x: crate::types::WebPageAttributeTheme) -> Self {
             WebPageAttribute::Theme(x)
+        }
+    }
+    impl From<crate::types::WebPageAttributeStory> for WebPageAttribute {
+        fn from(x: crate::types::WebPageAttributeStory) -> Self {
+            WebPageAttribute::Story(x)
         }
     }
     #[derive(Debug, Clone, PartialEq)]
@@ -75802,6 +82033,41 @@ pub mod enums {
         }
     }
     #[allow(clippy::large_enum_variant)]
+    pub mod bots {
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum BotInfo {
+            Info(crate::types::bots::BotInfo),
+        }
+        impl crate::Serializable for BotInfo {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Info(x) => {
+                        crate::types::bots::BotInfo::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for BotInfo {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::bots::BotInfo::CONSTRUCTOR_ID => {
+                        Self::Info(crate::types::bots::BotInfo::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::bots::BotInfo> for BotInfo {
+            fn from(x: crate::types::bots::BotInfo) -> Self {
+                BotInfo::Info(x)
+            }
+        }
+    }
+    #[allow(clippy::large_enum_variant)]
     pub mod channels {
         #[derive(Debug, Clone, PartialEq)]
         pub enum AdminLogResults {
@@ -75950,6 +82216,170 @@ pub mod enums {
         }
     }
     #[allow(clippy::large_enum_variant)]
+    pub mod chatlists {
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum ChatlistInvite {
+            Already(crate::types::chatlists::ChatlistInviteAlready),
+            Invite(crate::types::chatlists::ChatlistInvite),
+        }
+        impl ChatlistInvite {
+            pub fn users(&self) -> Vec<crate::enums::User> {
+                match self {
+                    Self::Already(i) => i.users.clone(),
+                    Self::Invite(i) => i.users.clone(),
+                }
+            }
+            pub fn chats(&self) -> Vec<crate::enums::Chat> {
+                match self {
+                    Self::Already(i) => i.chats.clone(),
+                    Self::Invite(i) => i.chats.clone(),
+                }
+            }
+        }
+        impl crate::Serializable for ChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Already(x) => {
+                        crate::types::chatlists::ChatlistInviteAlready::CONSTRUCTOR_ID
+                            .serialize(buf);
+                        x.serialize(buf)
+                    }
+                    Self::Invite(x) => {
+                        crate::types::chatlists::ChatlistInvite::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for ChatlistInvite {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::chatlists::ChatlistInviteAlready::CONSTRUCTOR_ID => {
+                        Self::Already(crate::types::chatlists::ChatlistInviteAlready::deserialize(
+                            buf,
+                        )?)
+                    }
+                    crate::types::chatlists::ChatlistInvite::CONSTRUCTOR_ID => {
+                        Self::Invite(crate::types::chatlists::ChatlistInvite::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::chatlists::ChatlistInviteAlready> for ChatlistInvite {
+            fn from(x: crate::types::chatlists::ChatlistInviteAlready) -> Self {
+                ChatlistInvite::Already(x)
+            }
+        }
+        impl From<crate::types::chatlists::ChatlistInvite> for ChatlistInvite {
+            fn from(x: crate::types::chatlists::ChatlistInvite) -> Self {
+                ChatlistInvite::Invite(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum ChatlistUpdates {
+            Updates(crate::types::chatlists::ChatlistUpdates),
+        }
+        impl crate::Serializable for ChatlistUpdates {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Updates(x) => {
+                        crate::types::chatlists::ChatlistUpdates::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for ChatlistUpdates {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::chatlists::ChatlistUpdates::CONSTRUCTOR_ID => {
+                        Self::Updates(crate::types::chatlists::ChatlistUpdates::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::chatlists::ChatlistUpdates> for ChatlistUpdates {
+            fn from(x: crate::types::chatlists::ChatlistUpdates) -> Self {
+                ChatlistUpdates::Updates(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum ExportedChatlistInvite {
+            Invite(crate::types::chatlists::ExportedChatlistInvite),
+        }
+        impl crate::Serializable for ExportedChatlistInvite {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Invite(x) => {
+                        crate::types::chatlists::ExportedChatlistInvite::CONSTRUCTOR_ID
+                            .serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for ExportedChatlistInvite {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::chatlists::ExportedChatlistInvite::CONSTRUCTOR_ID => {
+                        Self::Invite(
+                            crate::types::chatlists::ExportedChatlistInvite::deserialize(buf)?,
+                        )
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::chatlists::ExportedChatlistInvite> for ExportedChatlistInvite {
+            fn from(x: crate::types::chatlists::ExportedChatlistInvite) -> Self {
+                ExportedChatlistInvite::Invite(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum ExportedInvites {
+            Invites(crate::types::chatlists::ExportedInvites),
+        }
+        impl crate::Serializable for ExportedInvites {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Invites(x) => {
+                        crate::types::chatlists::ExportedInvites::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for ExportedInvites {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::chatlists::ExportedInvites::CONSTRUCTOR_ID => {
+                        Self::Invites(crate::types::chatlists::ExportedInvites::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::chatlists::ExportedInvites> for ExportedInvites {
+            fn from(x: crate::types::chatlists::ExportedInvites) -> Self {
+                ExportedInvites::Invites(x)
+            }
+        }
+    }
+    #[allow(clippy::large_enum_variant)]
     pub mod contacts {
         #[derive(Debug, Clone, PartialEq)]
         pub enum Blocked {
@@ -75957,16 +82387,16 @@ pub mod enums {
             Slice(crate::types::contacts::BlockedSlice),
         }
         impl Blocked {
-            pub fn blocked(&self) -> Vec<crate::enums::PeerBlocked> {
-                match self {
-                    Self::Blocked(i) => i.blocked.clone(),
-                    Self::Slice(i) => i.blocked.clone(),
-                }
-            }
             pub fn chats(&self) -> Vec<crate::enums::Chat> {
                 match self {
                     Self::Blocked(i) => i.chats.clone(),
                     Self::Slice(i) => i.chats.clone(),
+                }
+            }
+            pub fn blocked(&self) -> Vec<crate::enums::PeerBlocked> {
+                match self {
+                    Self::Blocked(i) => i.blocked.clone(),
+                    Self::Slice(i) => i.blocked.clone(),
                 }
             }
             pub fn users(&self) -> Vec<crate::enums::User> {
@@ -77566,16 +83996,16 @@ pub mod enums {
             Replaced(crate::types::messages::ExportedChatInviteReplaced),
         }
         impl ExportedChatInvite {
-            pub fn invite(&self) -> crate::enums::ExportedChatInvite {
-                match self {
-                    Self::Invite(i) => i.invite.clone(),
-                    Self::Replaced(i) => i.invite.clone(),
-                }
-            }
             pub fn users(&self) -> Vec<crate::enums::User> {
                 match self {
                     Self::Invite(i) => i.users.clone(),
                     Self::Replaced(i) => i.users.clone(),
+                }
+            }
+            pub fn invite(&self) -> crate::enums::ExportedChatInvite {
+                match self {
+                    Self::Invite(i) => i.invite.clone(),
+                    Self::Replaced(i) => i.invite.clone(),
                 }
             }
         }
@@ -78765,6 +85195,38 @@ pub mod enums {
                 VotesList::List(x)
             }
         }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum WebPage {
+            Page(crate::types::messages::WebPage),
+        }
+        impl crate::Serializable for WebPage {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Page(x) => {
+                        crate::types::messages::WebPage::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for WebPage {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::messages::WebPage::CONSTRUCTOR_ID => {
+                        Self::Page(crate::types::messages::WebPage::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::messages::WebPage> for WebPage {
+            fn from(x: crate::types::messages::WebPage) -> Self {
+                WebPage::Page(x)
+            }
+        }
     }
     #[allow(clippy::large_enum_variant)]
     pub mod payments {
@@ -78801,6 +85263,38 @@ pub mod enums {
             }
         }
         #[derive(Debug, Clone, PartialEq)]
+        pub enum CheckedGiftCode {
+            Code(crate::types::payments::CheckedGiftCode),
+        }
+        impl crate::Serializable for CheckedGiftCode {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Code(x) => {
+                        crate::types::payments::CheckedGiftCode::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for CheckedGiftCode {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::payments::CheckedGiftCode::CONSTRUCTOR_ID => {
+                        Self::Code(crate::types::payments::CheckedGiftCode::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::payments::CheckedGiftCode> for CheckedGiftCode {
+            fn from(x: crate::types::payments::CheckedGiftCode) -> Self {
+                CheckedGiftCode::Code(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
         pub enum ExportedInvoice {
             Invoice(crate::types::payments::ExportedInvoice),
         }
@@ -78830,6 +85324,59 @@ pub mod enums {
         impl From<crate::types::payments::ExportedInvoice> for ExportedInvoice {
             fn from(x: crate::types::payments::ExportedInvoice) -> Self {
                 ExportedInvoice::Invoice(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum GiveawayInfo {
+            Info(crate::types::payments::GiveawayInfo),
+            Results(crate::types::payments::GiveawayInfoResults),
+        }
+        impl GiveawayInfo {
+            pub fn start_date(&self) -> i32 {
+                match self {
+                    Self::Info(i) => i.start_date,
+                    Self::Results(i) => i.start_date,
+                }
+            }
+        }
+        impl crate::Serializable for GiveawayInfo {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Info(x) => {
+                        crate::types::payments::GiveawayInfo::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                    Self::Results(x) => {
+                        crate::types::payments::GiveawayInfoResults::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for GiveawayInfo {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::payments::GiveawayInfo::CONSTRUCTOR_ID => {
+                        Self::Info(crate::types::payments::GiveawayInfo::deserialize(buf)?)
+                    }
+                    crate::types::payments::GiveawayInfoResults::CONSTRUCTOR_ID => Self::Results(
+                        crate::types::payments::GiveawayInfoResults::deserialize(buf)?,
+                    ),
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::payments::GiveawayInfo> for GiveawayInfo {
+            fn from(x: crate::types::payments::GiveawayInfo) -> Self {
+                GiveawayInfo::Info(x)
+            }
+        }
+        impl From<crate::types::payments::GiveawayInfoResults> for GiveawayInfo {
+            fn from(x: crate::types::payments::GiveawayInfoResults) -> Self {
+                GiveawayInfo::Results(x)
             }
         }
         #[derive(Debug, Clone, PartialEq)]
@@ -79332,6 +85879,105 @@ pub mod enums {
         }
     }
     #[allow(clippy::large_enum_variant)]
+    pub mod premium {
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum BoostsList {
+            List(crate::types::premium::BoostsList),
+        }
+        impl crate::Serializable for BoostsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::List(x) => {
+                        crate::types::premium::BoostsList::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for BoostsList {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::premium::BoostsList::CONSTRUCTOR_ID => {
+                        Self::List(crate::types::premium::BoostsList::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::premium::BoostsList> for BoostsList {
+            fn from(x: crate::types::premium::BoostsList) -> Self {
+                BoostsList::List(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum BoostsStatus {
+            Status(crate::types::premium::BoostsStatus),
+        }
+        impl crate::Serializable for BoostsStatus {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Status(x) => {
+                        crate::types::premium::BoostsStatus::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for BoostsStatus {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::premium::BoostsStatus::CONSTRUCTOR_ID => {
+                        Self::Status(crate::types::premium::BoostsStatus::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::premium::BoostsStatus> for BoostsStatus {
+            fn from(x: crate::types::premium::BoostsStatus) -> Self {
+                BoostsStatus::Status(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum MyBoosts {
+            Boosts(crate::types::premium::MyBoosts),
+        }
+        impl crate::Serializable for MyBoosts {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Boosts(x) => {
+                        crate::types::premium::MyBoosts::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for MyBoosts {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::premium::MyBoosts::CONSTRUCTOR_ID => {
+                        Self::Boosts(crate::types::premium::MyBoosts::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::premium::MyBoosts> for MyBoosts {
+            fn from(x: crate::types::premium::MyBoosts) -> Self {
+                MyBoosts::Boosts(x)
+            }
+        }
+    }
+    #[allow(clippy::large_enum_variant)]
     pub mod stats {
         #[derive(Debug, Clone, PartialEq)]
         pub enum BroadcastStats {
@@ -79584,6 +86230,198 @@ pub mod enums {
         impl From<crate::types::storage::FileWebp> for FileType {
             fn from(_x: crate::types::storage::FileWebp) -> Self {
                 FileType::FileWebp
+            }
+        }
+    }
+    #[allow(clippy::large_enum_variant)]
+    pub mod stories {
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum AllStories {
+            NotModified(crate::types::stories::AllStoriesNotModified),
+            Stories(crate::types::stories::AllStories),
+        }
+        impl AllStories {
+            pub fn state(&self) -> String {
+                match self {
+                    Self::NotModified(i) => i.state.clone(),
+                    Self::Stories(i) => i.state.clone(),
+                }
+            }
+            pub fn stealth_mode(&self) -> crate::enums::StoriesStealthMode {
+                match self {
+                    Self::NotModified(i) => i.stealth_mode.clone(),
+                    Self::Stories(i) => i.stealth_mode.clone(),
+                }
+            }
+        }
+        impl crate::Serializable for AllStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::NotModified(x) => {
+                        crate::types::stories::AllStoriesNotModified::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                    Self::Stories(x) => {
+                        crate::types::stories::AllStories::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for AllStories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::stories::AllStoriesNotModified::CONSTRUCTOR_ID => {
+                        Self::NotModified(
+                            crate::types::stories::AllStoriesNotModified::deserialize(buf)?,
+                        )
+                    }
+                    crate::types::stories::AllStories::CONSTRUCTOR_ID => {
+                        Self::Stories(crate::types::stories::AllStories::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::stories::AllStoriesNotModified> for AllStories {
+            fn from(x: crate::types::stories::AllStoriesNotModified) -> Self {
+                AllStories::NotModified(x)
+            }
+        }
+        impl From<crate::types::stories::AllStories> for AllStories {
+            fn from(x: crate::types::stories::AllStories) -> Self {
+                AllStories::Stories(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum PeerStories {
+            Stories(crate::types::stories::PeerStories),
+        }
+        impl crate::Serializable for PeerStories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Stories(x) => {
+                        crate::types::stories::PeerStories::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for PeerStories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::stories::PeerStories::CONSTRUCTOR_ID => {
+                        Self::Stories(crate::types::stories::PeerStories::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::stories::PeerStories> for PeerStories {
+            fn from(x: crate::types::stories::PeerStories) -> Self {
+                PeerStories::Stories(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum Stories {
+            Stories(crate::types::stories::Stories),
+        }
+        impl crate::Serializable for Stories {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Stories(x) => {
+                        crate::types::stories::Stories::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for Stories {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::stories::Stories::CONSTRUCTOR_ID => {
+                        Self::Stories(crate::types::stories::Stories::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::stories::Stories> for Stories {
+            fn from(x: crate::types::stories::Stories) -> Self {
+                Stories::Stories(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum StoryViews {
+            Views(crate::types::stories::StoryViews),
+        }
+        impl crate::Serializable for StoryViews {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::Views(x) => {
+                        crate::types::stories::StoryViews::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for StoryViews {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::stories::StoryViews::CONSTRUCTOR_ID => {
+                        Self::Views(crate::types::stories::StoryViews::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::stories::StoryViews> for StoryViews {
+            fn from(x: crate::types::stories::StoryViews) -> Self {
+                StoryViews::Views(x)
+            }
+        }
+        #[derive(Debug, Clone, PartialEq)]
+        pub enum StoryViewsList {
+            List(crate::types::stories::StoryViewsList),
+        }
+        impl crate::Serializable for StoryViewsList {
+            fn serialize(&self, buf: crate::serialize::Buffer) {
+                use crate::Identifiable;
+                match self {
+                    Self::List(x) => {
+                        crate::types::stories::StoryViewsList::CONSTRUCTOR_ID.serialize(buf);
+                        x.serialize(buf)
+                    }
+                }
+            }
+        }
+        impl crate::Deserializable for StoryViewsList {
+            fn deserialize(buf: crate::deserialize::Buffer) -> crate::deserialize::Result<Self> {
+                use crate::Identifiable;
+                let id = u32::deserialize(buf)?;
+                Ok(match id {
+                    crate::types::stories::StoryViewsList::CONSTRUCTOR_ID => {
+                        Self::List(crate::types::stories::StoryViewsList::deserialize(buf)?)
+                    }
+                    _ => return Err(crate::deserialize::Error::UnexpectedConstructor { id }),
+                })
+            }
+        }
+        impl From<crate::types::stories::StoryViewsList> for StoryViewsList {
+            fn from(x: crate::types::stories::StoryViewsList) -> Self {
+                StoryViewsList::List(x)
             }
         }
     }

@@ -69,6 +69,11 @@ pub struct GeoLive {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub struct WebPage {
+    webpage: tl::types::MessageMediaWebPage,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 #[non_exhaustive]
 pub enum Media {
     Photo(Photo),
@@ -80,6 +85,7 @@ pub enum Media {
     Dice(Dice),
     Venue(Venue),
     GeoLive(GeoLive),
+    WebPage(WebPage),
 }
 
 impl Photo {
@@ -318,7 +324,9 @@ impl Document {
             Some(tl::enums::Document::Document(d)) => {
                 for attr in &d.attributes {
                     match attr {
-                        tl::enums::DocumentAttribute::Video(v) => return Some(v.duration),
+                        tl::enums::DocumentAttribute::Video(v) => {
+                            return Some(v.duration.max(i32::MAX as _) as i32)
+                        }
                         tl::enums::DocumentAttribute::Audio(a) => return Some(a.duration),
                         _ => {}
                     }
@@ -773,6 +781,22 @@ impl GeoLive {
     }
 }
 
+impl WebPage {
+    fn _from_media(webpage: tl::types::MessageMediaWebPage) -> Self {
+        Self { webpage }
+    }
+
+    #[cfg(not(feature = "unstable_raw"))]
+    pub(crate) fn from_media(webpage: tl::types::MessageMediaWebPage) -> Self {
+        Self::_from_media(webpage)
+    }
+
+    #[cfg(feature = "unstable_raw")]
+    pub fn from_media(webpage: tl::types::MessageMediaWebPage) -> Self {
+        Self::_from_media(webpage)
+    }
+}
+
 impl Uploaded {
     fn _from_raw(input_file: tl::enums::InputFile) -> Self {
         Self { input_file }
@@ -820,9 +844,11 @@ impl Uploaded {
                 tl::types::DocumentAttributeVideo {
                     round_message: false,
                     supports_streaming: true,
-                    duration: 0,
+                    duration: 0.0,
                     w: 0,
                     h: 0,
+                    nosound: false,
+                    preload_prefix_size: None,
                 }
                 .into(),
             ],
@@ -870,13 +896,15 @@ impl Media {
                     Self::Document(document)
                 })
             }
-            M::WebPage(_) => None,
+            M::WebPage(webpage) => Some(Self::WebPage(WebPage::from_media(webpage))),
             M::Venue(venue) => Some(Self::Venue(Venue::from_media(venue))),
             M::Game(_) => None,
             M::Invoice(_) => None,
             M::GeoLive(geolive) => Some(Self::GeoLive(GeoLive::from_media(geolive))),
             M::Poll(poll) => Some(Self::Poll(Poll::from_media(poll))),
             M::Dice(dice) => Some(Self::Dice(Dice::from_media(dice))),
+            M::Story(_) => None,
+            M::Giveaway(_) => None,
         }
     }
 
@@ -890,17 +918,18 @@ impl Media {
         Self::_from_raw(media, client)
     }
 
-    pub(crate) fn to_input_media(&self) -> tl::enums::InputMedia {
+    pub(crate) fn to_input_media(&self) -> Option<tl::enums::InputMedia> {
         match self {
-            Media::Photo(photo) => photo.to_input_media().into(),
-            Media::Document(document) => document.to_input_media().into(),
-            Media::Sticker(sticker) => sticker.document.to_input_media().into(),
-            Media::Contact(contact) => contact.to_input_media().into(),
-            Media::Poll(poll) => poll.to_input_media().into(),
-            Media::Geo(geo) => geo.to_input_media().into(),
-            Media::Dice(dice) => dice.to_input_media().into(),
-            Media::Venue(venue) => venue.to_input_media().into(),
-            Media::GeoLive(geolive) => geolive.to_input_media().into(),
+            Media::Photo(photo) => Some(photo.to_input_media().into()),
+            Media::Document(document) => Some(document.to_input_media().into()),
+            Media::Sticker(sticker) => Some(sticker.document.to_input_media().into()),
+            Media::Contact(contact) => Some(contact.to_input_media().into()),
+            Media::Poll(poll) => Some(poll.to_input_media().into()),
+            Media::Geo(geo) => Some(geo.to_input_media().into()),
+            Media::Dice(dice) => Some(dice.to_input_media().into()),
+            Media::Venue(venue) => Some(venue.to_input_media().into()),
+            Media::GeoLive(geolive) => Some(geolive.to_input_media().into()),
+            Media::WebPage(_) => None,
         }
     }
 
@@ -915,6 +944,7 @@ impl Media {
             Media::Dice(_) => None,
             Media::Venue(_) => None,
             Media::GeoLive(_) => None,
+            Media::WebPage(_) => None,
         }
     }
 }
@@ -948,6 +978,7 @@ impl From<Media> for tl::enums::MessageMedia {
             Media::Dice(dice) => dice.dice.into(),
             Media::Venue(venue) => venue.venue.into(),
             Media::GeoLive(geolive) => geolive.geolive.into(),
+            Media::WebPage(webpage) => webpage.webpage.into(),
         }
     }
 }

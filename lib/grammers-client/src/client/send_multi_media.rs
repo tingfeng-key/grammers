@@ -23,13 +23,13 @@ impl Client {
                 background: input.background,
                 clear_draft: input.clear_draft,
                 peer: chat.to_input_peer(),
-                reply_to_msg_id: input.reply_to_msg_id,
                 multi_media: input.multi_media,
                 schedule_date: input.schedule_date,
                 send_as: None,
                 noforwards: false,
                 update_stickersets_order: false,
-                top_msg_id: None,
+                invert_media: false,
+                reply_to: None,
             })
             .await?;
 
@@ -78,9 +78,11 @@ impl Client {
                 tl::types::DocumentAttributeVideo {
                     round_message: false,
                     supports_streaming: true,
-                    duration: 0,
+                    duration: 0.0,
                     w: 0,
                     h: 0,
+                    nosound: true,
+                    preload_prefix_size: None,
                 }
                 .into(),
             ],

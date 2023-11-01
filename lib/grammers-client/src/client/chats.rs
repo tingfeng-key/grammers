@@ -116,10 +116,11 @@ impl ParticipantIter {
                     tl::enums::ChatParticipants::Participants(c) => c.participants,
                 };
 
-                let mut chat_hashes = client.0.chat_hashes.lock("iter_participants");
-                // Telegram can return peers without hash (e.g. Users with 'min: true')
-                let _ = chat_hashes.extend(&full.users, &full.chats);
-                drop(chat_hashes);
+                {
+                    let mut state = client.0.state.write().unwrap();
+                    // Telegram can return peers without hash (e.g. Users with 'min: true')
+                    let _ = state.chat_hashes.extend(&full.users, &full.chats);
+                }
 
                 // Don't actually care for the chats, just the users.
                 let mut chats = ChatMap::new(full.users, Vec::new());
@@ -147,10 +148,11 @@ impl ParticipantIter {
                         }
                     };
 
-                let mut chat_hashes = iter.client.0.chat_hashes.lock("iter_participants");
-                // Telegram can return peers without hash (e.g. Users with 'min: true')
-                let _ = chat_hashes.extend(&users, &chats);
-                drop(chat_hashes);
+                {
+                    let mut state = iter.client.0.state.write().unwrap();
+                    // Telegram can return peers without hash (e.g. Users with 'min: true')
+                    let _ = state.chat_hashes.extend(&users, &chats);
+                }
 
                 // Telegram can return less participants than asked for but the count being higher
                 // (for example, count=4825, participants=199, users=200). The missing participant
@@ -366,10 +368,11 @@ impl Client {
             Err(err) => return Err(err),
         };
 
-        let mut chat_hashes = self.0.chat_hashes.lock("resolve_username");
-        // Telegram can return peers without hash (e.g. Users with 'min: true')
-        let _ = chat_hashes.extend(&users, &chats);
-        drop(chat_hashes);
+        {
+            let mut state = self.0.state.write().unwrap();
+            // Telegram can return peers without hash (e.g. Users with 'min: true')
+            let _ = state.chat_hashes.extend(&users, &chats);
+        }
 
         Ok(match peer {
             tl::enums::Peer::User(tl::types::PeerUser { user_id }) => users
@@ -384,37 +387,6 @@ impl Client {
                 .map(Chat::from_chat)
                 .find(|chat| chat.id() == chat_id),
         })
-    }
-
-    pub async fn resolve_username_all(&self, username: &str) -> Result<Vec<Chat>, InvocationError> {
-        let mut res = vec![];
-        let tl::types::contacts::ResolvedPeer {
-            peer: _,
-            users,
-            chats,
-        } = match self
-            .invoke(&tl::functions::contacts::ResolveUsername {
-                username: username.into(),
-            })
-            .await
-        {
-            Ok(tl::enums::contacts::ResolvedPeer::Peer(p)) => p,
-            Err(err) if err.is("USERNAME_NOT_OCCUPIED") => return Ok(res),
-            Err(err) => return Err(err),
-        };
-
-        let mut chat_hashes = self.0.chat_hashes.lock("resolve_username");
-        // Telegram can return peers without hash (e.g. Users with 'min: true')
-        let _ = chat_hashes.extend(&users, &chats);
-        drop(chat_hashes);
-
-        for user in users {
-            res.push(Chat::from_user(user));
-        }
-        for chat in chats {
-            res.push(Chat::from_chat(chat));
-        }
-        Ok(res)
     }
 
     /// Fetch full information about the currently logged-in user.
@@ -497,7 +469,7 @@ impl Client {
         let user = user.into();
         if let Some(channel) = chat.try_to_input_channel() {
             // TODO should PackedChat also know about is user self?
-            let self_id = self.0.chat_hashes.lock("client.kick_participant").self_id();
+            let self_id = { self.0.state.read().unwrap().chat_hashes.self_id() };
             if user.id == self_id {
                 self.invoke(&tl::functions::channels::LeaveChannel { channel })
                     .await
@@ -820,27 +792,12 @@ impl Client {
     pub async fn accept_invite_link(
         &self,
         invite_link: &str,
-    ) -> Result<Vec<Chat>, InvocationError> {
+    ) -> Result<tl::enums::Updates, InvocationError> {
         match Self::parse_invite_link(invite_link) {
-            Some(hash) => Ok(
-                match self
-                    .invoke(&tl::functions::messages::ImportChatInvite { hash })
-                    .await?
-                {
-                    tl::enums::Updates::Combined(updates) => updates
-                        .chats
-                        .into_iter()
-                        .map(|x| Chat::from_chat(x))
-                        .collect::<Vec<Chat>>(),
-                    tl::enums::Updates::Updates(updates) => updates
-                        .chats
-                        .into_iter()
-                        .map(|x| Chat::from_chat(x))
-                        .collect::<Vec<Chat>>(),
-
-                    _ => vec![],
-                },
-            ),
+            Some(hash) => {
+                self.invoke(&tl::functions::messages::ImportChatInvite { hash })
+                    .await
+            }
             None => Err(InvocationError::Rpc(RpcError {
                 code: 400,
                 name: "INVITE_HASH_INVALID".to_string(),
@@ -962,3 +919,4 @@ impl ParticipantPermissions {
         }
     }
 }
+

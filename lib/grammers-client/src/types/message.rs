@@ -7,7 +7,7 @@
 // except according to those terms.
 #[cfg(any(feature = "markdown", feature = "html"))]
 use crate::parsers;
-use crate::types::{InputMessage, Media, Photo};
+use crate::types::{Downloadable, InputMessage, Media, Photo};
 use crate::utils;
 use crate::ChatMap;
 use crate::{types, Client};
@@ -68,6 +68,7 @@ impl Message {
                     edit_hide: false,
                     pinned: false,
                     noforwards: false,
+                    invert_media: false,
                     id: msg.id,
                     from_id: msg.from_id,
                     peer_id: msg.peer_id,
@@ -114,6 +115,7 @@ impl Message {
                 edit_hide: false,
                 pinned: false,
                 noforwards: false, // TODO true if channel has noforwads?
+                invert_media: false,
                 id: updates.id,
                 from_id: None, // TODO self
                 peer_id: chat.to_peer(),
@@ -123,9 +125,14 @@ impl Message {
                     tl::types::MessageReplyHeader {
                         reply_to_scheduled: false,
                         forum_topic: false,
-                        reply_to_msg_id,
+                        quote: false,
+                        reply_to_msg_id: Some(reply_to_msg_id),
                         reply_to_peer_id: None,
+                        reply_from: None,
+                        reply_media: None,
                         reply_to_top_id: None,
+                        quote_text: None,
+                        quote_entities: None,
                     }
                     .into()
                 }),
@@ -347,9 +354,33 @@ impl Message {
     }
 
     /// How many replies does this message have, when applicable.
-    pub fn reply_count(&self) -> Option<tl::enums::MessageReplies> {
-        // TODO return int instead
-        self.msg.replies.clone()
+    pub fn reply_count(&self) -> Option<i32> {
+        match &self.msg.replies {
+            None => None,
+            Some(replies) => {
+                let tl::enums::MessageReplies::Replies(replies) = replies;
+                Some(replies.replies)
+            }
+        }
+    }
+
+    /// How many reactions does this message have, when applicable.
+    pub fn reaction_count(&self) -> Option<i32> {
+        match &self.msg.reactions {
+            None => None,
+            Some(reactions) => {
+                let tl::enums::MessageReactions::Reactions(reactions) = reactions;
+                let count = reactions
+                    .results
+                    .iter()
+                    .map(|reaction: &tl::enums::ReactionCount| {
+                        let tl::enums::ReactionCount::Count(reaction) = reaction;
+                        reaction.count
+                    })
+                    .sum();
+                Some(count)
+            }
+        }
     }
 
     /// The date when this message was last edited.
@@ -387,7 +418,7 @@ impl Message {
     /// If this message is replying to another message, return the replied message ID.
     pub fn reply_to_message_id(&self) -> Option<i32> {
         if let Some(tl::enums::MessageReplyHeader::Header(m)) = &self.msg.reply_to {
-            Some(m.reply_to_msg_id)
+            m.reply_to_msg_id
         } else {
             None
         }
@@ -524,7 +555,10 @@ impl Message {
     pub async fn download_media<P: AsRef<Path>>(&self, path: P) -> Result<bool, io::Error> {
         // TODO probably encode failed download in error
         if let Some(media) = self.media() {
-            self.client.download_media(&media, path).await.map(|_| true)
+            self.client
+                .download_media(&Downloadable::Media(media), path)
+                .await
+                .map(|_| true)
         } else {
             Ok(false)
         }

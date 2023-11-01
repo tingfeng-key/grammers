@@ -6,8 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use crate::types::{Media, Uploaded};
-use crate::utils::{generate_random_id, AsyncMutex};
+use crate::types::{Downloadable, Media, Uploaded};
+use crate::utils::generate_random_id;
 use crate::Client;
 use futures_util::stream::{FuturesUnordered, StreamExt as _};
 use grammers_mtsender::InvocationError;
@@ -17,6 +17,7 @@ use tokio::sync::mpsc::unbounded_channel;
 use tokio::{
     fs,
     io::{self, AsyncRead, AsyncReadExt, AsyncSeekExt, AsyncWriteExt},
+    sync::Mutex as AsyncMutex,
 };
 
 pub const MIN_CHUNK_SIZE: i32 = 4 * 1024;
@@ -32,8 +33,8 @@ pub struct DownloadIter {
 }
 
 impl DownloadIter {
-    fn new(client: &Client, media: &Media) -> Self {
-        DownloadIter::new_from_file_location(client, media.to_input_location().unwrap())
+    fn new(client: &Client, downloadable: &Downloadable) -> Self {
+        DownloadIter::new_from_file_location(client, downloadable.to_input_location().unwrap())
     }
 
     fn new_from_location(client: &Client, location: tl::enums::InputFileLocation) -> Self {
@@ -125,9 +126,9 @@ impl Client {
     /// # Examples
     ///
     /// ```
-    /// # async fn f(media: grammers_client::types::Media, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// # async fn f(downloadable: grammers_client::types::Downloadable, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
     /// let mut file_bytes = Vec::new();
-    /// let mut download = client.iter_download(&media);
+    /// let mut download = client.iter_download(&downloadable);
     ///
     /// while let Some(chunk) = download.next().await? {
     ///     file_bytes.extend(chunk);
@@ -137,8 +138,8 @@ impl Client {
     /// # Ok(())
     /// # }
     /// ```
-    pub fn iter_download(&self, media: &Media) -> DownloadIter {
-        DownloadIter::new(self, media)
+    pub fn iter_download(&self, downloadable: &Downloadable) -> DownloadIter {
+        DownloadIter::new(self, downloadable)
     }
 
     /// Downloads a media file into the specified path.
@@ -151,26 +152,28 @@ impl Client {
     /// # Examples
     ///
     /// ```
-    /// # async fn f(media: grammers_client::types::Media, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
-    /// client.download_media(&media, "/home/username/photos/holidays.jpg").await?;
+    /// # async fn f(downloadable: grammers_client::types::Downloadable, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// client.download_media(&downloadable, "/home/username/photos/holidays.jpg").await?;
     /// # Ok(())
     /// # }
     /// ```
     pub async fn download_media<P: AsRef<Path>>(
         &self,
-        media: &Media,
+        downloadable: &Downloadable,
         path: P,
     ) -> Result<(), io::Error> {
         // Concurrent downloader
-        if let Media::Document(document) = media {
-            if document.size() as usize > BIG_FILE_SIZE {
-                return self
-                    .download_media_concurrent(media, path, WORKER_COUNT)
-                    .await;
+        if let Downloadable::Media(media) = downloadable {
+            if let Media::Document(document) = media {
+                if document.size() as usize > BIG_FILE_SIZE {
+                    return self
+                        .download_media_concurrent(media, path, WORKER_COUNT)
+                        .await;
+                }
             }
         }
 
-        let mut download = self.iter_download(media);
+        let mut download = self.iter_download(downloadable);
         Client::load(path, &mut download).await
     }
 
@@ -480,13 +483,10 @@ impl<'a, S: AsyncRead + Unpin> PartStream<'a, S> {
     fn new(stream: &'a mut S, size: usize) -> Self {
         let total_parts = ((size + MAX_CHUNK_SIZE as usize - 1) / MAX_CHUNK_SIZE as usize) as i32;
         Self {
-            inner: AsyncMutex::new(
-                "upload_stream",
-                PartStreamInner {
-                    stream,
-                    current_part: 0,
-                },
-            ),
+            inner: AsyncMutex::new(PartStreamInner {
+                stream,
+                current_part: 0,
+            }),
             total_parts,
         }
     }
@@ -496,7 +496,7 @@ impl<'a, S: AsyncRead + Unpin> PartStream<'a, S> {
     }
 
     async fn next_part(&self) -> Result<Option<(i32, Vec<u8>)>, io::Error> {
-        let mut lock = self.inner.lock("read part").await;
+        let mut lock = self.inner.lock().await;
         if lock.current_part >= self.total_parts {
             return Ok(None);
         }

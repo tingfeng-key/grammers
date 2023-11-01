@@ -14,7 +14,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 const SCHEDULE_ONCE_ONLINE: i32 = 0x7ffffffe;
 
 /// Construct and send rich text messages with various options.
-#[derive(Default, Debug)]
+#[derive(Default)]
 pub struct InputMessage {
     pub(crate) background: bool,
     pub(crate) clear_draft: bool,
@@ -254,7 +254,7 @@ impl InputMessage {
     ///
     /// You can use this to send media from another message without re-uploading it.
     pub fn copy_media(mut self, media: &Media) -> Self {
-        self.media = Some(media.to_input_media());
+        self.media = media.to_input_media();
         self
     }
 
