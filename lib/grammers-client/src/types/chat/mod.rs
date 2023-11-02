@@ -173,18 +173,23 @@ impl Chat {
     }
 
     pub fn photo_to_location(&self) -> Option<tl::enums::InputFileLocation> {
+        match self.photo_downloadable(false) {
+            Some(downloadable) => downloadable.to_input_location(),
+            None => None,
+        }
+    }
+
+    pub fn photo_downloadable(&self, big: bool) -> Option<crate::types::Downloadable> {
+        let peer = self.pack().to_input_peer();
         match self {
             Self::User(user) => match user.0.photo.clone() {
                 Some(photo_size) => match photo_size {
                     tl::enums::UserProfilePhoto::Empty => None,
-                    tl::enums::UserProfilePhoto::Photo(photo) => Some(
-                        tl::types::InputPeerPhotoFileLocation {
-                            big: false,
-                            peer: self.pack().to_input_peer(),
-                            photo_id: photo.photo_id,
-                        }
-                        .into(),
-                    ),
+                    tl::enums::UserProfilePhoto::Photo(photo) => {
+                        Some(crate::types::Downloadable::UserProfilePhoto(
+                            crate::types::UserProfilePhoto { big, peer, photo },
+                        ))
+                    }
                 },
                 None => None,
             },
@@ -192,39 +197,30 @@ impl Chat {
                 tl::enums::Chat::Empty(_) => None,
                 tl::enums::Chat::Chat(chat) => match chat.photo {
                     tl::enums::ChatPhoto::Empty => None,
-                    tl::enums::ChatPhoto::Photo(photo) => Some(
-                        tl::types::InputPeerPhotoFileLocation {
-                            big: false,
-                            peer: self.pack().to_input_peer(),
-                            photo_id: photo.photo_id,
-                        }
-                        .into(),
-                    ),
+                    tl::enums::ChatPhoto::Photo(photo) => {
+                        Some(crate::types::Downloadable::ChatPhoto(
+                            crate::types::ChatPhoto { big, peer, photo },
+                        ))
+                    }
                 },
                 tl::enums::Chat::Forbidden(_) => None,
                 tl::enums::Chat::Channel(channel) => match channel.photo {
                     tl::enums::ChatPhoto::Empty => None,
                     tl::enums::ChatPhoto::Photo(photo) => Some(
-                        tl::types::InputPeerPhotoFileLocation {
+                        crate::types::Downloadable::ChatPhoto(crate::types::ChatPhoto {
                             big: false,
-                            peer: self.pack().to_input_peer(),
-                            photo_id: photo.photo_id,
-                        }
-                        .into(),
+                            peer,
+                            photo,
+                        }),
                     ),
                 },
                 tl::enums::Chat::ChannelForbidden(_) => None,
             },
             Self::Channel(channel) => match channel.0.photo.clone() {
                 tl::enums::ChatPhoto::Empty => None,
-                tl::enums::ChatPhoto::Photo(photo) => Some(
-                    tl::types::InputPeerPhotoFileLocation {
-                        big: false,
-                        peer: self.pack().to_input_peer(),
-                        photo_id: photo.photo_id,
-                    }
-                    .into(),
-                ),
+                tl::enums::ChatPhoto::Photo(photo) => Some(crate::types::Downloadable::ChatPhoto(
+                    crate::types::ChatPhoto { big, peer, photo },
+                )),
             },
         }
     }
