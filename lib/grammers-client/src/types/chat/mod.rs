@@ -179,11 +179,12 @@ impl Chat {
         }
     }
 
+    // get an chat photo downloadable
     pub fn photo_downloadable(&self, big: bool) -> Option<crate::types::Downloadable> {
         let peer = self.pack().to_input_peer();
         match self {
             Self::User(user) => match user.0.photo.clone() {
-                Some(photo_size) => match photo_size {
+                Some(user_profile_photo) => match user_profile_photo {
                     tl::enums::UserProfilePhoto::Empty => None,
                     tl::enums::UserProfilePhoto::Photo(photo) => {
                         Some(crate::types::Downloadable::UserProfilePhoto(
