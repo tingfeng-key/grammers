@@ -7,7 +7,7 @@
 // except according to those terms.
 #[cfg(any(feature = "markdown", feature = "html"))]
 use crate::parsers;
-use crate::types::{Downloadable, InputMessage, Media, Photo};
+use crate::types::{Downloadable, Entity, InputMessage, Media, Photo};
 use crate::utils;
 use crate::ChatMap;
 use crate::{types, Client};
@@ -335,9 +335,9 @@ impl Message {
 
     /// The formatting entities used to format this message, such as bold, italic, with their
     /// offsets and lengths.
-    pub fn fmt_entities(&self) -> Option<&Vec<tl::enums::MessageEntity>> {
+    pub fn fmt_entities(&self) -> Vec<Entity> {
         // TODO correct the offsets and lengths to match the byte offsets
-        self.msg.entities.as_ref()
+        Entity::_from_message(self.text(), self.msg.entities.clone())
     }
 
     /// How many views does this message have, when applicable.
@@ -573,78 +573,11 @@ impl Message {
         None
     }
 
-    fn parse_username_from_string(entity_text: String) -> Option<String> {
-        if entity_text.starts_with("https://t.me") {
-            let new = entity_text.replace("https://t.me/", "");
-            if new.starts_with('+') {
-                return None;
-            }
-            return Some(new);
-        }
-
-        if entity_text.starts_with('@') {
-            let username = entity_text.replace('@', "");
-            if username.contains('/') {
-                let urls = username.split('/').collect::<Vec<&str>>();
-                return Some(urls[0].to_string());
-            }
-            return Some(username);
-        }
-        None
-    }
-
     pub fn parse_usernames_from_entities(&self) -> Vec<String> {
-        let mut usernames = vec![];
-        if let Some(entities) = &self.msg.entities {
-            for entity in entities {
-                let text_u16 = self
-                    .msg
-                    .message
-                    .encode_utf16()
-                    .skip(entity.offset() as usize)
-                    .take(entity.length() as usize)
-                    .collect::<Vec<u16>>();
-
-                let entity_text = String::from_utf16(&text_u16).unwrap();
-                let username = match entity {
-                    tl::enums::MessageEntity::Url(_) => {
-                        Self::parse_username_from_string(entity_text)
-                    }
-                    tl::enums::MessageEntity::TextUrl(url) => {
-                        Self::parse_username_from_string(url.url.clone())
-                    }
-                    tl::enums::MessageEntity::InputMessageEntityMentionName(_) => {
-                        Self::parse_username_from_string(entity_text)
-                    }
-                    tl::enums::MessageEntity::Mention(_) => {
-                        Self::parse_username_from_string(entity_text)
-                    }
-                    tl::enums::MessageEntity::MentionName(_) => {
-                        Self::parse_username_from_string(entity_text)
-                    }
-                    _ => None,
-                };
-                if let Some(username) = username {
-                    let username_split = username.split('/').collect::<Vec<&str>>();
-                    let entity = match username_split.len() > 1 {
-                        true => {
-                            let username_querys =
-                                username_split[0].split('/').collect::<Vec<&str>>();
-                            match username_querys.len() > 1 {
-                                true => username_querys[0],
-                                false => username_split[0],
-                            }
-                            .to_string()
-                        }
-                        false => username,
-                    };
-                    if !usernames.contains(&entity) {
-                        usernames.push(entity);
-                    }
-                }
-            }
-        }
-        usernames
+        self.fmt_entities()
+            .iter()
+            .filter_map(|x| x.username())
+            .collect::<Vec<String>>()
     }
 }
 

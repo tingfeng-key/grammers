@@ -737,54 +737,6 @@ impl Client {
         Ok(permissions)
     }
 
-    #[cfg(feature = "parse_invite_link")]
-    fn parse_invite_link(invite_link: &str) -> Option<String> {
-        let url_parse_result = url::Url::parse(invite_link);
-        if url_parse_result.is_err() {
-            return None;
-        }
-
-        let url_parse = url_parse_result.unwrap();
-        let scheme = url_parse.scheme();
-        let path = url_parse.path();
-        if url_parse.host_str().is_none() || !vec!["https", "http"].contains(&scheme) {
-            return None;
-        }
-        let host = url_parse.host_str().unwrap();
-        let hosts = [
-            "t.me",
-            "telegram.me",
-            "telegram.dog",
-            "tg.dev",
-            "telegram.me",
-            "telesco.pe",
-        ];
-
-        if !hosts.contains(&host) {
-            return None;
-        }
-        let paths = path.split("/").collect::<Vec<&str>>();
-
-        if paths.len() == 1 {
-            if paths[0].starts_with("+") {
-                return Some(paths[0].replace("+", ""));
-            }
-            return None;
-        }
-
-        if paths.len() > 1 {
-            if paths[0].starts_with("joinchat") {
-                return Some(paths[1].to_string());
-            }
-            if paths[0].starts_with("+") {
-                return Some(paths[0].replace("+", ""));
-            }
-            return None;
-        }
-
-        None
-    }
-
     /// Accept an invite link to join the corresponding private chat.
     ///
     /// If the chat is public (has a public username), [`Client::join_chat`](Client::join_chat) should be used instead.
@@ -793,7 +745,7 @@ impl Client {
         &self,
         invite_link: &str,
     ) -> Result<Vec<Chat>, InvocationError> {
-        match Self::parse_invite_link(invite_link) {
+        match crate::types::Entity::parse_invite_link(invite_link) {
             Some(hash) => Ok(
                 match self
                     .invoke(&tl::functions::messages::ImportChatInvite { hash })
@@ -802,12 +754,12 @@ impl Client {
                     tl::enums::Updates::Combined(updates) => updates
                         .chats
                         .into_iter()
-                        .map(|x| Chat::from_chat(x))
+                        .map(Chat::from_chat)
                         .collect::<Vec<Chat>>(),
                     tl::enums::Updates::Updates(updates) => updates
                         .chats
                         .into_iter()
-                        .map(|x| Chat::from_chat(x))
+                        .map(Chat::from_chat)
                         .collect::<Vec<Chat>>(),
 
                     _ => vec![],
