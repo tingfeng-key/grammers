@@ -211,14 +211,15 @@ impl Entity {
         None
     }
 
+    #[cfg(feature = "parse_invite_link")]
     pub fn invite_link_hash(&self) -> Option<String> {
-        let entity_text = self.text();
+        let _entity_text = self.text();
         match self._type() {
             EntityType::TextUrl(url) => {
-                #[cfg(feature = "parse_invite_link")]
                 if let Some(hash) = Self::parse_invite_link(url) {
                     return Some(hash);
                 }
+
                 if let Some(hash) = Self::parse_invite_link(entity_text) {
                     return Some(hash);
                 }
