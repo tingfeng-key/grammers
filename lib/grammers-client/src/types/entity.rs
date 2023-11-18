@@ -99,12 +99,58 @@ impl Entity {
         &self.text
     }
 
+    #[cfg(feature = "parse_invite_link")]
+    pub(crate) fn parse_username_from_url(url: &str) -> Option<String> {
+        let url_parse_result = url::Url::parse(url);
+        if url_parse_result.is_err() {
+            return None;
+        }
+
+        let url_parse = url_parse_result.unwrap();
+        let scheme = url_parse.scheme();
+        let path = url_parse.path();
+        if url_parse.host_str().is_none() || ["https", "http"].contains(&scheme) {
+            return None;
+        }
+        let host = url_parse.host_str().unwrap();
+        let hosts = [
+            "t.me",
+            "telegram.me",
+            "telegram.dog",
+            "tg.dev",
+            "telegram.me",
+            "telesco.pe",
+        ];
+
+        if !hosts.contains(&host) {
+            return None;
+        }
+        let paths = path.split('/').collect::<Vec<&str>>();
+
+        if paths.len() >= 1 {
+            if paths[0].starts_with("joinchat") {
+                return None;
+            }
+            return Some(paths[0].to_string());
+        }
+
+        None
+    }
+
+    pub fn user_id(&self) -> Option<i64> {
+        match self._type() {
+            EntityType::InputMessageEntityMentionName(user) => user.user_id(),
+            EntityType::MentionName(user_id) => Some(user_id.clone()),
+            _ => None,
+        }
+    }
+
     pub fn username(&self) -> Option<String> {
         let entity_text = self.text();
         let username = match self._type() {
-            EntityType::Url
-            | EntityType::InputMessageEntityMentionName(_)
-            | EntityType::MentionName(_) => {
+            #[cfg(feature = "parse_invite_link")]
+            EntityType::Url => Self::parse_username_from_url(entity_text),
+            EntityType::InputMessageEntityMentionName(_) | EntityType::MentionName(_) => {
                 let username = entity_text.replace('@', "");
                 if username.contains('/') {
                     let urls = username.split('/').collect::<Vec<&str>>();
@@ -115,23 +161,6 @@ impl Entity {
             _ => None,
         };
         username
-    }
-
-    pub fn invite_hash(&self) -> Option<String> {
-        let entity_text = self.text();
-        match self._type() {
-            EntityType::TextUrl(url) => {
-                #[cfg(feature = "parse_invite_link")]
-                if let Some(hash) = Self::parse_invite_link(url) {
-                    return Some(hash);
-                }
-                if let Some(hash) = Self::parse_invite_link(entity_text) {
-                    return Some(hash);
-                }
-                None
-            }
-            _ => None,
-        }
     }
 
     #[cfg(feature = "parse_invite_link")]
@@ -180,5 +209,38 @@ impl Entity {
         }
 
         None
+    }
+
+    pub fn invite_link_hash(&self) -> Option<String> {
+        let entity_text = self.text();
+        match self._type() {
+            EntityType::TextUrl(url) => {
+                #[cfg(feature = "parse_invite_link")]
+                if let Some(hash) = Self::parse_invite_link(url) {
+                    return Some(hash);
+                }
+                if let Some(hash) = Self::parse_invite_link(entity_text) {
+                    return Some(hash);
+                }
+                None
+            }
+            _ => None,
+        }
+    }
+
+    pub fn tag(&self) -> Option<String> {
+        let entity_text = self.text();
+        let username = match self._type() {
+            EntityType::Cashtag | EntityType::Hashtag => Some(entity_text.replace("#", "")),
+            _ => None,
+        };
+        username
+    }
+
+    pub fn input_user(&self) -> Option<&types::input_user::InputUser> {
+        match self._type() {
+            EntityType::InputMessageEntityMentionName(input_user) => Some(input_user),
+            _ => None,
+        }
     }
 }

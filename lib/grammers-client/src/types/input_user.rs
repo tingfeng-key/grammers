@@ -26,6 +26,47 @@ impl InputUser {
     pub fn is_self(&self) -> bool {
         self.0 == tl::enums::InputUser::UserSelf
     }
+
+    pub fn user_id(&self) -> Option<i64> {
+        match &self.0 {
+            tl::enums::InputUser::User(user) => Some(user.user_id),
+            tl::enums::InputUser::Empty | tl::enums::InputUser::UserSelf => None,
+            tl::enums::InputUser::FromMessage(input_user_from_message) => {
+                Some(input_user_from_message.user_id)
+            }
+        }
+    }
+
+    pub fn user_access_hash(&self) -> Option<i64> {
+        match &self.0 {
+            tl::enums::InputUser::User(user) => Some(user.access_hash),
+            tl::enums::InputUser::Empty
+            | tl::enums::InputUser::UserSelf
+            | tl::enums::InputUser::FromMessage(_) => None,
+        }
+    }
+
+    pub fn message_id(&self) -> Option<i32> {
+        match &self.0 {
+            tl::enums::InputUser::FromMessage(input_user_from_message) => {
+                Some(input_user_from_message.msg_id)
+            }
+            tl::enums::InputUser::Empty
+            | tl::enums::InputUser::UserSelf
+            | tl::enums::InputUser::User(_) => None,
+        }
+    }
+
+    pub fn message_peer(&self) -> Option<tl::enums::InputPeer> {
+        match &self.0 {
+            tl::enums::InputUser::FromMessage(input_user_from_message) => {
+                Some(input_user_from_message.peer.clone())
+            }
+            tl::enums::InputUser::Empty
+            | tl::enums::InputUser::UserSelf
+            | tl::enums::InputUser::User(_) => None,
+        }
+    }
 }
 
 #[cfg(feature = "unstable_raw")]
