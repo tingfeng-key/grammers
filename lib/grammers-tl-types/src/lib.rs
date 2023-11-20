@@ -74,17 +74,11 @@
 //! [`Deserializable`]: trait.Deserializable.html
 //! [`LAYER`]: constant.LAYER.html
 pub mod deserialize;
-#[cfg(not(debug_assertions))]
 mod generated;
-#[cfg(debug_assertions)]
-mod generateds;
 pub mod serialize;
 
 pub use deserialize::{Cursor, Deserializable};
-#[cfg(not(debug_assertions))]
 pub use generated::{enums, functions, name_for_id, types, LAYER};
-#[cfg(debug_assertions)]
-pub use generateds::{enums, functions, name_for_id, types, LAYER};
 pub use serialize::Serializable;
 
 /// This struct represents the concrete type of a vector, that is,
