@@ -220,7 +220,7 @@ impl Entity {
                     return Some(hash);
                 }
 
-                if let Some(hash) = Self::parse_invite_link(entity_text) {
+                if let Some(hash) = Self::parse_invite_link(_entity_text) {
                     return Some(hash);
                 }
                 None
