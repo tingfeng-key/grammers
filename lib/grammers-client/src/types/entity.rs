@@ -140,7 +140,7 @@ impl Entity {
     pub fn user_id(&self) -> Option<i64> {
         match self._type() {
             EntityType::InputMessageEntityMentionName(user) => user.user_id(),
-            EntityType::MentionName(user_id) => Some(user_id.clone()),
+            EntityType::MentionName(user_id) => Some(*user_id),
             _ => None,
         }
     }
@@ -232,7 +232,7 @@ impl Entity {
     pub fn tag(&self) -> Option<String> {
         let entity_text = self.text();
         let username = match self._type() {
-            EntityType::Cashtag | EntityType::Hashtag => Some(entity_text.replace("#", "")),
+            EntityType::Cashtag | EntityType::Hashtag => Some(entity_text.replace('#', "")),
             _ => None,
         };
         username
