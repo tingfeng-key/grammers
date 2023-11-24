@@ -165,10 +165,17 @@ impl Client {
         };
 
         if let Participants(p) = self.invoke(&request).await? {
+            let chat_map = crate::types::ChatMap::new(p.users.clone(), p.chats);
             return Ok((
                 p.users
                     .iter()
-                    .map(|x| Chat::from_user(x.clone()))
+                    .map(|x| {
+                        crate::utils::always_find_entity(
+                            &crate::types::User::from_raw(x.clone()).pack().to_peer(),
+                            &chat_map,
+                            self,
+                        )
+                    })
                     .collect::<Vec<Chat>>(),
                 p.count,
             ));
