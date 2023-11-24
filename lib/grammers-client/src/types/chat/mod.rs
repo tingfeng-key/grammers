@@ -206,6 +206,11 @@ impl Chat {
             }),
         }
     }
+
+    /// return is min_hash
+    pub fn is_min_hash(&mut self) -> bool {
+        self.get_min_hash_ref().is_some()
+    }
 }
 
 impl From<Chat> for PackedChat {

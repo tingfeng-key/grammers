@@ -156,9 +156,6 @@ impl Client {
             access_hash: chat.access_hash.unwrap_or(0i64),
         };
 
-        let mut chat_count = 0;
-        let mut chat_members: Vec<Chat> = vec![];
-
         let request = GetParticipants {
             channel: tl::enums::InputChannel::Channel(input_channel),
             filter,
@@ -168,11 +165,14 @@ impl Client {
         };
 
         if let Participants(p) = self.invoke(&request).await? {
-            for elem in p.users {
-                chat_members.push(Chat::from_user(elem));
-            }
-            chat_count = p.count;
+            return Ok((
+                p.users
+                    .iter()
+                    .map(|x| Chat::from_user(x.clone()))
+                    .collect::<Vec<Chat>>(),
+                p.count,
+            ));
         }
-        Ok((chat_members, chat_count))
+        Ok((vec![], 0))
     }
 }
