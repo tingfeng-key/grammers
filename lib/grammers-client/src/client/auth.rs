@@ -253,6 +253,34 @@ impl Client {
         })
     }
 
+    pub async fn request_qr_token(
+        &self,
+        except_ids: Vec<i64>,
+    ) -> Result<crate::types::login_token::QrToken, AuthorizationError> {
+        let request = tl::functions::auth::ExportLoginToken {
+            api_id: self.0.config.api_id,
+            api_hash: self.0.config.api_hash.clone(),
+            except_ids: except_ids.clone(),
+        };
+
+        use tl::enums::auth::LoginToken as LT;
+
+        let login_token = match self.invoke(&request).await {
+            Ok(x) => match x {
+                LT::Token(x) => x,
+                LT::MigrateTo(_) => panic!("should not have logged in yet"),
+                LT::Success(_) => panic!("should not have logged in yet"),
+            },
+            Err(e) => return Err(e.into()),
+        };
+        Ok(crate::types::login_token::QrToken {
+            token: login_token.token,
+            expires: login_token.expires,
+            except_ids,
+            client: self.clone(),
+        })
+    }
+
     /// Signs in to the user account.
     ///
     /// You must call [`Client::request_login_code`] before using this method in order to obtain
