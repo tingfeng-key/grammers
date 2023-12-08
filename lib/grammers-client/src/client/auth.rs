@@ -257,7 +257,7 @@ impl Client {
         &self,
         except_ids: Vec<i64>,
     ) -> Result<crate::types::qr_login::QRLogin, AuthorizationError> {
-        Ok(crate::types::qr_login::QRLogin::new(self.clone(), except_ids).await?)
+        crate::types::qr_login::QRLogin::new(self.clone(), except_ids).await
     }
 
     /// Signs in to the user account.
@@ -398,12 +398,12 @@ impl Client {
             }
         }
 
-        let (salt1, salt2, g, p) = params;
+        let (salt1, salt2, p, g) = params;
 
         let g_b = password_info.srp_b.unwrap();
         let a: Vec<u8> = password_info.secure_random;
 
-        let (m1, g_a) = calculate_2fa(salt1, salt2, g, p, g_b, a, password);
+        let (m1, g_a) = calculate_2fa(salt1, salt2, p, g, g_b, a, password);
 
         let check_password = tl::functions::auth::CheckPassword {
             password: tl::enums::InputCheckPasswordSrp::Srp(tl::types::InputCheckPasswordSrp {

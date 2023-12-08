@@ -104,14 +104,13 @@ impl Client {
         let password = self
             .get_password_information()
             .await
-            .map_err(|x| EditTwoFaError::Other(x))?;
+            .map_err(EditTwoFaError::Other)?;
         let current_algo = password.algo(false);
         let mut new_algo: tl::enums::PasswordKdfAlgo = tl::types::PasswordKdfAlgoUnknown {}.into();
         let mut new_hash = vec![];
         if new_pwd.is_some() {
             let algo = password.algo(true);
-            new_hash =
-                password.generate_new_hash(algo.clone(), &new_pwd.unwrap_or_else(|| String::new()));
+            new_hash = password.generate_new_hash(algo.clone(), &new_pwd.unwrap_or_default());
             new_algo = algo.into();
         }
 
@@ -136,7 +135,7 @@ impl Client {
             new_settings: tl::types::account::PasswordInputSettings {
                 new_algo: Some(new_algo),
                 new_password_hash: Some(new_hash),
-                hint: Some(hint.unwrap_or_else(|| String::new())),
+                hint: Some(hint.unwrap_or_default()),
                 email,
                 new_secure_settings: None,
             }
@@ -150,12 +149,11 @@ impl Client {
     }
 
     pub async fn edit_2fa_email_code(&self, code: &str) -> Result<bool, EditTwoFaError> {
-        Ok(self
-            .invoke(&tl::functions::account::ConfirmPasswordEmail {
-                code: code.to_owned(),
-            })
-            .await
-            .map_err(|x| EditTwoFaError::Other(x))?)
+        self.invoke(&tl::functions::account::ConfirmPasswordEmail {
+            code: code.to_owned(),
+        })
+        .await
+        .map_err(EditTwoFaError::Other)
     }
 }
 

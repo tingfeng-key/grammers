@@ -44,7 +44,7 @@ impl PasswordToken {
         if !grammers_crypto::two_factor_auth::check_p_and_g(params.2, params.3) {
             panic!("Failed to get correct password information from Telegram")
         }
-        let (salt1, salt2, g, p) = params;
+        let (salt1, salt2, p, g) = params;
         let mut new_salt1 = salt1.clone();
         if is_new {
             let none = &grammers_crypto::two_factor_auth::generate_random_32_bytes();
@@ -54,7 +54,7 @@ impl PasswordToken {
         PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow {
             salt1: new_salt1,
             salt2: salt2.clone(),
-            g: g.clone(),
+            g: *g,
             p: p.clone(),
         }
     }
@@ -70,8 +70,8 @@ impl PasswordToken {
         let (m1, a) = grammers_crypto::two_factor_auth::calculate_2fa(
             &algo.salt1,
             &algo.salt2,
-            &algo.g,
             &algo.p,
+            &algo.g,
             g_b,
             a,
             current_password,
