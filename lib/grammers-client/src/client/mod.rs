@@ -27,3 +27,4 @@ pub(crate) use client::ClientInner;
 pub use client::{Client, Config, InitParams};
 pub use filters::Filters;
 pub use grammers_session::{PackedChat, PackedType};
+pub use user::EditTwoFaError;

@@ -28,63 +28,54 @@ impl PasswordToken {
     }
 
     fn srp_id(&self) -> i64 {
-        self.password.srp_id.unwrap_or_default()
+        self.password.srp_id.unwrap()
     }
 
-    fn srp_b(&self) -> Vec<u8> {
-        self.password.srp_b.clone().unwrap_or_default()
-    }
-
-    fn secure_random(&self) -> Vec<u8> {
-        self.password.secure_random.clone()
-    }
-
-    fn current_algo(
+    pub fn algo(
         &self,
-    ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
-        use tl::enums::PasswordKdfAlgo::{
-            Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow, Unknown,
-        };
-        match self.password.current_algo.clone() {
-            Some(algo) => match algo {
-                Unknown => None,
-                Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow(a) => Some(a),
-            },
-            None => None,
+        is_new: bool,
+    ) -> PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow {
+        let pwd = self.password.clone();
+        let mut current_algo = pwd.new_algo;
+        if !is_new {
+            current_algo = pwd.current_algo.unwrap();
+        }
+        let params = crate::utils::extract_password_parameters(&current_algo);
+        if !grammers_crypto::two_factor_auth::check_p_and_g(params.2, params.3) {
+            panic!("Failed to get correct password information from Telegram")
+        }
+        let (salt1, salt2, g, p) = params;
+        let mut new_salt1 = salt1.clone();
+        if is_new {
+            let none = &grammers_crypto::two_factor_auth::generate_random_32_bytes();
+            new_salt1.extend_from_slice(none);
+        }
+
+        PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow {
+            salt1: new_salt1,
+            salt2: salt2.clone(),
+            g: g.clone(),
+            p: p.clone(),
         }
     }
 
-    fn new_algo(
+    pub async fn to_input_check_password_srp(
         &self,
-    ) -> Option<PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow> {
-        use tl::enums::PasswordKdfAlgo::{
-            Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow, Unknown,
-        };
-        match self.password.new_algo.clone() {
-            Unknown => None,
-            Sha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow(a) => Some(a),
-        }
-    }
-
-    pub fn to_fa(&self, current_password: String) -> ([u8; 32], [u8; 256]) {
-        use grammers_crypto::two_factor_auth::calculate_2fa;
-        let current_algo = self.current_algo().unwrap();
-        calculate_2fa(
-            &current_algo.salt1,
-            &current_algo.salt2,
-            &current_algo.g,
-            &current_algo.p,
-            self.srp_b(),
-            self.secure_random(),
-            current_password,
-        )
-    }
-
-    pub fn to_input_check_password_srp(
-        &self,
-        current_password: String,
+        algo: PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow,
+        current_password: &str,
     ) -> tl::enums::InputCheckPasswordSrp {
-        let (m1, a) = self.to_fa(current_password);
+        let g_b = self.password.srp_b.clone().unwrap();
+        let a = self.password.secure_random.clone();
+
+        let (m1, a) = grammers_crypto::two_factor_auth::calculate_2fa(
+            &algo.salt1,
+            &algo.salt2,
+            &algo.g,
+            &algo.p,
+            g_b,
+            a,
+            current_password,
+        );
         tl::types::InputCheckPasswordSrp {
             srp_id: self.srp_id(),
             a: a.to_vec(),
@@ -95,33 +86,16 @@ impl PasswordToken {
 
     pub fn generate_new_hash(
         &self,
-        new_password: String,
-    ) -> Option<(
-        PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow,
-        Vec<u8>,
-    )> {
-        use grammers_crypto::two_factor_auth::{compute_password_hash, generate_random_32_bytes};
-        println!("{:#?}", self);
-        match self.new_algo() {
-            Some(mut new_algo) => {
-                let rand = generate_random_32_bytes();
-                // println!("{:#?}", new_algo.g);
-                // println!("{:#?}", new_algo.p);
-                // println!("{:#?}", new_algo.salt1);
-                // println!("{:#?}", new_algo.salt2);
-                // println!("{:#?}", rand);
-                new_algo.salt1.extend_from_slice(&rand);
-                let new_password_hash = compute_password_hash(
-                    &new_algo.salt1,
-                    &new_algo.salt2,
-                    &new_algo.g,
-                    &new_algo.p,
-                    new_password,
-                );
-                // println!("{:#?}", new_password_hash);
-                Some((new_algo.clone(), new_password_hash.to_vec()))
-            }
-            None => None,
-        }
+        new_algo: PasswordKdfAlgoSha256Sha256Pbkdf2Hmacsha512iter100000Sha256ModPow,
+        new_password: &str,
+    ) -> Vec<u8> {
+        grammers_crypto::two_factor_auth::compute_password_hash(
+            &new_algo.salt1,
+            &new_algo.salt2,
+            &new_algo.g,
+            &new_algo.p,
+            new_password,
+        )
+        .to_vec()
     }
 }

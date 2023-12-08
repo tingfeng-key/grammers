@@ -1,6 +1,5 @@
-use crate::types::Chat;
-
 use super::Client;
+use crate::types::Chat;
 use grammers_mtproto::mtp::RpcError;
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
@@ -87,117 +86,93 @@ impl Client {
         ))
     }
 
-    pub async fn enabled_password_verify(
+    pub async fn edit_2fa(
         &self,
-        password: String,
+        old_pwd: Option<String>,
+        new_pwd: Option<String>,
         hint: Option<String>,
         email: Option<String>,
-    ) -> Result<bool, InvocationError> {
-        let password_token = self.get_password_information().await?;
-        match !password_token.has_password() {
-            true => {
-                let (new_algo, new_hash) = password_token.generate_new_hash(password).unwrap();
-                let request = tl::functions::account::UpdatePasswordSettings {
-                    password: tl::enums::InputCheckPasswordSrp::InputCheckPasswordEmpty,
-                    new_settings: tl::types::account::PasswordInputSettings {
-                        new_algo: Some(new_algo.into()),
-                        new_password_hash: Some(new_hash),
-                        hint,
-                        email,
-                        new_secure_settings: None,
-                    }
-                    .into(),
-                };
-                // println!("{:#?}", request);
-                Ok(self.invoke(&request).await?)
-            }
-            false => Err(InvocationError::Rpc(RpcError {
-                code: 500,
-                name: "not set password".to_string(),
+    ) -> Result<bool, EditTwoFaError> {
+        if old_pwd.is_none() && new_pwd.is_none() {
+            return Err(EditTwoFaError::Other(InvocationError::Rpc(RpcError {
+                code: 400,
+                name: "old password and new password cannot be empty".to_string(),
                 value: None,
                 caused_by: None,
-            })),
+            })));
+        }
+        let password = self
+            .get_password_information()
+            .await
+            .map_err(|x| EditTwoFaError::Other(x))?;
+        let current_algo = password.algo(false);
+        let mut new_algo: tl::enums::PasswordKdfAlgo = tl::types::PasswordKdfAlgoUnknown {}.into();
+        let mut new_hash = vec![];
+        if new_pwd.is_some() {
+            let algo = password.algo(true);
+            new_hash =
+                password.generate_new_hash(algo.clone(), &new_pwd.unwrap_or_else(|| String::new()));
+            new_algo = algo.into();
+        }
+
+        let password = match !password.has_password() && old_pwd.is_none() {
+            true => tl::enums::InputCheckPasswordSrp::InputCheckPasswordEmpty,
+            false => {
+                if old_pwd.is_none() {
+                    return Err(EditTwoFaError::Other(InvocationError::Rpc(RpcError {
+                        code: 400,
+                        name: "old password cannot be empty".to_string(),
+                        value: None,
+                        caused_by: None,
+                    })));
+                }
+                password
+                    .to_input_check_password_srp(current_algo, &old_pwd.unwrap())
+                    .await
+            }
+        };
+        let request = tl::functions::account::UpdatePasswordSettings {
+            password,
+            new_settings: tl::types::account::PasswordInputSettings {
+                new_algo: Some(new_algo),
+                new_password_hash: Some(new_hash),
+                hint: Some(hint.unwrap_or_else(|| String::new())),
+                email,
+                new_secure_settings: None,
+            }
+            .into(),
+        };
+        match self.invoke(&request).await {
+            Ok(res) => Ok(res),
+            Err(err) if err.is("EMAIL_UNCONFIRMED_*") => Err(EditTwoFaError::EmailUnconfirmed),
+            Err(err) => Err(EditTwoFaError::Other(err)),
         }
     }
 
-    pub async fn change_password_verify(
-        &self,
-        current_password: String,
-        new_password: String,
-        hint: Option<String>,
-        email: Option<String>,
-    ) -> Result<bool, InvocationError> {
-        let password = self.get_password_information().await?;
-        match password.has_password() {
-            true => {
-                let (new_algo, new_hash) = password.generate_new_hash(new_password).unwrap();
-                let request = tl::functions::account::UpdatePasswordSettings {
-                    password: password.to_input_check_password_srp(current_password),
-                    new_settings: tl::types::account::PasswordInputSettings {
-                        new_algo: Some(new_algo.into()),
-                        new_password_hash: Some(new_hash),
-                        hint,
-                        email,
-                        new_secure_settings: None,
-                    }
-                    .into(),
-                };
-                println!("{:#?}", request);
-                Ok(self.invoke(&request).await?)
-            }
-            false => Err(InvocationError::Rpc(RpcError {
-                code: 500,
-                name: "not set password".to_string(),
-                value: None,
-                caused_by: None,
-            })),
-        }
+    pub async fn edit_2fa_email_code(&self, code: &str) -> Result<bool, EditTwoFaError> {
+        Ok(self
+            .invoke(&tl::functions::account::ConfirmPasswordEmail {
+                code: code.to_owned(),
+            })
+            .await
+            .map_err(|x| EditTwoFaError::Other(x))?)
     }
-
-    // pub async fn get_full(&mut self, packed_chat: PackedChat) -> Result<Chat, InvocationError> {
-    //     Ok(match packed_chat.ty {
-    //         PackedType::User | PackedType::Bot => {
-    //             let mut res = self
-    //                 .invoke(&tl::functions::users::GetFullUser {
-    //                     id: tl::enums::InputUser::User(packed_chat.to_input_peer()),
-    //                 })
-    //                 .await?;
-    //             tl::enums::ChatFull::Full()
-    //             Chat::from_user(res.pop().unwrap())
-    //         }
-    //         PackedType::Chat => {
-    //             let mut res = match self
-    //                 .invoke(&tl::functions::messages::GetChats {
-    //                     id: vec![packed_chat.id],
-    //                 })
-    //                 .await?
-    //             {
-    //                 tl::enums::messages::Chats::Chats(chats) => chats.chats,
-    //                 tl::enums::messages::Chats::Slice(chat_slice) => chat_slice.chats,
-    //             };
-    //             if res.len() != 1 {
-    //                 panic!("fetching only one chat should exactly return one chat");
-    //             }
-    //             Chat::from_chat(res.pop().unwrap())
-    //         }
-    //         PackedType::Megagroup | PackedType::Broadcast | PackedType::Gigagroup => {
-    //             let mut res = match self
-    //                 .invoke(&tl::functions::channels::GetChannels {
-    //                     id: vec![tl::enums::InputChannel::Channel(tl::types::InputChannel {
-    //                         channel_id: packed_chat.id,
-    //                         access_hash: packed_chat.access_hash.unwrap(),
-    //                     })],
-    //                 })
-    //                 .await?
-    //             {
-    //                 tl::enums::messages::Chats::Chats(chats) => chats.chats,
-    //                 tl::enums::messages::Chats::Slice(chat_slice) => chat_slice.chats,
-    //             };
-    //             if res.len() != 1 {
-    //                 panic!("fetching only one chat should exactly return one chat");
-    //             }
-    //             Chat::from_chat(res.pop().unwrap())
-    //         }
-    //     })
-    // }
 }
+
+#[derive(Debug)]
+#[allow(clippy::large_enum_variant)]
+pub enum EditTwoFaError {
+    EmailUnconfirmed,
+    Other(InvocationError),
+}
+
+impl std::fmt::Display for EditTwoFaError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::EmailUnconfirmed => write!(f, "please input email code",),
+            Self::Other(e) => write!(f, "sign in error: {}", e),
+        }
+    }
+}
+
+impl std::error::Error for EditTwoFaError {}

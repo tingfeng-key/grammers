@@ -102,17 +102,12 @@ pub fn compute_password_hash(
     p: &[u8],
     password: impl AsRef<[u8]>,
 ) -> [u8; 256] {
-    // Prepare our parameters
-    let big_p = BigUint::from_bytes_be(p);
-
-    let big_g = BigUint::from(*g as u32);
-
-    // x := PH2(password, salt1, salt2)
     let x = ph2(&password, salt1, salt2);
 
     let x = BigUint::from_bytes_be(&x);
 
-    // v := pow(g, x) mod p
+    let big_g = BigUint::from(*g as u32);
+    let big_p = BigUint::from_bytes_be(p);
     let big_v = big_g.modpow(&x, &big_p);
     pad_to_256(&big_v.to_bytes_be())
 }
