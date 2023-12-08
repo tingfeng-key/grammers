@@ -93,6 +93,8 @@ pub enum NetStream {
     Tcp(TcpStream),
     #[cfg(feature = "proxy")]
     ProxySocks5(Socks5Stream<TcpStream>),
+    #[cfg(feature = "proxy")]
+    ProxyHttp(TcpStream),
 }
 
 impl NetStream {
@@ -101,6 +103,8 @@ impl NetStream {
             Self::Tcp(stream) => stream.split(),
             #[cfg(feature = "proxy")]
             Self::ProxySocks5(stream) => stream.split(),
+            #[cfg(feature = "proxy")]
+            Self::ProxyHttp(stream) => stream.split(),
         }
     }
 }
@@ -747,6 +751,34 @@ async fn connect_proxy_stream(
                     .map_err(|err| io::Error::new(ErrorKind::ConnectionAborted, err))?,
                 ))
             }
+        }
+        "http" => {
+            let mut stream = TcpStream::connect(format!("{}:{}", host, port)).await?;
+            if username.is_empty() {
+                if let Err(err) = async_http_proxy::http_connect_tokio(
+                    &mut stream,
+                    &addr.ip().to_string(),
+                    addr.port(),
+                )
+                .await
+                {
+                    panic!("http proxy error: {}", err);
+                }
+            } else {
+                if let Err(err) = async_http_proxy::http_connect_tokio_with_basic_auth(
+                    &mut stream,
+                    &addr.ip().to_string(),
+                    addr.port(),
+                    username,
+                    password,
+                )
+                .await
+                {
+                    panic!("http proxy error: {}", err);
+                }
+            }
+
+            Ok(NetStream::ProxyHttp(stream))
         }
         scheme => Err(io::Error::new(
             ErrorKind::ConnectionAborted,
