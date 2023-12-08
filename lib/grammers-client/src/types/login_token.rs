@@ -6,10 +6,6 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use grammers_tl_types::deserialize::Result;
-
-use crate::Client;
-
 #[derive(Debug, Clone)]
 pub struct LoginToken {
     pub(crate) phone: String,
@@ -29,18 +25,5 @@ impl LoginToken {
 
     pub fn phone_code_hash(&self) -> &str {
         self.phone_code_hash.as_ref()
-    }
-}
-
-pub struct QrToken {
-    pub(crate) token: Vec<u8>,
-    pub(crate) expires: i32,
-    pub(crate) except_ids: Vec<i64>,
-    pub(crate) client: Client,
-}
-
-impl QrToken {
-    pub fn token(&self) -> &[u8] {
-        self.token.as_ref()
     }
 }
