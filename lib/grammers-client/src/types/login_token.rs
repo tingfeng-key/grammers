@@ -27,3 +27,9 @@ impl LoginToken {
         self.phone_code_hash.as_ref()
     }
 }
+
+#[derive(Debug, Clone)]
+pub enum QrWaitResult {
+    Token((Vec<u8>, i32)),
+    Success(crate::types::User),
+}

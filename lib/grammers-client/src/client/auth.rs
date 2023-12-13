@@ -254,10 +254,78 @@ impl Client {
     }
 
     pub async fn request_qr_token(
-        &self,
+        &mut self,
         except_ids: Vec<i64>,
-    ) -> Result<crate::types::qr_login::QRLogin, AuthorizationError> {
-        crate::types::qr_login::QRLogin::new(self.clone(), except_ids).await
+    ) -> Result<crate::types::QrWaitResult, AuthorizationError> {
+        let login_token = self
+            .invoke(&tl::functions::auth::ExportLoginToken {
+                api_id: self.0.config.api_id,
+                api_hash: self.0.config.api_hash.clone(),
+                except_ids: except_ids.clone(),
+            })
+            .await?;
+        self.qrt_login_wait_result(login_token).await
+    }
+    pub async fn qrt_login_wait(
+        &mut self,
+        except_ids: Vec<i64>,
+    ) -> Result<crate::types::QrWaitResult, AuthorizationError> {
+        loop {
+            if let Ok(Some(crate::types::Update::Raw(tl::enums::Update::LoginToken))) =
+                self.next_update().await
+            {
+                let request = tl::functions::auth::ExportLoginToken {
+                    api_id: self.0.config.api_id,
+                    api_hash: self.0.config.api_hash.clone(),
+                    except_ids,
+                };
+                match self.invoke(&request).await {
+                    Ok(x) => {
+                        return self.qrt_login_wait_result(x).await;
+                    }
+                    Err(e) => {
+                        return Err(e.into());
+                    }
+                }
+            }
+        }
+    }
+
+    #[async_recursion::async_recursion]
+    async fn qrt_login_wait_result(
+        &mut self,
+        login_token: tl::enums::auth::LoginToken,
+    ) -> Result<crate::types::QrWaitResult, AuthorizationError> {
+        Ok(match login_token {
+            tl::enums::auth::LoginToken::Token(x) => {
+                crate::types::QrWaitResult::Token((x.token, x.expires))
+            }
+            tl::enums::auth::LoginToken::MigrateTo(x) => {
+                let (sender, request_tx) =
+                    crate::client::net::connect_sender(x.dc_id, &self.0.config).await?;
+                {
+                    *self.0.conn.sender.lock().await = sender;
+                    *self.0.conn.request_tx.write().unwrap() = request_tx;
+                    let mut state = self.0.state.write().unwrap();
+                    state.dc_id = x.dc_id;
+                }
+                let token = self
+                    .invoke(&tl::functions::auth::ImportLoginToken { token: x.token })
+                    .await?;
+                self.qrt_login_wait_result(token).await?
+            }
+            tl::enums::auth::LoginToken::Success(x) => {
+                let user = match x.authorization {
+                    tl::enums::auth::Authorization::Authorization(x) => {
+                        self.complete_login(x).await?
+                    }
+                    tl::enums::auth::Authorization::SignUpRequired(_) => {
+                        panic!("Unexpected result")
+                    }
+                };
+                crate::types::QrWaitResult::Success(user)
+            }
+        })
     }
 
     /// Signs in to the user account.
