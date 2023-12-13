@@ -207,9 +207,12 @@ impl Chat {
         }
     }
 
-    /// return is min_hash
-    pub fn is_min_hash(&mut self) -> bool {
-        self.get_min_hash_ref().is_some()
+    pub fn is_min(&self) -> bool {
+        match self {
+            Self::User(user) => user.0.min,
+            Self::Group(_group) => false,
+            Self::Channel(channel) => channel.0.min,
+        }
     }
 }
 
