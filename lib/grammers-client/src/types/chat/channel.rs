@@ -168,6 +168,10 @@ impl Channel {
     pub fn participants_count(&self) -> Option<i32> {
         self.0.participants_count
     }
+
+    pub fn is_min(&self) -> bool {
+        self.0.min
+    }
 }
 
 impl From<Channel> for PackedChat {
