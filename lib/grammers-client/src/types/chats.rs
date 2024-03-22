@@ -15,7 +15,6 @@ use pin_project_lite::pin_project;
 use std::{
     future::Future,
     marker::PhantomPinned,
-    mem::drop,
     pin::Pin,
     task::{Context, Poll},
     time::{Duration, SystemTime, UNIX_EPOCH},

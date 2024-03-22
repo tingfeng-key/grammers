@@ -8,7 +8,6 @@
 use crate::{types, Client, InputMessage};
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
-use std::convert::TryInto;
 use std::fmt;
 use std::sync::Arc;
 use std::time::Duration;
