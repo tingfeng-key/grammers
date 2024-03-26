@@ -61,8 +61,8 @@ impl From<tl::enums::MessageEntity> for EntityType {
 
 #[derive(Debug)]
 pub struct Entity {
-    r#type: EntityType,
-    text: String,
+    pub r#type: EntityType,
+    pub text: String,
 }
 
 impl Entity {
@@ -107,9 +107,8 @@ impl Entity {
         }
 
         let url_parse = url_parse_result.unwrap();
-        let scheme = url_parse.scheme();
         let path = url_parse.path();
-        if url_parse.host_str().is_none() || ["https", "http"].contains(&scheme) {
+        if url_parse.host_str().is_none() {
             return None;
         }
         let host = url_parse.host_str().unwrap();
@@ -127,11 +126,11 @@ impl Entity {
         }
         let paths = path.split('/').collect::<Vec<&str>>();
 
-        if paths.len() >= 1 {
-            if paths[0].starts_with("joinchat") {
+        if paths.len() >= 2 {
+            if paths[1].starts_with("joinchat") {
                 return None;
             }
-            return Some(paths[0].to_string());
+            return Some(paths[1].to_string());
         }
 
         None
@@ -150,7 +149,8 @@ impl Entity {
         let username = match self._type() {
             #[cfg(feature = "parse_invite_link")]
             EntityType::Url => Self::parse_username_from_url(entity_text),
-            EntityType::InputMessageEntityMentionName(_) | EntityType::MentionName(_) => {
+            // | EntityType::MentionName(_)
+            EntityType::InputMessageEntityMentionName(_) => {
                 let username = entity_text.replace('@', "");
                 if username.contains('/') {
                     let urls = username.split('/').collect::<Vec<&str>>();
@@ -158,6 +158,8 @@ impl Entity {
                 }
                 return Some(username);
             }
+            EntityType::TextUrl(url) => Self::parse_username_from_url(url),
+            EntityType::Mention => Some(entity_text.replace('@', "")),
             _ => None,
         };
         username
@@ -171,9 +173,8 @@ impl Entity {
         }
 
         let url_parse = url_parse_result.unwrap();
-        let scheme = url_parse.scheme();
         let path = url_parse.path();
-        if url_parse.host_str().is_none() || ["https", "http"].contains(&scheme) {
+        if url_parse.host_str().is_none() {
             return None;
         }
         let host = url_parse.host_str().unwrap();
@@ -192,17 +193,17 @@ impl Entity {
         let paths = path.split('/').collect::<Vec<&str>>();
 
         if paths.len() == 1 {
-            if paths[0].starts_with('+') {
-                return Some(paths[0].replace('+', ""));
+            if paths[1].starts_with('+') {
+                return Some(paths[1].replace('+', ""));
             }
             return None;
         }
 
         if paths.len() > 1 {
-            if paths[0].starts_with("joinchat") {
+            if paths[1].starts_with("joinchat") {
                 return Some(paths[1].to_string());
             }
-            if paths[0].starts_with('+') {
+            if paths[1].starts_with('+') {
                 return Some(paths[0].replace('+', ""));
             }
             return None;
@@ -243,5 +244,22 @@ impl Entity {
             EntityType::InputMessageEntityMentionName(input_user) => Some(input_user),
             _ => None,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::types::{entity::EntityType, Entity};
+
+    #[test]
+    fn parse_username() {
+        let entity = Entity {
+            r#type: EntityType::TextUrl("https://t.me/HuanQiuPro888".to_string()),
+            text: "t.me/quanqiuguaji".to_string(),
+        };
+
+        let result = entity.username();
+
+        println!("{:#?}", result);
     }
 }

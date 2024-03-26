@@ -14,6 +14,7 @@ categories = ["api-bindings"]
 edition = "2021"
 
 [features]
+default = ["parse_invite_link"]
 markdown = ["pulldown-cmark"]
 html = ["html5ever"]
 proxy = ["grammers-mtsender/proxy"]

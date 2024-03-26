@@ -574,10 +574,16 @@ impl Message {
     }
 
     pub fn parse_usernames_from_entities(&self) -> Vec<String> {
-        self.fmt_entities()
+        println!("origin entities:{:#?}", self.fmt_entities());
+        let entities: Vec<String> = self
+            .fmt_entities()
             .iter()
             .filter_map(|x| x.username())
-            .collect::<Vec<String>>()
+            .collect::<std::collections::HashSet<String>>()
+            .into_iter()
+            .collect();
+        println!("new entities:{:#?}", entities);
+        entities
     }
 }
 
