@@ -1,4 +1,5 @@
 use grammers_tl_types as tl;
+#[allow(dead_code)]
 pub struct InputChannel(tl::enums::InputChannel);
 
 impl InputChannel {

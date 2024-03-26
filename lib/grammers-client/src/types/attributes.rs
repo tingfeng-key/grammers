@@ -6,7 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 use grammers_tl_types as tl;
-use std::{convert::TryInto, time::Duration};
+use std::time::Duration;
 
 pub enum Attribute {
     Audio {

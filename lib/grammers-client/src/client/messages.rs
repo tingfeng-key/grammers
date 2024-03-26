@@ -253,6 +253,8 @@ impl SearchIter {
                 peer: peer.to_input_peer(),
                 q: String::new(),
                 from_id: None,
+                saved_peer_id: None,
+                saved_reaction: None,
                 top_msg_id: None,
                 filter: tl::enums::MessagesFilter::InputMessagesFilterEmpty,
                 min_date: 0,
@@ -486,6 +488,7 @@ impl Client {
                         reply_to_peer_id: None,
                         quote_text: None,
                         quote_entities: None,
+                        quote_offset: None,
                     }
                     .into()
                 }),
@@ -499,6 +502,7 @@ impl Client {
                 noforwards: false,
                 update_stickersets_order: false,
                 invert_media: false,
+                quick_reply_shortcut: None,
             })
             .await
         } else {
@@ -515,6 +519,7 @@ impl Client {
                         reply_to_peer_id: None,
                         quote_text: None,
                         quote_entities: None,
+                        quote_offset: None,
                     }
                     .into()
                 }),
@@ -527,6 +532,7 @@ impl Client {
                 noforwards: false,
                 update_stickersets_order: false,
                 invert_media: false,
+                quick_reply_shortcut: None,
             })
             .await
         }?;
@@ -579,6 +585,7 @@ impl Client {
             reply_markup: new_message.reply_markup,
             entities,
             schedule_date: new_message.schedule_date,
+            quick_reply_shortcut_id: None,
         })
         .await?;
 
@@ -683,6 +690,7 @@ impl Client {
             schedule_date: None,
             send_as: None,
             noforwards: false,
+            quick_reply_shortcut: None,
         };
         let result = self.invoke(&request).await?;
         Ok(map_random_ids_to_messages(self, &request.random_id, result))

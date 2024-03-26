@@ -7,7 +7,7 @@
 // except according to those terms.
 use crate::types::photo_sizes::{PhotoSize, VecExt};
 use crate::Client;
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
+use chrono::{DateTime, Utc};
 use grammers_tl_types as tl;
 use std::fmt::Debug;
 
@@ -302,9 +302,9 @@ impl Document {
     /// The date on which the file was created, if any.
     pub fn creation_date(&self) -> Option<DateTime<Utc>> {
         match self.document.document.as_ref() {
-            Some(tl::enums::Document::Document(d)) => Some(Utc.from_utc_datetime(
-                &NaiveDateTime::from_timestamp_opt(d.date as i64, 0).expect("date out of range"),
-            )),
+            Some(tl::enums::Document::Document(d)) => {
+                Some(DateTime::<Utc>::from_timestamp(d.date as i64, 0).expect("date out of range"))
+            }
             _ => None,
         }
     }
@@ -319,15 +319,13 @@ impl Document {
     }
 
     /// Duration of video/audio, in seconds
-    pub fn duration(&self) -> Option<i32> {
+    pub fn duration(&self) -> Option<f64> {
         match self.document.document.as_ref() {
             Some(tl::enums::Document::Document(d)) => {
                 for attr in &d.attributes {
                     match attr {
-                        tl::enums::DocumentAttribute::Video(v) => {
-                            return Some(v.duration.max(i32::MAX as _) as i32)
-                        }
-                        tl::enums::DocumentAttribute::Audio(a) => return Some(a.duration),
+                        tl::enums::DocumentAttribute::Video(v) => return Some(v.duration),
+                        tl::enums::DocumentAttribute::Audio(a) => return Some(a.duration as _),
                         _ => {}
                     }
                 }
@@ -905,6 +903,7 @@ impl Media {
             M::Dice(dice) => Some(Self::Dice(Dice::from_media(dice))),
             M::Story(_) => None,
             M::Giveaway(_) => None,
+            M::GiveawayResults(_) => None,
         }
     }
 

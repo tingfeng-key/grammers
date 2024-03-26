@@ -67,10 +67,12 @@ pub(super) fn update_short_message(
                     }
                     .into(),
                 ),
+                from_boosts_applied: None,
                 peer_id: tl::types::PeerChat {
                     chat_id: short.user_id,
                 }
                 .into(),
+                saved_peer_id: None,
                 fwd_from: short.fwd_from,
                 via_bot_id: short.via_bot_id,
                 reply_to: short.reply_to,
@@ -87,6 +89,7 @@ pub(super) fn update_short_message(
                 grouped_id: None,
                 restriction_reason: None,
                 ttl_period: short.ttl_period,
+                quick_reply_shortcut_id: None,
             }
             .into(),
             pts: short.pts,
@@ -122,10 +125,12 @@ pub(super) fn update_short_chat_message(
                     }
                     .into(),
                 ),
+                from_boosts_applied: None,
                 peer_id: tl::types::PeerChat {
                     chat_id: short.chat_id,
                 }
                 .into(),
+                saved_peer_id: None,
                 fwd_from: short.fwd_from,
                 via_bot_id: short.via_bot_id,
                 reply_to: short.reply_to,
@@ -142,6 +147,7 @@ pub(super) fn update_short_chat_message(
                 grouped_id: None,
                 restriction_reason: None,
                 ttl_period: short.ttl_period,
+                quick_reply_shortcut_id: None,
             }
             .into(),
             pts: short.pts,
@@ -478,6 +484,27 @@ impl PtsInfo {
                 pts_count: 0,
                 entry: Entry::SecretChats,
             }),
+            ChannelViewForumAsMessages(_) => None,
+            PeerWallpaper(_) => None,
+            BotMessageReaction(u) => Some(Self {
+                pts: u.qts,
+                pts_count: 0,
+                entry: Entry::SecretChats,
+            }),
+            BotMessageReactions(u) => Some(Self {
+                pts: u.qts,
+                pts_count: 0,
+                entry: Entry::SecretChats,
+            }),
+            SavedDialogPinned(_) => None,
+            PinnedSavedDialogs(_) => None,
+            SavedReactionTags => None,
+            SmsJob(_) => None,
+            QuickReplies(_) => None,
+            NewQuickReply(_) => None,
+            DeleteQuickReply(_) => None,
+            QuickReplyMessage(_) => None,
+            DeleteQuickReplyMessages(_) => None,
         }
         .filter(|info| info.pts != NO_PTS)
     }

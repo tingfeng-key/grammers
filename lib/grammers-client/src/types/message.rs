@@ -11,6 +11,7 @@ use crate::types::{Downloadable, Entity, InputMessage, Media, Photo};
 use crate::utils;
 use crate::ChatMap;
 use crate::{types, Client};
+use chrono::{DateTime, Utc};
 use grammers_mtsender::InvocationError;
 use grammers_session::PackedChat;
 use grammers_tl_types as tl;
@@ -71,7 +72,9 @@ impl Message {
                     invert_media: false,
                     id: msg.id,
                     from_id: msg.from_id,
+                    from_boosts_applied: None,
                     peer_id: msg.peer_id,
+                    saved_peer_id: None,
                     fwd_from: None,
                     via_bot_id: None,
                     reply_to: msg.reply_to,
@@ -89,6 +92,7 @@ impl Message {
                     restriction_reason: None,
                     ttl_period: msg.ttl_period,
                     reactions: None,
+                    quick_reply_shortcut_id: None,
                 },
                 action: Some(msg.action),
                 client: client.clone(),
@@ -118,7 +122,9 @@ impl Message {
                 invert_media: false,
                 id: updates.id,
                 from_id: None, // TODO self
+                from_boosts_applied: None,
                 peer_id: chat.to_peer(),
+                saved_peer_id: None,
                 fwd_from: None,
                 via_bot_id: None,
                 reply_to: input.reply_to.map(|reply_to_msg_id| {
@@ -133,6 +139,7 @@ impl Message {
                         reply_to_top_id: None,
                         quote_text: None,
                         quote_entities: None,
+                        quote_offset: None,
                     }
                     .into()
                 }),
@@ -150,6 +157,7 @@ impl Message {
                 restriction_reason: None,
                 ttl_period: updates.ttl_period,
                 reactions: None,
+                quick_reply_shortcut_id: None,
             },
             action: None,
             client: client.clone(),
@@ -270,7 +278,7 @@ impl Message {
     }
 
     /// The date when this message was produced.
-    pub fn date(&self) -> utils::Date {
+    pub fn date(&self) -> DateTime<Utc> {
         utils::date(self.msg.date)
     }
 
@@ -384,7 +392,7 @@ impl Message {
     }
 
     /// The date when this message was last edited.
-    pub fn edit_date(&self) -> Option<utils::Date> {
+    pub fn edit_date(&self) -> Option<DateTime<Utc>> {
         self.msg.edit_date.map(utils::date)
     }
 

@@ -30,6 +30,7 @@ impl Client {
                 update_stickersets_order: false,
                 invert_media: false,
                 reply_to: None,
+                quick_reply_shortcut: None,
             })
             .await?;
 
