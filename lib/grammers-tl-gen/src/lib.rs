@@ -8,6 +8,9 @@
 
 //! This module gathers all the code generation submodules and coordinates
 //! them, feeding them the right data.
+
+#![deny(unsafe_code)]
+
 mod enums;
 mod grouper;
 mod metadata;
@@ -63,9 +66,8 @@ pub fn generate_rust_code(
 // except according to those terms.
 
 /// The schema layer from which the definitions were generated.
-pub const LAYER: i32 = {};
-"#,
-        layer
+pub const LAYER: i32 = {layer};
+"#
     )?;
 
     if config.gen_name_for_id {

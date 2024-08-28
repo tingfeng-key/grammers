@@ -7,15 +7,16 @@
 // except according to those terms.
 
 //! Methods related to sending messages.
-use crate::types::{IterBuffer, Message};
+use crate::types::{InputReactions, IterBuffer, Message};
 use crate::utils::{generate_random_id, generate_random_ids};
 use crate::{types, ChatMap, Client};
 use chrono::{DateTime, FixedOffset};
 pub use grammers_mtsender::{AuthorizationError, InvocationError};
 use grammers_session::PackedChat;
 use grammers_tl_types as tl;
-use grammers_tl_types::enums::InputPeer;
 use std::collections::HashMap;
+use tl::enums::InputPeer;
+use tl::functions::messages::SendReaction;
 
 fn get_message_id(message: &tl::enums::Message) -> i32 {
     match message {
@@ -65,8 +66,8 @@ fn map_random_ids_to_messages(
                     ) => Some(message),
                     _ => None,
                 })
-                .filter_map(|message| Message::new(client, message, &chats))
-                .map(|message| (message.msg.id, message))
+                .filter_map(|message| Message::from_raw(client, message, &chats))
+                .map(|message| (message.raw.id, message))
                 .collect::<HashMap<_, _>>();
 
             random_ids
@@ -176,7 +177,7 @@ impl<R: tl::RemoteCall<Return = tl::enums::messages::Messages>> IterBuffer<R, Me
         self.buffer.extend(
             messages
                 .into_iter()
-                .flat_map(|message| Message::new(&client, message, &chats)),
+                .flat_map(|message| Message::from_raw(&client, message, &chats)),
         );
 
         Ok(rate)
@@ -236,8 +237,8 @@ impl MessageIter {
         // Don't bother updating offsets if this is the last time stuff has to be fetched.
         if !self.last_chunk && !self.buffer.is_empty() {
             let last = &self.buffer[self.buffer.len() - 1];
-            self.request.offset_id = last.msg.id;
-            self.request.offset_date = last.msg.date;
+            self.request.offset_id = last.raw.id;
+            self.request.offset_date = last.raw.date;
         }
 
         Ok(self.pop_item())
@@ -360,8 +361,8 @@ impl SearchIter {
         // Don't bother updating offsets if this is the last time stuff has to be fetched.
         if !self.last_chunk && !self.buffer.is_empty() {
             let last = &self.buffer[self.buffer.len() - 1];
-            self.request.offset_id = last.msg.id;
-            self.request.max_date = last.msg.date;
+            self.request.offset_id = last.raw.id;
+            self.request.max_date = last.raw.date;
         }
 
         Ok(self.pop_item())
@@ -386,6 +387,7 @@ impl GlobalSearchIter {
                 offset_peer: tl::enums::InputPeer::Empty,
                 offset_id: 0,
                 limit: 0,
+                broadcasts_only: false,
             },
         )
     }
@@ -434,7 +436,7 @@ impl GlobalSearchIter {
             let last = &self.buffer[self.buffer.len() - 1];
             self.request.offset_rate = offset_rate.unwrap_or(0);
             self.request.offset_peer = last.chat().pack().to_input_peer();
-            self.request.offset_id = last.msg.id;
+            self.request.offset_id = last.raw.id;
         }
 
         Ok(self.pop_item())
@@ -504,8 +506,9 @@ impl Client {
                 send_as: None,
                 noforwards: false,
                 update_stickersets_order: false,
-                invert_media: false,
+                invert_media: message.invert_media,
                 quick_reply_shortcut: None,
+                effect: None,
             })
             .await
         } else {
@@ -534,15 +537,16 @@ impl Client {
                 send_as: None,
                 noforwards: false,
                 update_stickersets_order: false,
-                invert_media: false,
+                invert_media: message.invert_media,
                 quick_reply_shortcut: None,
+                effect: None,
             })
             .await
         }?;
 
         Ok(match updates {
             tl::enums::Updates::UpdateShortSentMessage(updates) => {
-                Message::from_short_updates(self, updates, message, chat)
+                Message::from_raw_short_updates(self, updates, message, chat)
             }
             updates => map_random_ids_to_messages(self, &[random_id], updates)
                 .pop()
@@ -580,7 +584,7 @@ impl Client {
         let entities = parse_mention_entities(self, new_message.entities);
         self.invoke(&tl::functions::messages::EditMessage {
             no_webpage: !new_message.link_preview,
-            invert_media: false,
+            invert_media: new_message.invert_media,
             peer: chat.into().to_input_peer(),
             id: message_id,
             message: Some(new_message.text),
@@ -747,7 +751,7 @@ impl Client {
         };
 
         let input_id =
-            tl::enums::InputMessage::ReplyTo(tl::types::InputMessageReplyTo { id: message.msg.id });
+            tl::enums::InputMessage::ReplyTo(tl::types::InputMessageReplyTo { id: message.raw.id });
 
         let (res, filter_req) = match get_message(self, chat, input_id).await {
             Ok(tup) => tup,
@@ -773,9 +777,9 @@ impl Client {
         let chats = ChatMap::new(users, chats);
         Ok(messages
             .into_iter()
-            .flat_map(|m| Message::new(self, m, &chats))
+            .flat_map(|m| Message::from_raw(self, m, &chats))
             .next()
-            .filter(|m| !filter_req || m.msg.peer_id == message.msg.peer_id))
+            .filter(|m| !filter_req || m.raw.peer_id == message.raw.peer_id))
     }
 
     /// Iterate over the message history of a chat, from most recent to oldest.
@@ -890,9 +894,9 @@ impl Client {
         let chats = ChatMap::new(users, chats);
         let mut map = messages
             .into_iter()
-            .flat_map(|m| Message::new(self, m, &chats))
+            .flat_map(|m| Message::from_raw(self, m, &chats))
             .filter(|m| m.chat().pack() == chat)
-            .map(|m| (m.msg.id, m))
+            .map(|m| (m.raw.id, m))
             .collect::<HashMap<_, _>>();
 
         Ok(message_ids.iter().map(|id| map.remove(id)).collect())
@@ -940,7 +944,7 @@ impl Client {
         let chats = ChatMap::new(users, chats);
         Ok(messages
             .into_iter()
-            .flat_map(|m| Message::new(self, m, &chats))
+            .flat_map(|m| Message::from_raw(self, m, &chats))
             .find(|m| m.chat().pack() == chat))
     }
 
@@ -1019,6 +1023,54 @@ impl Client {
             top_msg_id: None,
         })
         .await?;
+        Ok(())
+    }
+
+    /// Send reaction.
+    ///
+    /// # Examples
+    ///
+    /// Via emoticon
+    ///
+    /// ```
+    /// # async fn f(chat: grammers_client::types::Chat, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// let message_id = 123;
+    ///
+    /// client.send_reaction(&chat, message_id, "👍").await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    ///
+    /// Make animation big & Add to recent
+    ///
+    /// ```
+    /// # async fn f(chat: grammers_client::types::Chat, client: grammers_client::Client) -> Result<(), Box<dyn std::error::Error>> {
+    /// use grammers_client::types::InputReactions;
+    ///
+    /// let message_id = 123;
+    /// let reactions = InputReactions::emoticon("🤯").big().add_to_recent();
+    ///
+    /// client.send_reaction(&chat, message_id, reactions).await?;
+    /// # Ok(())
+    /// # }
+    /// ```
+    pub async fn send_reaction<C: Into<PackedChat>, R: Into<InputReactions>>(
+        &self,
+        chat: C,
+        message_id: i32,
+        reactions: R,
+    ) -> Result<(), InvocationError> {
+        let reactions = reactions.into();
+
+        self.invoke(&SendReaction {
+            big: reactions.big,
+            add_to_recent: reactions.add_to_recent,
+            peer: chat.into().to_input_peer(),
+            msg_id: message_id,
+            reaction: Some(reactions.reactions),
+        })
+        .await?;
+
         Ok(())
     }
 }

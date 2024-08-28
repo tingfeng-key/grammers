@@ -1,4 +1,4 @@
-use crate::types::{InputSendMultiMedia, Uploaded};
+use crate::types::{extends::input_multi_media::InputSendMultiMedia, Uploaded};
 
 use super::Client;
 pub use grammers_mtsender::{AuthorizationError, InvocationError};
@@ -6,10 +6,7 @@ use grammers_session::PackedChat;
 use grammers_tl_types as tl;
 
 impl Client {
-    pub async fn send_multi_media<
-        C: Into<PackedChat>,
-        M: Into<crate::types::InputSendMultiMedia>,
-    >(
+    pub async fn send_multi_media<C: Into<PackedChat>, M: Into<InputSendMultiMedia>>(
         &self,
         chat: C,
         input: M,
@@ -31,6 +28,7 @@ impl Client {
                 invert_media: false,
                 reply_to: None,
                 quick_reply_shortcut: None,
+                effect: None,
             })
             .await?;
 
@@ -50,13 +48,14 @@ impl Client {
         self.invoke(&tl::functions::messages::UploadMedia {
             peer: chat.to_input_peer(),
             media,
+            business_connection_id: None,
         })
         .await
     }
 
     pub fn phone(&self, file: Uploaded) -> tl::enums::InputMedia {
         tl::types::InputMediaUploadedPhoto {
-            file: file.input_file,
+            file: file.raw,
             stickers: None,
             ttl_seconds: None,
             spoiler: true,
@@ -68,7 +67,7 @@ impl Client {
         tl::types::InputMediaUploadedDocument {
             nosound_video: false,
             force_file: false,
-            file: file.clone().input_file,
+            file: file.clone().raw,
             thumb: None,
             mime_type: InputSendMultiMedia::get_file_mime(&file),
             attributes: vec![
@@ -84,6 +83,7 @@ impl Client {
                     h: 0,
                     nosound: true,
                     preload_prefix_size: None,
+                    video_start_ts: None,
                 }
                 .into(),
             ],
@@ -98,7 +98,7 @@ impl Client {
         tl::types::InputMediaUploadedDocument {
             nosound_video: false,
             force_file: false,
-            file: file.clone().input_file,
+            file: file.clone().raw,
             thumb: None,
             mime_type: InputSendMultiMedia::get_file_mime(&file),
             attributes: vec![tl::types::DocumentAttributeFilename {

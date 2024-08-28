@@ -17,7 +17,7 @@ mod intermediate;
 
 pub use abridged::Abridged;
 pub use full::Full;
-use grammers_crypto::RingBuffer;
+use grammers_crypto::DequeBuffer;
 pub use intermediate::Intermediate;
 use std::fmt;
 
@@ -39,6 +39,20 @@ pub enum Error {
 
     /// The checksum of the packet does not match its expected value.
     BadCrc { expected: u32, got: u32 },
+
+    /// A negative length was received, indicating a [transport-level error].
+    /// The absolute value of this length behaves like an [HTTP status code]:
+    ///
+    /// * 404, if the authorization key used was not found, meaning that the
+    ///   server is not aware of the key used by the client, so it cannot be
+    ///   used to securely communicate with it.
+    ///
+    /// * 429, if too many transport connections are established to the same
+    ///   IP address in a too-short lapse of time.
+    ///
+    /// [transport-level error]: https://core.telegram.org/mtproto/mtproto-transports#transport-errors
+    /// [HTTP status code]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    BadStatus { status: u32 },
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -55,12 +69,15 @@ impl fmt::Display for Error {
         write!(f, "transport error: ")?;
         match self {
             Error::MissingBytes => write!(f, "need more bytes"),
-            Error::BadLen { got } => write!(f, "bad len (got {})", got),
+            Error::BadLen { got } => write!(f, "bad len (got {got})"),
             Error::BadSeq { expected, got } => {
-                write!(f, "bad seq (expected {}, got {})", expected, got)
+                write!(f, "bad seq (expected {expected}, got {got})")
             }
             Error::BadCrc { expected, got } => {
-                write!(f, "bad crc (expected {}, got {})", expected, got)
+                write!(f, "bad crc (expected {expected}, got {got})")
+            }
+            Error::BadStatus { status } => {
+                write!(f, "bad status (negative length -{status})")
             }
         }
     }
@@ -71,7 +88,7 @@ pub trait Transport {
     /// Packs the input buffer in-place.
     ///
     /// Panics if `input.len()` is not divisible by 4.
-    fn pack(&mut self, buffer: &mut RingBuffer<u8>);
+    fn pack(&mut self, buffer: &mut DequeBuffer<u8>);
 
     /// Unpacks the input buffer in-place.
     fn unpack(&mut self, buffer: &[u8]) -> Result<UnpackedOffset, Error>;

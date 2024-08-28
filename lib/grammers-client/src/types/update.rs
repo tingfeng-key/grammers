@@ -5,12 +5,12 @@
 // <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
+
 use std::sync::Arc;
 
-use grammers_tl_types as tl;
-
-use super::{CallbackQuery, ChatMap, InlineQuery, Message};
+use super::{CallbackQuery, ChatMap, InlineQuery, InlineSend, Message};
 use crate::{types::MessageDeletion, Client};
+use grammers_tl_types as tl;
 
 #[non_exhaustive]
 #[derive(Debug, Clone)]
@@ -27,6 +27,8 @@ pub enum Update {
     /// Occurs whenever you sign in as a bot and a user sends an inline query
     /// such as `@bot query`.
     InlineQuery(InlineQuery),
+    /// Represents an update of user choosing the result of inline query and sending it to their chat partner.
+    InlineSend(InlineSend),
     /// Raw events are not actual events.
     /// Instead, they are the raw Update object that Telegram sends. You
     /// normally shouldn’t need these.
@@ -38,29 +40,26 @@ pub enum Update {
 }
 
 impl Update {
-    pub(crate) fn new(
-        client: &Client,
-        update: tl::enums::Update,
-        chats: &Arc<ChatMap>,
-    ) -> Option<Self> {
+    /// Create new friendly to use Update from its raw version and chat map
+    pub fn new(client: &Client, update: tl::enums::Update, chats: &Arc<ChatMap>) -> Option<Self> {
         match update {
             // NewMessage
             tl::enums::Update::NewMessage(tl::types::UpdateNewMessage { message, .. }) => {
-                Message::new(client, message, chats).map(Self::NewMessage)
+                Message::from_raw(client, message, chats).map(Self::NewMessage)
             }
             tl::enums::Update::NewChannelMessage(tl::types::UpdateNewChannelMessage {
                 message,
                 ..
-            }) => Message::new(client, message, chats).map(Self::NewMessage),
+            }) => Message::from_raw(client, message, chats).map(Self::NewMessage),
 
             // MessageEdited
             tl::enums::Update::EditMessage(tl::types::UpdateEditMessage { message, .. }) => {
-                Message::new(client, message, chats).map(Self::MessageEdited)
+                Message::from_raw(client, message, chats).map(Self::MessageEdited)
             }
             tl::enums::Update::EditChannelMessage(tl::types::UpdateEditChannelMessage {
                 message,
                 ..
-            }) => Message::new(client, message, chats).map(Self::MessageEdited),
+            }) => Message::from_raw(client, message, chats).map(Self::MessageEdited),
 
             // MessageDeleted
             tl::enums::Update::DeleteMessages(tl::types::UpdateDeleteMessages {
@@ -76,12 +75,17 @@ impl Update {
 
             // CallbackQuery
             tl::enums::Update::BotCallbackQuery(query) => Some(Self::CallbackQuery(
-                CallbackQuery::new(client, query, chats),
+                CallbackQuery::from_raw(client, query, chats),
             )),
 
             // InlineQuery
-            tl::enums::Update::BotInlineQuery(query) => {
-                Some(Self::InlineQuery(InlineQuery::new(client, query, chats)))
+            tl::enums::Update::BotInlineQuery(query) => Some(Self::InlineQuery(
+                InlineQuery::from_raw(client, query, chats),
+            )),
+
+            // InlineSend
+            tl::enums::Update::BotInlineSend(query) => {
+                Some(Self::InlineSend(InlineSend::from_raw(query, client, chats)))
             }
 
             // Raw

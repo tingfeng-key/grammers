@@ -7,7 +7,7 @@
 // except according to those terms.
 use super::{Error, Transport, UnpackedOffset};
 use crc32fast::Hasher;
-use grammers_crypto::RingBuffer;
+use grammers_crypto::DequeBuffer;
 
 /// The basic MTProto transport protocol. This is an implementation of the
 /// [full transport].
@@ -42,16 +42,15 @@ impl Full {
 }
 
 impl Transport for Full {
-    fn pack(&mut self, buffer: &mut RingBuffer<u8>) {
+    fn pack(&mut self, buffer: &mut DequeBuffer<u8>) {
         let len = buffer.len();
         assert_eq!(len % 4, 0);
 
         // payload len + length itself (4 bytes) + send counter (4 bytes) + crc32 (4 bytes)
         let len = (len as i32) + 4 + 4 + 4;
 
-        let mut header = buffer.shift(4 + 4);
-        header.extend(len.to_le_bytes());
-        header.extend(self.send_seq.to_le_bytes());
+        buffer.extend_front(&self.send_seq.to_le_bytes());
+        buffer.extend_front(&len.to_le_bytes());
 
         let crc = {
             let mut hasher = Hasher::new();
@@ -74,6 +73,11 @@ impl Transport for Full {
         // payload len
         let len = i32::from_le_bytes(buffer[0..4].try_into().unwrap());
         if len < 12 {
+            if len < 0 {
+                return Err(Error::BadStatus {
+                    status: (-len) as u32,
+                });
+            }
             return Err(Error::BadLen { got: len });
         }
 
@@ -116,6 +120,7 @@ impl Transport for Full {
     }
 
     fn reset(&mut self) {
+        log::info!("resetting recv and send seqs in full transport");
         self.recv_seq = 0;
         self.send_seq = 0;
     }
@@ -126,8 +131,8 @@ mod tests {
     use super::*;
 
     /// Returns a full abridged transport, and `n` bytes of input data for it.
-    fn setup_pack(n: usize) -> (Full, RingBuffer<u8>) {
-        let mut buffer = RingBuffer::with_capacity(n, 0);
+    fn setup_pack(n: usize) -> (Full, DequeBuffer<u8>) {
+        let mut buffer = DequeBuffer::with_capacity(n, 0);
         buffer.extend((0..n).map(|x| (x & 0xff) as u8));
         (Full::new(), buffer)
     }
@@ -164,7 +169,7 @@ mod tests {
         let (mut transport, mut buffer) = setup_pack(128);
         let orig = buffer.clone();
 
-        let mut two_buffer = RingBuffer::with_capacity(0, 0);
+        let mut two_buffer = DequeBuffer::with_capacity(0, 0);
         transport.pack(&mut buffer);
         two_buffer.extend(&buffer[..]);
 
@@ -181,7 +186,7 @@ mod tests {
     #[test]
     fn unpack_small() {
         let mut transport = Full::new();
-        let mut buffer = RingBuffer::with_capacity(3, 0);
+        let mut buffer = DequeBuffer::with_capacity(3, 0);
         buffer.extend([0, 1, 3]);
         assert_eq!(transport.unpack(&buffer[..]), Err(Error::MissingBytes));
     }
@@ -200,7 +205,7 @@ mod tests {
         let (mut transport, mut buffer) = setup_pack(128);
         let orig = buffer.clone();
 
-        let mut two_buffer = RingBuffer::with_capacity(0, 0);
+        let mut two_buffer = DequeBuffer::with_capacity(0, 0);
         transport.pack(&mut buffer);
         two_buffer.extend(&buffer[..]);
         let single_size = two_buffer.len();
@@ -213,8 +218,8 @@ mod tests {
         assert_eq!(&buffer[offset.data_start..offset.data_end], &orig[..]);
         assert_eq!(offset.next_offset, single_size);
 
-        two_buffer.skip(offset.next_offset);
-        let offset = transport.unpack(&two_buffer[..]).unwrap();
+        let n = offset.next_offset;
+        let offset = transport.unpack(&two_buffer[n..]).unwrap();
         assert_eq!(&buffer[offset.data_start..offset.data_end], &orig[..]);
     }
 
@@ -246,6 +251,18 @@ mod tests {
                 expected: 932541318,
                 got: 3365237638,
             })
+        );
+    }
+
+    #[test]
+    fn unpack_bad_status() {
+        let mut transport = Full::new();
+        let mut buffer = DequeBuffer::with_capacity(4, 0);
+        buffer.extend(&(-404_i32).to_le_bytes());
+
+        assert_eq!(
+            transport.unpack(&buffer[..]),
+            Err(Error::BadStatus { status: 404 })
         );
     }
 }

@@ -41,7 +41,7 @@ impl Chat {
         Self::User(User::from_raw(user))
     }
 
-    pub(crate) fn from_chat(chat: tl::enums::Chat) -> Self {
+    pub fn from_raw(chat: tl::enums::Chat) -> Self {
         use tl::enums::Chat as C;
 
         match chat {
@@ -106,13 +106,13 @@ impl Chat {
         match packed.ty {
             PackedType::User => {
                 let mut user = User::from_raw(tl::types::UserEmpty { id: packed.id }.into());
-                user.0.access_hash = packed.access_hash;
+                user.raw.access_hash = packed.access_hash;
                 Chat::User(user)
             }
             PackedType::Bot => {
                 let mut user = User::from_raw(tl::types::UserEmpty { id: packed.id }.into());
-                user.0.access_hash = packed.access_hash;
-                user.0.bot = true;
+                user.raw.access_hash = packed.access_hash;
+                user.raw.bot = true;
                 Chat::User(user)
             }
             PackedType::Chat => Chat::Group(Group::from_raw(
@@ -165,22 +165,24 @@ impl Chat {
     // is missing).
     pub(crate) fn get_min_hash_ref(&mut self) -> Option<(&mut bool, &mut i64)> {
         match self {
-            Self::User(user) => match (&mut user.0.min, user.0.access_hash.as_mut()) {
+            Self::User(user) => match (&mut user.raw.min, user.raw.access_hash.as_mut()) {
                 (m @ true, Some(ah)) => Some((m, ah)),
                 _ => None,
             },
             // Small group chats don't have an `access_hash` to begin with.
             Self::Group(_group) => None,
-            Self::Channel(channel) => match (&mut channel.0.min, channel.0.access_hash.as_mut()) {
-                (m @ true, Some(ah)) => Some((m, ah)),
-                _ => None,
-            },
+            Self::Channel(channel) => {
+                match (&mut channel.raw.min, channel.raw.access_hash.as_mut()) {
+                    (m @ true, Some(ah)) => Some((m, ah)),
+                    _ => None,
+                }
+            }
         }
     }
 
     pub fn photo_to_location(&self) -> Option<tl::enums::InputFileLocation> {
         match self.photo_downloadable(false) {
-            Some(downloadable) => downloadable.to_input_location(),
+            Some(downloadable) => downloadable.to_raw_input_location(),
             None => None,
         }
     }
@@ -193,21 +195,21 @@ impl Chat {
                 crate::types::Downloadable::UserProfilePhoto(crate::types::UserProfilePhoto {
                     big,
                     peer,
-                    photo: x.clone(),
+                    raw: x.clone(),
                 })
             }),
             Self::Group(group) => group.photo().map(|x| {
                 crate::types::Downloadable::ChatPhoto(crate::types::ChatPhoto {
                     big,
                     peer,
-                    photo: x.clone(),
+                    raw: x.clone(),
                 })
             }),
             Self::Channel(channel) => channel.photo().map(|x| {
                 crate::types::Downloadable::ChatPhoto(crate::types::ChatPhoto {
                     big,
                     peer,
-                    photo: x.clone(),
+                    raw: x.clone(),
                 })
             }),
         }
@@ -215,9 +217,9 @@ impl Chat {
 
     pub fn is_min(&self) -> bool {
         match self {
-            Self::User(user) => user.0.min,
+            Self::User(user) => user.raw.min,
             Self::Group(_group) => false,
-            Self::Channel(channel) => channel.0.min,
+            Self::Channel(channel) => channel.raw.min,
         }
     }
 }

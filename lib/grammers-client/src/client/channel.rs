@@ -1,8 +1,7 @@
 use crate::types::Chat;
 
 use super::Client;
-use grammers_mtproto::mtp::RpcError;
-use grammers_mtsender::InvocationError;
+use grammers_mtsender::{InvocationError, RpcError};
 use grammers_session::PackedChat;
 use grammers_tl_types as tl;
 
@@ -20,14 +19,14 @@ impl Client {
             Ok(tl::enums::messages::Chats::Chats(chats)) => {
                 let mut res_chats = vec![];
                 for chat in chats.chats {
-                    res_chats.push(crate::types::chat::Chat::from_chat(chat))
+                    res_chats.push(crate::types::chat::Chat::from_raw(chat))
                 }
                 Ok(res_chats)
             }
             Ok(tl::enums::messages::Chats::Slice(chat_slice)) => {
                 let mut res_chats = vec![];
                 for chat in chat_slice.chats {
-                    res_chats.push(crate::types::chat::Chat::from_chat(chat))
+                    res_chats.push(crate::types::chat::Chat::from_raw(chat))
                 }
                 Ok(res_chats)
             }
@@ -56,7 +55,7 @@ impl Client {
                 }?;
                 let base = match chat_full.chats.first() {
                     Some(tl::enums::Chat::Channel(channel)) => {
-                        Ok(crate::types::Chat::from_chat(channel.clone().into()))
+                        Ok(crate::types::Chat::from_raw(channel.clone().into()))
                     }
                     _ => Err(InvocationError::Rpc(RpcError {
                         code: 404,

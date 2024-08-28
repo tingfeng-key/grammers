@@ -1,8 +1,7 @@
 //! this example demonstrate how to implement custom Reconnection Polies
 
-use grammers_client::{Client, Config, InitParams};
-use grammers_mtsender::ReconnectionPolicy;
-use grammers_session::Session;
+use grammers_client::session::Session;
+use grammers_client::{Client, Config, InitParams, ReconnectionPolicy};
 use std::ops::ControlFlow;
 use std::time::Duration;
 use tokio::runtime;
@@ -43,7 +42,9 @@ async fn async_main() -> Result {
     /// happy listening to updates forever!!
     use grammers_client::Update;
 
-    while let Some(update) = client.next_update().await? {
+    loop {
+        let update = client.next_update().await?;
+
         match update {
             Update::NewMessage(message) if !message.outgoing() => {
                 message.respond(message.text()).await?;
@@ -51,7 +52,6 @@ async fn async_main() -> Result {
             _ => {}
         }
     }
-    Ok(())
 }
 
 fn main() -> Result {

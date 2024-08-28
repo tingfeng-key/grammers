@@ -32,12 +32,12 @@ impl Client {
             Ok(tl::enums::messages::Chats::Chats(chats)) => Ok(chats
                 .chats
                 .into_iter()
-                .map(crate::types::Chat::from_chat)
+                .map(crate::types::Chat::from_raw)
                 .collect()),
             Ok(tl::enums::messages::Chats::Slice(chat_slice)) => Ok(chat_slice
                 .chats
                 .into_iter()
-                .map(crate::types::Chat::from_chat)
+                .map(crate::types::Chat::from_raw)
                 .collect()),
             Err(e) => Err(e),
         }
@@ -49,7 +49,7 @@ impl Client {
         chat: PackedChat,
         users: Vec<PackedChat>,
     ) -> Result<Option<(Option<i64>, Vec<i64>)>, InvocationError> {
-        use tl::enums::Updates;
+        use tl::enums::{messages::InvitedUsers, Updates};
 
         let user_ids = users
             .clone()
@@ -57,14 +57,14 @@ impl Client {
             .map(|x| x.id)
             .collect::<Vec<i64>>();
 
-        let updates = self
+        let InvitedUsers::Users(invited_users) = self
             .invoke(&tl::functions::channels::InviteToChannel {
                 channel: chat.to_input_channel_lossy(),
                 users: users.into_iter().map(|x| x.to_input_user_lossy()).collect(),
             })
             .await?;
 
-        let result = match updates {
+        let result = match invited_users.updates {
             Updates::Combined(update) => Some((
                 update
                     .chats
@@ -106,20 +106,20 @@ impl Client {
         Option<(Option<crate::types::Chat>, Option<crate::types::chat::User>)>,
         InvocationError,
     > {
-        use tl::enums::Updates;
-        let updates = self
+        use tl::enums::{messages::InvitedUsers, Updates};
+        let InvitedUsers::Users(invited_users) = self
             .invoke(&tl::functions::messages::AddChatUser {
                 chat_id: chat.id,
                 user_id: user.to_input_user_lossy(),
                 fwd_limit,
             })
             .await?;
-        let result = match updates {
+        let result = match invited_users.updates {
             Updates::Combined(update) => Some((
                 update
                     .chats
                     .into_iter()
-                    .map(crate::types::chat::Chat::from_chat)
+                    .map(crate::types::chat::Chat::from_raw)
                     .find(|x| x.id() == chat.id),
                 update
                     .users
@@ -131,7 +131,7 @@ impl Client {
                 update
                     .chats
                     .into_iter()
-                    .map(crate::types::chat::Chat::from_chat)
+                    .map(crate::types::chat::Chat::from_raw)
                     .find(|x| x.id() == chat.id),
                 update
                     .users

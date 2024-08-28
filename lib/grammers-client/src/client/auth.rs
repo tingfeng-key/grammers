@@ -35,13 +35,12 @@ impl fmt::Display for SignInError {
                 terms_of_service: tos,
             } => write!(
                 f,
-                "sign in error: sign up with official client required: {:?}",
-                tos
+                "sign in error: sign up with official client required: {tos:?}"
             ),
             PasswordRequired(_password) => write!(f, "2fa password required"),
             InvalidCode => write!(f, "sign in error: invalid code"),
             InvalidPassword => write!(f, "invalid password"),
-            Other(e) => write!(f, "sign in error: {}", e),
+            Other(e) => write!(f, "sign in error: {e}"),
         }
     }
 }
@@ -213,6 +212,7 @@ impl Client {
                 logout_tokens: None,
                 token: None,
                 app_sandbox: None,
+                unknown_number: false,
             }
             .into(),
         };
@@ -271,7 +271,7 @@ impl Client {
         except_ids: Vec<i64>,
     ) -> Result<crate::types::QrWaitResult, AuthorizationError> {
         loop {
-            if let Ok(Some(crate::types::Update::Raw(tl::enums::Update::LoginToken))) =
+            if let Ok(crate::types::Update::Raw(tl::enums::Update::LoginToken)) =
                 self.next_update().await
             {
                 let request = tl::functions::auth::ExportLoginToken {

@@ -1,4 +1,3 @@
-use crate::types;
 use grammers_tl_types as tl;
 
 #[derive(Debug)]
@@ -15,7 +14,7 @@ pub enum EntityType {
     Pre(String),
     TextUrl(String),
     MentionName(i64),
-    InputMessageEntityMentionName(types::input_user::InputUser),
+    InputMessageEntityMentionName(super::input_user::InputUser),
     Phone,
     Cashtag,
     Underline,
@@ -43,7 +42,7 @@ impl From<tl::enums::MessageEntity> for EntityType {
             TlMessageEntity::TextUrl(text_url) => Self::TextUrl(text_url.url.clone()),
             TlMessageEntity::MentionName(user) => Self::MentionName(user.user_id),
             TlMessageEntity::InputMessageEntityMentionName(user) => {
-                Self::InputMessageEntityMentionName(types::input_user::InputUser::_from_raw(
+                Self::InputMessageEntityMentionName(super::input_user::InputUser::_from_raw(
                     user.user_id.clone(),
                 ))
             }
@@ -239,7 +238,7 @@ impl Entity {
         username
     }
 
-    pub fn input_user(&self) -> Option<&types::input_user::InputUser> {
+    pub fn input_user(&self) -> Option<&super::input_user::InputUser> {
         match self._type() {
             EntityType::InputMessageEntityMentionName(input_user) => Some(input_user),
             _ => None,
@@ -249,7 +248,7 @@ impl Entity {
 
 #[cfg(test)]
 mod tests {
-    use crate::types::{entity::EntityType, Entity};
+    use super::{Entity, EntityType};
 
     #[test]
     fn parse_username() {

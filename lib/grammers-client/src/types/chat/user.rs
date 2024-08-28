@@ -27,7 +27,7 @@ pub struct RestrictionReason {
 }
 
 impl RestrictionReason {
-    pub(crate) fn from_raw(reason: &tl::enums::RestrictionReason) -> Self {
+    pub fn from_raw(reason: &tl::enums::RestrictionReason) -> Self {
         let tl::enums::RestrictionReason::Reason(reason) = reason;
         Self {
             platforms: reason
@@ -61,77 +61,74 @@ impl RestrictionReason {
 ///
 /// [@BotFather]: https://t.me/BotFather
 #[derive(Clone)]
-pub struct User(pub(crate) tl::types::User);
+pub struct User {
+    pub raw: tl::types::User,
+}
 
 impl fmt::Debug for User {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.0.fmt(f)
+        self.raw.fmt(f)
     }
 }
 
 // TODO: photo
 impl User {
-    fn _from_raw(user: tl::enums::User) -> Self {
-        Self(match user {
-            tl::enums::User::Empty(empty) => tl::types::User {
-                is_self: false,
-                contact: false,
-                mutual_contact: false,
-                deleted: false,
-                bot: false,
-                bot_chat_history: false,
-                bot_nochats: false,
-                verified: false,
-                restricted: false,
-                min: false,
-                bot_inline_geo: false,
-                support: false,
-                scam: false,
-                apply_min_photo: false,
-                fake: false,
-                bot_attach_menu: false,
-                premium: false,
-                attach_menu_enabled: false,
-                bot_can_edit: false,
-                close_friend: false,
-                stories_hidden: false,
-                stories_unavailable: true,
-                contact_require_premium: false,
-                id: empty.id,
-                access_hash: None,
-                first_name: None,
-                last_name: None,
-                username: None,
-                phone: None,
-                photo: None,
-                status: None,
-                bot_info_version: None,
-                restriction_reason: None,
-                bot_inline_placeholder: None,
-                lang_code: None,
-                emoji_status: None,
-                usernames: None,
-                stories_max_id: None,
-                color: None,
-                profile_color: None,
-            },
-            tl::enums::User::User(user) => user,
-        })
-    }
-
-    #[cfg(feature = "unstable_raw")]
     pub fn from_raw(user: tl::enums::User) -> Self {
-        Self::_from_raw(user)
-    }
-
-    #[cfg(not(feature = "unstable_raw"))]
-    pub(crate) fn from_raw(user: tl::enums::User) -> Self {
-        Self::_from_raw(user)
+        Self {
+            raw: match user {
+                tl::enums::User::Empty(empty) => tl::types::User {
+                    is_self: false,
+                    contact: false,
+                    mutual_contact: false,
+                    deleted: false,
+                    bot: false,
+                    bot_chat_history: false,
+                    bot_nochats: false,
+                    verified: false,
+                    restricted: false,
+                    min: false,
+                    bot_inline_geo: false,
+                    support: false,
+                    scam: false,
+                    apply_min_photo: false,
+                    fake: false,
+                    bot_attach_menu: false,
+                    premium: false,
+                    attach_menu_enabled: false,
+                    bot_can_edit: false,
+                    close_friend: false,
+                    stories_hidden: false,
+                    stories_unavailable: true,
+                    contact_require_premium: false,
+                    bot_business: false,
+                    bot_has_main_app: false,
+                    id: empty.id,
+                    access_hash: None,
+                    first_name: None,
+                    last_name: None,
+                    username: None,
+                    phone: None,
+                    photo: None,
+                    status: None,
+                    bot_info_version: None,
+                    restriction_reason: None,
+                    bot_inline_placeholder: None,
+                    lang_code: None,
+                    emoji_status: None,
+                    usernames: None,
+                    stories_max_id: None,
+                    color: None,
+                    profile_color: None,
+                    bot_active_users: None,
+                },
+                tl::enums::User::User(user) => user,
+            },
+        }
     }
 
     /// Return the user presence status (also known as "last seen").
     pub fn status(&self) -> &grammers_tl_types::enums::UserStatus {
-        self.0
+        self.raw
             .status
             .as_ref()
             .unwrap_or(&grammers_tl_types::enums::UserStatus::Empty)
@@ -139,12 +136,12 @@ impl User {
 
     /// Return the unique identifier for this user.
     pub fn id(&self) -> i64 {
-        self.0.id
+        self.raw.id
     }
 
     /// Return access_hash for this user.
     pub(crate) fn access_hash(&self) -> Option<i64> {
-        self.0.access_hash
+        self.raw.access_hash
     }
 
     /// Pack this user into a smaller representation that can be loaded later.
@@ -164,12 +161,12 @@ impl User {
     ///
     /// If the account was deleted, the returned string will be empty.
     pub fn first_name(&self) -> &str {
-        self.0.first_name.as_deref().unwrap_or("")
+        self.raw.first_name.as_deref().unwrap_or("")
     }
 
     /// Return the last name of this user, if any.
     pub fn last_name(&self) -> Option<&str> {
-        self.0
+        self.raw
             .last_name
             .as_deref()
             .and_then(|name| if name.is_empty() { None } else { Some(name) })
@@ -199,18 +196,18 @@ impl User {
     /// Outside of the application, people may link to this user with one of Telegram's URLs, such
     /// as https://t.me/username.
     pub fn username(&self) -> Option<&str> {
-        self.0.username.as_deref()
+        self.raw.username.as_deref()
     }
 
     /// Return the phone number of this user, if they are not a bot and their privacy settings
     /// allow you to see it.
     pub fn phone(&self) -> Option<&str> {
-        self.0.phone.as_deref()
+        self.raw.phone.as_deref()
     }
 
     /// Return the photo of this user, if any.
     pub fn photo(&self) -> Option<&tl::types::UserProfilePhoto> {
-        match self.0.photo.as_ref() {
+        match self.raw.photo.as_ref() {
             Some(maybe_photo) => match maybe_photo {
                 tl::enums::UserProfilePhoto::Empty => None,
                 tl::enums::UserProfilePhoto::Photo(photo) => Some(photo),
@@ -222,12 +219,12 @@ impl User {
     /// Does this user represent the account that's currently logged in?
     pub fn is_self(&self) -> bool {
         // TODO if is_self is false, check in chat cache if id == ourself
-        self.0.is_self
+        self.raw.is_self
     }
 
     /// Is this user in your account's contact list?
     pub fn contact(&self) -> bool {
-        self.0.contact
+        self.raw.contact
     }
 
     /// Is this user a mutual contact?
@@ -235,19 +232,19 @@ impl User {
     /// Contacts are mutual if both the user of the current account and this user have eachother
     /// in their respective contact list.
     pub fn mutual_contact(&self) -> bool {
-        self.0.mutual_contact
+        self.raw.mutual_contact
     }
 
     /// Has the account of this user been deleted?
     pub fn deleted(&self) -> bool {
-        self.0.deleted
+        self.raw.deleted
     }
 
     /// Is the current account a bot?
     ///
     /// Bot accounts are those created by [@BotFather](https://t.me/BotFather).
     pub fn is_bot(&self) -> bool {
-        self.0.bot
+        self.raw.bot
     }
 
     /// If the current user is a bot, does it have [privacy mode] enabled?
@@ -258,12 +255,12 @@ impl User {
     ///
     /// [privacy mode]: https://core.telegram.org/bots#privacy-mode
     pub fn bot_privacy(&self) -> bool {
-        !self.0.bot_chat_history
+        !self.raw.bot_chat_history
     }
 
     /// If the current user is a bot, can it be added to groups?
     pub fn bot_supports_chats(self) -> bool {
-        self.0.bot_nochats
+        self.raw.bot_nochats
     }
 
     /// Has the account of this user been verified?
@@ -271,32 +268,32 @@ impl User {
     /// Verified accounts, such as [@BotFather](https://t.me/BotFather), have a special icon next
     /// to their names in official applications (commonly a blue starred checkmark).
     pub fn verified(&self) -> bool {
-        self.0.verified
+        self.raw.verified
     }
 
     /// Does this user have restrictions applied to their account?
     pub fn restricted(&self) -> bool {
-        self.0.restricted
+        self.raw.restricted
     }
 
     /// If the current user is a bot, does it want geolocation information on inline queries?
     pub fn bot_inline_geo(&self) -> bool {
-        self.0.bot_inline_geo
+        self.raw.bot_inline_geo
     }
 
     /// Is this user an official member of the support team?
     pub fn support(&self) -> bool {
-        self.0.support
+        self.raw.support
     }
 
     /// Has this user been flagged for trying to scam other people?
     pub fn scam(&self) -> bool {
-        self.0.scam
+        self.raw.scam
     }
 
     /// The reason(s) why this user is restricted, could be empty.
     pub fn restriction_reason(&self) -> Vec<RestrictionReason> {
-        if let Some(reasons) = &self.0.restriction_reason {
+        if let Some(reasons) = &self.raw.restriction_reason {
             reasons.iter().map(RestrictionReason::from_raw).collect()
         } else {
             Vec::new()
@@ -306,16 +303,16 @@ impl User {
     /// Return the placeholder for inline queries if the current user is a bot and has said
     /// placeholder configured.
     pub fn bot_inline_placeholder(&self) -> Option<&str> {
-        self.0.bot_inline_placeholder.as_deref()
+        self.raw.bot_inline_placeholder.as_deref()
     }
 
     /// Language code of the user, if any.
     pub fn lang_code(&self) -> Option<&str> {
-        self.0.lang_code.as_deref()
+        self.raw.lang_code.as_deref()
     }
 
     pub fn is_min(&self) -> bool {
-        self.0.min
+        self.raw.min
     }
 }
 
@@ -328,12 +325,5 @@ impl From<User> for PackedChat {
 impl From<&User> for PackedChat {
     fn from(chat: &User) -> Self {
         chat.pack()
-    }
-}
-
-#[cfg(feature = "unstable_raw")]
-impl From<User> for tl::types::User {
-    fn from(user: User) -> Self {
-        user.0
     }
 }

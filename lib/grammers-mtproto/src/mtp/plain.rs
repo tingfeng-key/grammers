@@ -5,9 +5,9 @@
 // <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
-use super::{Deserialization, DeserializeError, Mtp};
+use super::{Deserialization, DeserializeError, Mtp, RpcResult};
 use crate::MsgId;
-use grammers_crypto::RingBuffer;
+use grammers_crypto::DequeBuffer;
 use grammers_tl_types::{Cursor, Deserializable, Serializable};
 
 /// An implementation of the [Mobile Transport Protocol] for plaintext
@@ -45,7 +45,7 @@ impl Mtp for Plain {
     /// the authorization key itself.
     ///
     /// [unencrypted messages]: https://core.telegram.org/mtproto/description#unencrypted-message
-    fn push(&mut self, buffer: &mut RingBuffer<u8>, request: &[u8]) -> Option<MsgId> {
+    fn push(&mut self, buffer: &mut DequeBuffer<u8>, request: &[u8]) -> Option<MsgId> {
         if !buffer.is_empty() {
             return None;
         }
@@ -63,13 +63,15 @@ impl Mtp for Plain {
         Some(MsgId(0))
     }
 
-    fn finalize(&mut self, _buffer: &mut RingBuffer<u8>) {}
+    fn finalize(&mut self, buffer: &mut DequeBuffer<u8>) -> Option<MsgId> {
+        (!buffer.is_empty()).then_some(MsgId(0))
+    }
 
     /// Validates that the returned data is a correct plain message, and
     /// if it is, the method returns the inner contents of the message.
     ///
     /// [`serialize_plain_message`]: #method.serialize_plain_message
-    fn deserialize(&mut self, payload: &[u8]) -> Result<Deserialization, DeserializeError> {
+    fn deserialize(&mut self, payload: &[u8]) -> Result<Vec<Deserialization>, DeserializeError> {
         crate::utils::check_message_buffer(payload)?;
 
         let mut buf = Cursor::from_slice(payload);
@@ -104,10 +106,10 @@ impl Mtp for Plain {
             });
         }
 
-        Ok(Deserialization {
-            rpc_results: vec![(MsgId(0), Ok(payload[20..20 + len as usize].into()))],
-            updates: Vec::new(),
-        })
+        Ok(vec![Deserialization::RpcResult(RpcResult {
+            msg_id: MsgId(0),
+            body: payload[20..20 + len as usize].into(),
+        })])
     }
 
     fn reset(&mut self) {}
@@ -121,7 +123,7 @@ mod tests {
 
     #[test]
     fn ensure_finalize_preserves_buffer() {
-        let mut buffer = RingBuffer::with_capacity(0, 0);
+        let mut buffer = DequeBuffer::with_capacity(0, 0);
         let mut mtp = Plain::new();
 
         mtp.push(&mut buffer, REQUEST);
@@ -131,7 +133,7 @@ mod tests {
 
     #[test]
     fn ensure_only_one_push_allowed() {
-        let mut buffer = RingBuffer::with_capacity(0, 0);
+        let mut buffer = DequeBuffer::with_capacity(0, 0);
         let mut mtp = Plain::new();
 
         assert!(mtp.push(&mut buffer, REQUEST).is_some());

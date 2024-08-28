@@ -8,9 +8,9 @@
 use super::client::{ClientState, Connection};
 use super::{Client, ClientInner, Config};
 use crate::utils;
-use grammers_mtproto::mtp::{self, RpcError};
+use grammers_mtproto::mtp;
 use grammers_mtproto::transport;
-use grammers_mtsender::{self as sender, AuthorizationError, InvocationError, Sender};
+use grammers_mtsender::{self as sender, AuthorizationError, InvocationError, RpcError, Sender};
 use grammers_session::{ChatHashCache, MessageBox};
 use grammers_tl_types::{self as tl, Deserializable};
 use log::{debug, info};
@@ -294,7 +294,7 @@ impl Client {
             }
             Err(AuthorizationError::Invoke(e)) => Err(e),
             Err(AuthorizationError::Gen(e)) => {
-                panic!("authorization key generation failed: {}", e)
+                panic!("authorization key generation failed: {e}")
             }
         }
     }
@@ -371,7 +371,7 @@ impl Connection {
         }
     }
 
-    pub(crate) async fn invoke<R: tl::RemoteCall, F: Fn(Vec<tl::enums::Updates>) -> ()>(
+    pub(crate) async fn invoke<R: tl::RemoteCall, F: Fn(Vec<tl::enums::Updates>)>(
         &self,
         request: &R,
         flood_sleep_threshold: u32,

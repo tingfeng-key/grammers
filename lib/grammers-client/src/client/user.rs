@@ -1,7 +1,6 @@
 use super::Client;
 use crate::types::Chat;
-use grammers_mtproto::mtp::RpcError;
-use grammers_mtsender::InvocationError;
+use grammers_mtsender::{InvocationError, RpcError};
 use grammers_tl_types as tl;
 
 impl Client {

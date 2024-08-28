@@ -5,7 +5,8 @@
 // <LICENSE-MIT or https://opensource.org/licenses/MIT>, at your
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
-use super::{Chat, ChatMap, User};
+
+use super::super::{Chat, ChatMap, User};
 use crate::{client::Client, utils::generate_random_id, InputMessage};
 use grammers_mtsender::InvocationError;
 use grammers_tl_types as tl;
@@ -16,7 +17,7 @@ use std::sync::Arc;
 /// inline query such as `@bot query`.
 #[derive(Clone)]
 pub struct InlineQuery {
-    query: tl::types::UpdateBotInlineQuery,
+    raw: tl::types::UpdateBotInlineQuery,
     client: Client,
     chats: Arc<ChatMap>,
 }
@@ -40,25 +41,25 @@ impl From<InlineResult> for tl::enums::InputBotInlineResult {
 }
 
 impl InlineQuery {
-    pub(crate) fn new(
+    pub fn from_raw(
         client: &Client,
         query: tl::types::UpdateBotInlineQuery,
         chats: &Arc<ChatMap>,
     ) -> Self {
         Self {
-            query,
+            raw: query,
             client: client.clone(),
             chats: chats.clone(),
         }
     }
 
-    // User that sent the query.
+    ///	User that sent the query
     pub fn sender(&self) -> &User {
         match self
             .chats
             .get(
                 &tl::types::PeerUser {
-                    user_id: self.query.user_id,
+                    user_id: self.raw.user_id,
                 }
                 .into(),
             )
@@ -69,14 +70,14 @@ impl InlineQuery {
         }
     }
 
-    // The text of the inline query.
+    /// The text of the inline query.
     pub fn text(&self) -> &str {
-        self.query.query.as_str()
+        self.raw.query.as_str()
     }
 
-    // The offset of the inline query.
+    /// The offset of the inline query.
     pub fn offset(&self) -> &str {
-        self.query.offset.as_str()
+        self.raw.offset.as_str()
     }
 
     /// Answer the inline query.
@@ -86,7 +87,7 @@ impl InlineQuery {
             request: tl::functions::messages::SetInlineBotResults {
                 gallery: false,
                 private: false,
-                query_id: self.query.query_id,
+                query_id: self.raw.query_id,
                 results: results.into_iter().map(Into::into).collect(),
                 cache_time: 0,
                 next_offset: None,
@@ -95,6 +96,16 @@ impl InlineQuery {
             },
             client: self.client.clone(),
         }
+    }
+
+    /// Type of the chat from which the inline query was sent.
+    pub fn peer_type(&self) -> Option<tl::enums::InlineQueryPeerType> {
+        self.raw.peer_type.clone()
+    }
+
+    /// Query ID
+    pub fn query_id(&self) -> i64 {
+        self.raw.query_id
     }
 }
 
@@ -217,7 +228,7 @@ impl From<Article> for InlineResult {
                 send_message: tl::enums::InputBotInlineMessage::Text(
                     tl::types::InputBotInlineMessageText {
                         no_webpage: !article.input_message.link_preview,
-                        invert_media: false,
+                        invert_media: article.input_message.invert_media,
                         message: article.input_message.text,
                         entities: Some(article.input_message.entities),
                         reply_markup: article.input_message.reply_markup,
@@ -232,7 +243,9 @@ impl fmt::Debug for InlineQuery {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("InlineQuery")
             .field("text", &self.text())
+            .field("peer_type", &self.peer_type())
             .field("sender", &self.sender())
+            .field("query_id", &self.query_id())
             .finish()
     }
 }

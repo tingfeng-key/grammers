@@ -6,7 +6,7 @@ impl Client {
     pub async fn contact_add(
         &self,
         add_phone_privacy_exception: bool,
-        input_user: crate::types::InputUser,
+        input_user: crate::types::extends::input_user::InputUser,
         first_name: String,
         last_name: String,
         phone: String,
@@ -66,7 +66,7 @@ impl Client {
             .await?;
 
         for chat in found.chats.into_iter() {
-            chats.push(crate::types::Chat::from_chat(chat));
+            chats.push(crate::types::Chat::from_raw(chat));
         }
         for user in found.users.into_iter() {
             chats.push(crate::types::Chat::from_user(user));

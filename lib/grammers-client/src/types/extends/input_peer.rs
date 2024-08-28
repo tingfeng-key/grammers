@@ -8,7 +8,6 @@ impl InputPeer {
     }
 }
 
-#[cfg(feature = "unstable_raw")]
 impl From<InputPeer> for tl::enums::InputPeer {
     fn from(input_user: InputPeer) -> Self {
         input_user.0
